@@ -1,0 +1,71 @@
+#!/bin/bash
+
+### BEGIN INIT INFO
+# Provides:		home-assistant
+# Required-Start:	$all
+# Required-Stop:	
+# Default-Start:	2 3 4 5
+# Default-Stop:		0 1 6
+# Short-Description:	Home-assistant daemon
+### END INIT INFO
+
+NAME="home-assistant"
+DESC="Home-Assistant daemon"
+RUN_AS="hass"
+HOME_DIR="/home/$RUN_AS"
+PID_FILE="/var/run/home-assistant.pid"
+CONFIG_DIR="/srv/hass-config"
+DAEMON_ARGS="-m homeassistant -c \"$CONFIG_DIR\""
+
+# setup pyenv
+#export PYENV_ROOT="$HOME_DIR/.pyenv"
+#export PATH="$PYENV_ROOT/bin:$PATH"
+#eval "$(pyenv init -)"
+#pyenv shell 3.4.2
+#PYTHON=$(pyenv which python)
+
+. /lib/init/vars.sh
+. /lib/lsb/init-functions
+
+start() {
+    log_daemon_msg "Starting $DESC" "$NAME"
+    touch /var/log/home-assistant.log
+    chown $RUN_AS:$RUN_AS /var/log/home-assistant.log
+    start-stop-daemon --background --make-pidfile --chuid "$RUN_AS" \
+        --pidfile "$PID_FILE" \
+        --chdir "$HOME_DIR/home-assistant" \
+        --startas /bin/bash --start -- \
+        -c "export PATH=~/.pyenv/shims:~/.pyenv/bin:\"$PATH\"; \
+            exec python3 $DAEMON_ARGS > /var/log/home-assistant.log 2>&1"
+    log_end_msg $?
+}
+
+stop() {
+    log_daemon_msg "Stopping $DESC" "$NAME"
+    start-stop-daemon -p "$PID_FILE" --oknodo -K
+    RETVAL=$?
+    rm -f "$PID_FILE"
+    log_end_msg $RETVAL
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    restart|force-reload)
+        stop
+        start
+        ;;
+    status)
+        status_of_proc -p "$PID_FILE" "python3" "$NAME" && exit 0 || exit $?
+        ;;
+    *)
+        echo "Usage: $SCRIPTNAME {start|stop|status|restart|force-reload}" >&2
+        exit 3
+        ;;
+esac
+
+exit 0
