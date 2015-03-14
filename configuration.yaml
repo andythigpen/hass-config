@@ -3,6 +3,8 @@ homeassistant:
   latitude: 34.2437413
   longitude: -88.7026712
 
+history:
+
 http:
 
 sun:
