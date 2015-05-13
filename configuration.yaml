@@ -24,6 +24,10 @@ device_sun_light_trigger:
   light_profile: relax
 
 
+sensor:
+  - platform: mysensors
+    gateway: serial
+    port: /dev/ttyUSB0
 
 group:
   living_room:
