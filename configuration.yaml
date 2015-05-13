@@ -40,6 +40,11 @@ group:
     - light.Hall_2
 
 automation:
+  - platform: state
+    state_entity_id: group.all_devices
+    state_to: not_home
+    execute_service: light.turn_off
+    service_entity_id: group.all_lights
 
 
 script:
