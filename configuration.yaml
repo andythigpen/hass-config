@@ -2,6 +2,8 @@ homeassistant:
   # Location required to calculate the time the sun rises and sets
   latitude: 34.2437413
   longitude: -88.7026712
+  temperature_unit: F
+  time_zone: America/Chicago
 
 history:
 
