@@ -24,8 +24,6 @@ device_sun_light_trigger:
   light_profile: relax
 
 
-lighthub:
-  port: /dev/ttyUSB0
 
 group:
   living_room:
@@ -42,56 +40,6 @@ group:
     - light.Hall_2
 
 automation:
-  - alias: Hall light
-    platform: event
-    event_type: lighthub_changed
-    event_data:
-      nodeid: 2
-      gesture: 1
-      electrode: 4
-      repeat: 0
-    execute_service: lighthub.toggle
-    service_entity_id: group.hall
-  - alias: Dim Hall light
-    platform: event
-    event_type: lighthub_changed
-    event_data:
-      nodeid: 2
-      gesture: 3
-      electrode: 0
-      repeat: 1
-    execute_service: lighthub.dim
-    service_entity_id: group.hall
-  - alias: Dim Hall light
-    platform: event
-    event_type: lighthub_changed
-    event_data:
-      nodeid: 2
-      gesture: 1
-      electrode: 0
-      repeat: 0
-    execute_service: lighthub.dim
-    service_entity_id: group.hall
-  - alias: Brighten Hall light
-    platform: event
-    event_type: lighthub_changed
-    event_data:
-      nodeid: 2
-      gesture: 4
-      electrode: 2
-      repeat: 1
-    execute_service: lighthub.brighten
-    service_entity_id: group.hall
-  - alias: Brighten Hall light
-    platform: event
-    event_type: lighthub_changed
-    event_data:
-      nodeid: 2
-      gesture: 1
-      electrode: 2
-      repeat: 0
-    execute_service: lighthub.brighten
-    service_entity_id: group.hall
 
 
 script:
