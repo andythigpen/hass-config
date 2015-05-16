@@ -4,6 +4,19 @@ homeassistant:
   longitude: -88.7026712
   temperature_unit: F
   time_zone: America/Chicago
+  customize:
+    sensor.motion_sensor_101:
+      friendly_name: Bedroom Motion Sensor
+    sensor.motion_sensor_102:
+      friendly_name: Bedroom Light Sensor
+    sensor.motion_sensor_41:
+      friendly_name: Kitchen Motion Sensor
+    sensor.motion_sensor_42:
+      friendly_name: Kitchen Light Sensor
+    sensor.motion_sensor_51:
+      friendly_name: Stairs Motion Sensor
+    sensor.motion_sensor_52:
+      friendly_name: Stairs Light Sensor
 
 history:
 
@@ -23,11 +36,11 @@ device_sun_light_trigger:
   light_group: group.living_room
   light_profile: relax
 
-
 sensor:
   - platform: mysensors
     gateway: serial
     port: /dev/ttyUSB0
+    debug: True
 
 group:
   living_room:
