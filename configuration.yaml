@@ -1,10 +1,12 @@
 homeassistant:
   # Location required to calculate the time the sun rises and sets
-  latitude: 34.2437413
-  longitude: -88.7026712
+  latitude: !include conf/latitude.yaml
+  longitude: !include conf/longitude.yaml
   temperature_unit: F
   time_zone: America/Chicago
   customize:
+    group.living_room:
+      friendly_name: Living Room
     sensor.motion_sensor_101:
       friendly_name: Bedroom Motion Sensor
     sensor.motion_sensor_102:
@@ -27,10 +29,7 @@ sun:
 light:
   platform: hue
 
-device_tracker:
-  platform: nmap_tracker
-  hosts: 192.168.1.105
-  home_interval: 10
+device_tracker: !include conf/device_tracker.yaml
 
 device_sun_light_trigger:
   light_group: group.living_room
@@ -63,95 +62,6 @@ automation:
     execute_service: light.turn_off
     service_entity_id: group.all_lights
 
+scene: !include conf/scenes.yaml
 
-script:
-  snooze:
-    alias: Snooze Alarm
-    sequence:
-      - delay:
-          seconds: 30
-      - execute_service: light.turn_on
-        service_data:
-          entity_id: group.Bedroom
-          transition: 600
-          brightness: 255
-  wakeup:
-    alias: Wake up
-    sequence:
-      - execute_service: light.turn_on
-        service_data:
-          entity_id: group.Bedroom
-          transition: 30
-          brightness: 255
-        alias: Bedroom lights on
-      - delay:
-          minutes: 1
-      - execute_service: light.turn_on
-        service_data:
-          entity_id: group.hall
-          brightness: 40
-          transition: 300
-        alias: Hall lights on
-      - delay:
-          seconds: 30
-      - execute_service: light.turn_on
-        service_data:
-          entity_id: group.living_room
-          brightness: 150
-          transition: 600
-        alias: Living room lights on
-      - execute_service: light.turn_on
-        service_data:
-          entity_id: group.kitchen
-          brightness: 5
-          transition: 15
-        alias: Kitchen lights on
-      - delay:
-          minutes: 30
-      - execute_service: light.turn_on
-        service_data:
-          entity_id: group.hall
-          brightness: 150
-          transition: 60
-        alias: Hall lights brighter
-  bedtime:
-    alias: Bedtime
-    sequence:
-      - execute_service: light.turn_on
-        service_data:
-          entity_id: group.hall
-          brightness: 50
-          transition: 10
-        alias: Hall light dim
-      - execute_service: light.turn_on
-        service_data:
-          entity_id: group.bedroom
-          brightness: 255
-          transition: 10
-        alias: Bedroom light on
-      - delay:
-          seconds: 15
-      - execute_service: light.turn_off
-        service_data:
-          entity_id: group.kitchen
-          transition: 60
-        alias: Kitchen lights off
-      - execute_service: light.turn_off
-        service_data:
-          entity_id: group.living_room
-          transition: 120
-        alias: Living room lights off
-      - delay:
-          minutes: 15
-      - execute_service: light.turn_off
-        service_data:
-          entity_id: group.hall
-          transition: 60
-        alias: Hall lights off
-      - delay:
-          minutes: 5
-      - execute_service: light.turn_off
-        service_data:
-          entity_id: group.Bedroom
-          transition: 600
-        alias: Bedroom lights off
+script: !include conf/scripts.yaml
