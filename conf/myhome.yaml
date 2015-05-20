@@ -1,0 +1,124 @@
+rooms:
+  bedroom:
+    motion:
+      - sensor.motion_sensor_21
+    light:
+      sensor.motion_sensor_22:
+        high: 24
+        low: 12
+    timeout:
+      minutes: 15
+    modes:
+      day:
+        occupied:
+          brightness: 255
+        not_occupied:
+          transition: 30
+      evening:
+        occupied:
+          brightness: 200
+        not_occupied:
+          transition: 30
+      night:
+        threshold: False
+        occupied:
+          brightness: 150
+        not_occupied:
+          transition: 30
+  kitchen:
+    motion:
+      - sensor.motion_sensor_11
+    light:
+      sensor.motion_sensor_12:
+        high: 24
+        low: 12
+    timeout:
+      minutes: 15
+    modes:
+      morning:
+        occupied:
+          brightness: 30
+        not_occupied:
+          transition: 30
+      day:
+        occupied:
+          brightness: 100
+        not_occupied:
+          transition: 30
+      evening:
+        occupied:
+          brightness: 30
+        not_occupied:
+          transition: 30
+      night:
+        threshold: False
+        occupied:
+          brightness: 20
+        not_occupied:
+          transition: 30
+  living_room:
+    motion:
+      - sensor.motion_sensor_41
+      - sensor.motion_sensor_101
+    light:
+      sensor.motion_sensor_42:
+        high: 24
+        low: 12
+      sensor.motion_sensor_102:
+        high: 28
+        low: 16
+    timeout:
+      minutes: 15
+    modes:
+      morning:
+        occupied:
+          brightness: 100
+        not_occupied:
+          transition: 30
+      day:
+        occupied:
+          brightness: 255
+        not_occupied:
+          transition: 30
+      evening:
+        occupied:
+          brightness: 200
+        not_occupied:
+          transition: 30
+      night:
+        threshold: False
+        occupied:
+          brightness: 150
+        not_occupied:
+          transition: 30
+      asleep:
+        occupied:
+          brightness: 1
+        not_occupied:
+  hall:
+    motion:
+      - sensor.motion_sensor_51
+    light:
+      sensor.motion_sensor_52:
+        high: 24
+        low: 12
+    timeout:
+      minutes: 10
+    modes:
+      morning:
+        occupied:
+          brightness: 100
+        not_occupied:
+      day:
+        occupied:
+          brightness: 255
+        not_occupied:
+      evening:
+        occupied:
+          brightness: 200
+        not_occupied:
+      night:
+        threshold: False
+        occupied:
+          brightness: 75
+        not_occupied:

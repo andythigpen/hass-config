@@ -11,6 +11,9 @@ snooze:
 wakeup:
   alias: Wake up
   sequence:
+    - execute_service: myhome.set_mode
+      service_data:
+        mode: morning
     - execute_service: light.turn_on
       service_data:
         entity_id: group.Bedroom
@@ -23,68 +26,30 @@ wakeup:
       service_data:
         entity_id: group.hall
         brightness: 40
-        transition: 300
       alias: Hall lights on
-    - delay:
-        seconds: 30
-    - execute_service: light.turn_on
-      service_data:
-        entity_id: group.living_room
-        brightness: 150
-        transition: 600
-      alias: Living room lights on
-    - execute_service: light.turn_on
-      service_data:
-        entity_id: group.kitchen
-        brightness: 5
-        transition: 15
-      alias: Kitchen lights on
     - delay:
         minutes: 30
     - execute_service: light.turn_on
       service_data:
         entity_id: group.hall
         brightness: 150
-        transition: 60
       alias: Hall lights brighter
 bedtime:
   alias: Bedtime
   sequence:
-    - execute_service: light.turn_on
-      service_data:
-        entity_id: group.hall
-        brightness: 50
-        transition: 10
-      alias: Hall light dim
-    - execute_service: light.turn_on
-      service_data:
-        entity_id: group.bedroom
-        brightness: 255
-        transition: 10
-      alias: Bedroom light on
-    - delay:
-        seconds: 15
-    - execute_service: light.turn_off
-      service_data:
-        entity_id: group.kitchen
-        transition: 60
-      alias: Kitchen lights off
-    - execute_service: light.turn_off
-      service_data:
-        entity_id: group.living_room
-        transition: 120
-      alias: Living room lights off
     - delay:
         minutes: 15
-    - execute_service: light.turn_off
-      service_data:
-        entity_id: group.hall
-        transition: 60
-      alias: Hall lights off
-    - delay:
-        minutes: 5
     - execute_service: light.turn_off
       service_data:
         entity_id: group.Bedroom
         transition: 600
       alias: Bedroom lights off
+    - execute_service: myhome.set_mode
+      service_data:
+        mode: asleep
+    - delay:
+        minutes: 10
+        seconds: 30
+    - execute_service: light.turn_off
+      service_data:
+        entity_id: group.all_lights

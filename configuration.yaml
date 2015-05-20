@@ -28,6 +28,8 @@ homeassistant:
     sensor.motion_sensor_102:
       friendly_name: Living Room Light
 
+myhome: !include conf/myhome.yaml
+
 history:
 
 http:
