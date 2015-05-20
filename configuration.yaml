@@ -7,18 +7,26 @@ homeassistant:
   customize:
     group.living_room:
       friendly_name: Living Room
-    sensor.motion_sensor_101:
-      friendly_name: Bedroom Motion Sensor
-    sensor.motion_sensor_102:
-      friendly_name: Bedroom Light Sensor
+    sensor.motion_sensor_11:
+      friendly_name: Kitchen Motion
+    sensor.motion_sensor_12:
+      friendly_name: Kitchen Light
+    sensor.motion_sensor_21:
+      friendly_name: Bedroom Motion
+    sensor.motion_sensor_22:
+      friendly_name: Bedroom Light
     sensor.motion_sensor_41:
-      friendly_name: Kitchen Motion Sensor
+      friendly_name: Bookcase Motion
     sensor.motion_sensor_42:
-      friendly_name: Kitchen Light Sensor
+      friendly_name: Bookcase Light
     sensor.motion_sensor_51:
-      friendly_name: Stairs Motion Sensor
+      friendly_name: Front Door Motion
     sensor.motion_sensor_52:
-      friendly_name: Stairs Light Sensor
+      friendly_name: Front Door Light
+    sensor.motion_sensor_101:
+      friendly_name: Living Room Motion
+    sensor.motion_sensor_102:
+      friendly_name: Living Room Light
 
 history:
 
