@@ -86,28 +86,28 @@ class MyHome(object):
         self.hass.services.register(DOMAIN, 'set_mode', self._set_mode_service)
 
     @property
-    def state(self):
-        """ Returns the current myhome state (a.k.a. mode). """
-        return self.hass.states.get(ENTITY_ID)
+    def mode(self):
+        """ Returns the current myhome mode. """
+        return self.hass.states.get(ENTITY_ID).state
 
-    def _set_mode_callback(self, mode, now):
-        """ Event timer callback that sets the mode. """
-        self.set_mode(mode)
-
-    def _set_mode_service(self, service):
-        """ Service method fo calling set_mode. """
-        mode = service.data.get(ATTR_MODE)
-        self.set_mode(mode)
-
-    def set_mode(self, mode):
+    @mode.setter
+    def mode(self, new_mode):
         """
         Sets the home mode, if the current mode is not STATE_MANUAL.
 
         STATE_MANUAL must be explicitly turned off.
         """
-        if self.state.state == STATE_MANUAL:
+        if self.mode == STATE_MANUAL:
             return
-        self.hass.states.set(ENTITY_ID, mode)
+        self.hass.states.set(ENTITY_ID, new_mode)
+
+    def _set_mode_callback(self, mode, now):
+        """ Event timer callback that sets the mode. """
+        self.mode = mode
+
+    def _set_mode_service(self, service):
+        """ Service method for setting mode. """
+        self.mode = service.data.get(ATTR_MODE)
 
     def sunset(self, now):
         """
@@ -115,7 +115,7 @@ class MyHome(object):
 
         Sets the house mode to evening.
         """
-        self.set_mode(STATE_EVENING)
+        self.mode = STATE_EVENING
 
         def reschedule(now):
             """ Reschedules the sunset callback for the next sunset. """
@@ -131,7 +131,7 @@ class MyHome(object):
 
         Sets the house mode to night.
         """
-        self.set_mode(STATE_NIGHT)
+        self.mode = STATE_NIGHT
 
         self.hass.track_point_in_time(
             self.night, next_setting(self.hass) + self.night_offset)
