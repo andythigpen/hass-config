@@ -107,18 +107,18 @@ rooms:
     modes:
       morning:
         occupied:
-          brightness: 100
+          brightness: 120
         not_occupied:
       day:
         occupied:
-          brightness: 255
+          brightness: 150
         not_occupied:
       evening:
         occupied:
-          brightness: 200
+          brightness: 90
         not_occupied:
       night:
         threshold: False
         occupied:
-          brightness: 75
+          brightness: 50
         not_occupied:
