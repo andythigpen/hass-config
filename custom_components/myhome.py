@@ -195,7 +195,8 @@ class Room(object):
         self.hass.states.track_change(self.motion, self.motion_detected,
                                       from_state=STATE_OFF, to_state=STATE_ON)
         self.hass.states.track_change(
-            self.entity_id, self.occupied, to_state=STATE_OCCUPIED)
+            self.entity_id, self.occupied,
+            from_state=STATE_NOT_OCCUPIED, to_state=STATE_OCCUPIED)
 
     @property
     def state(self):
