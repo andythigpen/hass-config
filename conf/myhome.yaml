@@ -91,10 +91,6 @@ rooms:
           brightness: 150
         not_occupied:
           transition: 30
-      asleep:
-        occupied:
-          brightness: 1
-        not_occupied:
   hall:
     motion:
       - sensor.motion_sensor_51
