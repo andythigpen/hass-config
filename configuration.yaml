@@ -73,6 +73,4 @@ automation:
     execute_service: light.turn_off
     service_entity_id: group.all_lights
 
-scene: !include conf/scenes.yaml
-
 script: !include conf/scripts.yaml
