@@ -11,6 +11,7 @@ from functools import partial
 
 import homeassistant.util.dt as date_util
 from homeassistant.components.sun import next_setting
+import homeassistant.helpers.event as helper
 from homeassistant.const import (
     STATE_ON, STATE_OFF, STATE_NOT_HOME, SERVICE_TURN_OFF, SERVICE_TURN_ON,
     ATTR_ENTITY_ID, EVENT_TIME_CHANGED)
@@ -73,15 +74,15 @@ class MyHome(object):
             self.rooms.keys(), self.room_occupied, to_state=STATE_OCCUPIED)
         self.hass.states.track_change(
             'group.all_devices', self.not_home, to_state=STATE_NOT_HOME)
-        self.hass.track_time_change(
+        helper.track_time_change(self.hass,
             partial(self._set_mode_callback, STATE_MORNING),
             hour=6, minute=0, second=0)
-        self.hass.track_time_change(
+        helper.track_time_change(self.hass,
             partial(self._set_mode_callback, STATE_DAY),
             hour=9, minute=0, second=0)
-        self.hass.track_point_in_time(
+        helper.track_point_in_time(self.hass,
             self.sunset, next_setting(self.hass) - self.evening_offset)
-        self.hass.track_point_in_time(
+        helper.track_point_in_time(self.hass,
             self.night, next_setting(self.hass) + self.night_offset)
         self.hass.services.register(DOMAIN, 'set_mode', self._set_mode_service)
 
@@ -119,10 +120,10 @@ class MyHome(object):
 
         def reschedule(now):
             """ Reschedules the sunset callback for the next sunset. """
-            self.hass.track_point_in_time(
+            helper.track_point_in_time(self.hass,
                 self.sunset, next_setting(self.hass) - self.evening_offset)
 
-        self.hass.track_point_in_time(
+        helper.track_point_in_time(self.hass,
             reschedule, next_setting(self.hass) + timedelta(seconds=1))
 
     def night(self, now):
@@ -133,7 +134,7 @@ class MyHome(object):
         """
         self.mode = STATE_NIGHT
 
-        self.hass.track_point_in_time(
+        helper.track_point_in_time(self.hass,
             self.night, next_setting(self.hass) + self.night_offset)
 
     def get(self, entity_id):
@@ -210,7 +211,7 @@ class Room(object):
         """
         if self.timer is not None:
             return
-        self.timer = self.hass.track_point_in_utc_time(
+        self.timer = helper.track_point_in_utc_time(self.hass,
             self.not_occupied, date_util.utcnow() + self.timeout)
         self.hass.states.set(self.entity_id, STATE_COUNTDOWN)
         _LOGGER.info('room_occupied set timer %s', self)
