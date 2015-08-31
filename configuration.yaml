@@ -57,6 +57,7 @@ group:
     - light.Living_room_table
   bedroom:
     - light.Bedroom
+    - light.Bedroom_2
   kitchen:
     - light.Kitchen_1
     - light.Kitchen_2
