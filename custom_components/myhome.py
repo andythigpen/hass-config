@@ -351,6 +351,7 @@ def setup(hass, config):
         'homeassistant.components.light',
         'requests.packages.urllib3.connectionpool',
         'homeassistant.components.device_tracker.tomato.Tomato',
+        'homeassistant.components.recorder',
     ]
     for module in modules:
         logger = logging.getLogger(module)
