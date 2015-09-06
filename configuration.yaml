@@ -50,6 +50,7 @@ sensor:
     gateway: serial
     port: /dev/ttyUSB0
     debug: True
+    persistence_file: mysensors.json
 
 group:
   living_room:
