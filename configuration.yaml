@@ -41,10 +41,6 @@ light:
 
 device_tracker: !include conf/device_tracker.yaml
 
-device_sun_light_trigger:
-  light_group: group.living_room
-  light_profile: relax
-
 media_player:
   platform: cast
   host: 192.168.1.115
@@ -90,10 +86,29 @@ group:
     - script.bedtime
 
 automation:
-  - platform: state
-    state_entity_id: group.all_devices
-    state_to: not_home
-    execute_service: light.turn_off
-    service_entity_id: group.all_lights
+  - alias: Turn on light when sun sets or arriving home
+    trigger:
+      - platform: sun
+        event: sunset
+        offset: "-01:00:00"
+      - platform: state
+        entity_id: group.all_devices
+        state: home
+    condition:
+      platform: state
+      entity_id: group.all_devices
+      state: home
+    action:
+      service: light.turn_on
+      entity_id: group.living_room
+  - alias: Turn lights off when not home
+    trigger:
+      platform: state
+      entity_id: group.all_devices
+      from: 'home'
+      to: 'not_home'
+    action:
+      service: light.turn_off
+      entity_id: group.all_lights
 
 script: !include conf/scripts.yaml
