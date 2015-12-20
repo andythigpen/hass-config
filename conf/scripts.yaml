@@ -3,7 +3,7 @@ snooze:
   sequence:
     - delay:
         seconds: 30
-    - execute_service: light.turn_on
+    - service: light.turn_on
       service_data:
         entity_id: group.Bedroom
         transition: 600
@@ -11,10 +11,10 @@ snooze:
 wakeup:
   alias: Wake up
   sequence:
-    - execute_service: myhome.set_mode
+    - service: myhome.set_mode
       service_data:
         mode: morning
-    - execute_service: light.turn_on
+    - service: light.turn_on
       service_data:
         entity_id: group.Bedroom
         transition: 30
@@ -22,14 +22,14 @@ wakeup:
       alias: Bedroom lights on
     - delay:
         minutes: 1
-    - execute_service: light.turn_on
+    - service: light.turn_on
       service_data:
         entity_id: group.hall
         brightness: 40
       alias: Hall lights on
     - delay:
         minutes: 30
-    - execute_service: light.turn_on
+    - service: light.turn_on
       service_data:
         entity_id: group.hall
         brightness: 150
@@ -39,17 +39,17 @@ bedtime:
   sequence:
     - delay:
         minutes: 15
-    - execute_service: light.turn_off
+    - service: light.turn_off
       service_data:
         entity_id: group.Bedroom
         transition: 600
       alias: Bedroom lights off
-    - execute_service: myhome.set_mode
+    - service: myhome.set_mode
       service_data:
         mode: asleep
     - delay:
         minutes: 10
         seconds: 30
-    - execute_service: light.turn_off
+    - service: light.turn_off
       service_data:
         entity_id: group.all_lights
