@@ -347,20 +347,4 @@ def setup(hass, config):
     home.register_event_listeners()
     _LOGGER.info('myhome loaded: %s', home)
 
-    # quiet some noisy loggers
-    modules = [
-        'homeassistant.components.light',
-        'requests.packages.urllib3.connectionpool',
-        'homeassistant.components.device_tracker.tomato.Tomato',
-        'homeassistant.components.recorder',
-    ]
-    for module in modules:
-        logger = logging.getLogger(module)
-        logger.setLevel(logging.WARNING)
-
-    # enable debug logging for mysensors
-    logger = logging.getLogger(
-        'homeassistant.external.pymysensors.mysensors.mysensors')
-    logger.setLevel(logging.DEBUG)
-
     return True

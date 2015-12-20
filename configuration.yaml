@@ -112,3 +112,12 @@ automation:
       entity_id: group.all_lights
 
 script: !include conf/scripts.yaml
+
+logger:
+  default: warning
+  logs:
+    homeassistant.components: info
+    homeassistant.components.light: warning
+    homeassistant.components.device_tracker.tomato.Tomato: warning
+    homeassistant.external.pymysensors.mysensors.mysensors: debug
+    homeassistant.components.sensor.mysensors: debug
