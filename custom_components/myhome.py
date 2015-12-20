@@ -70,9 +70,9 @@ class MyHome(object):
 
     def register_event_listeners(self):
         """ Adds event listeners to HA. """
-        self.hass.states.track_change(
+        helper.track_state_change(self.hass,
             self.rooms.keys(), self.room_occupied, to_state=STATE_OCCUPIED)
-        self.hass.states.track_change(
+        helper.track_state_change(self.hass,
             'group.all_devices', self.not_home, to_state=STATE_NOT_HOME)
         helper.track_time_change(self.hass,
             partial(self._set_mode_callback, STATE_MORNING),
@@ -193,9 +193,10 @@ class Room(object):
 
     def register_event_listeners(self):
         """ Registers event listeners with HA so that we're notified. """
-        self.hass.states.track_change(self.motion, self.motion_detected,
-                                      from_state=STATE_OFF, to_state=STATE_ON)
-        self.hass.states.track_change(
+        helper.track_state_change(self.hass,
+            self.motion, self.motion_detected,
+            from_state=STATE_OFF, to_state=STATE_ON)
+        helper.track_state_change(self.hass,
             self.entity_id, self.occupied,
             from_state=STATE_NOT_OCCUPIED, to_state=STATE_OCCUPIED)
 
