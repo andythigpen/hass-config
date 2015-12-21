@@ -1,9 +1,14 @@
 *.pyc
 *.bak
+.*.swp
+.HA_VERSION
 home-assistant.db
 home-assistant.log*
+home-assistant.pid
 known_devices.csv
+known_devices.yaml
 conf/device_tracker.yaml
 conf/latitude.yaml
 conf/longitude.yaml
+build/
 lib/
