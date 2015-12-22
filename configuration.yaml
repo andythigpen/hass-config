@@ -129,6 +129,6 @@ logger:
     homeassistant.components: info
     homeassistant.components.light: warning
     homeassistant.components.device_tracker.tomato.Tomato: warning
-    homeassistant.external.pymysensors.mysensors.mysensors: debug
+    mysensors.mysensors: debug
     homeassistant.components.sensor.mysensors: debug
     homeassistant.components.http: warning
