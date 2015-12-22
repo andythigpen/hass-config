@@ -42,6 +42,8 @@ myhome: !include conf/myhome.yaml
 
 history:
 
+logbook:
+
 http:
 
 sun:
