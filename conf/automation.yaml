@@ -1,0 +1,28 @@
+# ------------------------------
+# Home presence rules
+# Turns lights on/off based on presence
+#
+- alias: Turn on light when sun sets or arriving home
+  trigger:
+    - platform: sun
+      event: sunset
+      offset: "-01:00:00"
+    - platform: state
+      entity_id: group.all_devices
+      state: home
+  condition:
+    platform: state
+    entity_id: group.all_devices
+    state: home
+  action:
+    service: light.turn_on
+    entity_id: group.living_room
+- alias: Turn lights off when not home
+  trigger:
+    platform: state
+    entity_id: group.all_devices
+    from: 'home'
+    to: 'not_home'
+  action:
+    service: light.turn_off
+    entity_id: group.all_lights
