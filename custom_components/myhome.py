@@ -59,6 +59,7 @@ class MyHome(Entity):
         self.entity_id = ENTITY_ID
         self.rooms = {}
         self._state = STATE_MANUAL
+        self._register_services()
 
     @property
     def should_poll(self):
@@ -85,20 +86,15 @@ class MyHome(Entity):
         self._state = new_mode
         self.update_ha_state()
 
-    def register_event_listeners(self):
-        """ Adds event listeners to HA. """
-        helper.track_state_change(self.hass,
-            'group.all_devices', self.not_home, to_state=STATE_NOT_HOME)
+    def _register_services(self):
+        """ Adds service methods to HA. """
         self.hass.services.register(DOMAIN, 'set_mode', self._set_mode_service)
         self.hass.services.register(DOMAIN, 'set_occupied', self._set_occupied)
+        self.hass.services.register(DOMAIN, 'set_away', self._set_away)
 
     def _set_mode_service(self, service):
         """ Service method for setting mode. """
         self.state = service.data.get(ATTR_MODE)
-
-    def get(self, entity_id):
-        """ Returns a Room, given an entity_id. """
-        return self.rooms.get(entity_id)
 
     def _set_occupied(self, service):
         """
@@ -118,15 +114,13 @@ class MyHome(Entity):
             _LOGGER.info('starting timer for room %s', room)
             room.start_timer()
 
-    def not_home(self, entity_id, old_state, new_state):
+    def _set_away(self, service):
         """
-        Event callback for all devices from device_tracker.
-
         Sets all rooms to STATE_NOT_OCCUPIED when no one is home.
         """
-        _LOGGER.info('not_home: setting all rooms to not occupied')
+        _LOGGER.info('setting all rooms to not occupied')
         for room in self.rooms.values():
-            room.set_not_occupied()
+            room.state = STATE_NOT_OCCUPIED
 
     def add(self, room):
         """ Adds a room. """
@@ -302,7 +296,6 @@ def setup(hass, config):
         room.update_ha_state()
         home.add(room)
 
-    home.register_event_listeners()
     home.update_ha_state()
     _LOGGER.info('myhome loaded: %s', home)
 
