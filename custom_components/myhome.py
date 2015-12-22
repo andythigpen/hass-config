@@ -49,15 +49,29 @@ DOMAIN_ROOM = 'room'
 DOMAIN_LIGHT = 'light'
 
 
-class MyHome(object):
+class MyHome(Entity):
     """
     Contains Room objects with sensors for tracking presence and performing
     actions based on location and "house mode".
     """
     def __init__(self, hass):
         self.hass = hass
+        self.entity_id = ENTITY_ID
         self.rooms = {}
-        self.hass.states.set(ENTITY_ID, STATE_MANUAL)
+        self._state = STATE_MANUAL
+
+    @property
+    def should_poll(self):
+        return False
+
+    @property
+    def name(self):
+        return 'Home Mode'
+
+    @property
+    def state(self):
+        """ Returns the current house mode. """
+        return self._state
 
     def register_event_listeners(self):
         """ Adds event listeners to HA. """
@@ -70,7 +84,7 @@ class MyHome(object):
     @property
     def mode(self):
         """ Returns the current myhome mode. """
-        return self.hass.states.get(ENTITY_ID).state
+        return self._state
 
     @mode.setter
     def mode(self, new_mode):
@@ -81,7 +95,8 @@ class MyHome(object):
         """
         if self.mode == STATE_MANUAL:
             return
-        self.hass.states.set(ENTITY_ID, new_mode)
+        self._state = new_mode
+        self.update_ha_state()
 
     def _set_mode_callback(self, mode, now):
         """ Event timer callback that sets the mode. """
@@ -310,6 +325,7 @@ def setup(hass, config):
         home.add(room)
 
     home.register_event_listeners()
+    home.update_ha_state()
     _LOGGER.info('myhome loaded: %s', home)
 
     return True
