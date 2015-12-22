@@ -73,56 +73,49 @@ class MyHome(Entity):
         """ Returns the current house mode. """
         return self._state
 
-    def register_event_listeners(self):
-        """ Adds event listeners to HA. """
-        helper.track_state_change(self.hass,
-            self.rooms.keys(), self.room_occupied, to_state=STATE_OCCUPIED)
-        helper.track_state_change(self.hass,
-            'group.all_devices', self.not_home, to_state=STATE_NOT_HOME)
-        self.hass.services.register(DOMAIN, 'set_mode', self._set_mode_service)
-
-    @property
-    def mode(self):
-        """ Returns the current myhome mode. """
-        return self._state
-
-    @mode.setter
-    def mode(self, new_mode):
+    @state.setter
+    def state(self, new_mode):
         """
         Sets the home mode, if the current mode is not STATE_MANUAL.
 
         STATE_MANUAL must be explicitly turned off.
         """
-        if self.mode == STATE_MANUAL:
+        if self._state == STATE_MANUAL:
             return
         self._state = new_mode
         self.update_ha_state()
 
-    def _set_mode_callback(self, mode, now):
-        """ Event timer callback that sets the mode. """
-        self.mode = mode
+    def register_event_listeners(self):
+        """ Adds event listeners to HA. """
+        helper.track_state_change(self.hass,
+            'group.all_devices', self.not_home, to_state=STATE_NOT_HOME)
+        self.hass.services.register(DOMAIN, 'set_mode', self._set_mode_service)
+        self.hass.services.register(DOMAIN, 'set_occupied', self._set_occupied)
 
     def _set_mode_service(self, service):
         """ Service method for setting mode. """
-        self.mode = service.data.get(ATTR_MODE)
+        self.state = service.data.get(ATTR_MODE)
 
     def get(self, entity_id):
         """ Returns a Room, given an entity_id. """
         return self.rooms.get(entity_id)
 
-    def room_occupied(self, entity_id, old_state, new_state):
+    def _set_occupied(self, service):
         """
-        Event callback for when a room changes state to STATE_OCCUPIED.
+        Service method to change a room state to STATE_OCCUPIED.
 
         Sets all other rooms that were STATE_OCCUPIED to STATE_COUNTDOWN.
         """
-        _LOGGER.info('room_occupied %s %s', entity_id, new_state)
+        entity_id = service.data.get(ATTR_ENTITY_ID)
+        _LOGGER.info('set room %s to occupied', entity_id)
         for room in self.rooms.values():
             if room.entity_id == entity_id:
+                room.state = STATE_OCCUPIED
+                room.disable_timer()
                 continue
-            if room.state.state != STATE_OCCUPIED:
+            if room.state != STATE_OCCUPIED:
                 continue
-            _LOGGER.info('room_occupied found room %s', room)
+            _LOGGER.info('starting timer for room %s', room)
             room.start_timer()
 
     def not_home(self, entity_id, old_state, new_state):
@@ -173,11 +166,13 @@ class Room(Entity):
         """ Returns the current room state (occupied/not_occupied). """
         return self._state
 
+    @state.setter
+    def state(self, new_state):
+        self._state = new_state
+        self.update_ha_state()
+
     def register_event_listeners(self):
         """ Registers event listeners with HA so that we're notified. """
-        helper.track_state_change(self.hass,
-            self.motion, self.motion_detected,
-            from_state=STATE_OFF, to_state=STATE_ON)
         helper.track_state_change(self.hass,
             self.entity_id, self.occupied,
             from_state=STATE_NOT_OCCUPIED, to_state=STATE_OCCUPIED)
@@ -191,8 +186,7 @@ class Room(Entity):
             return
         self.timer = helper.track_point_in_utc_time(self.hass,
             self.not_occupied, date_util.utcnow() + self.timeout)
-        self._state = STATE_COUNTDOWN
-        self.update_ha_state()
+        self.state = STATE_COUNTDOWN
         _LOGGER.info('room_occupied set timer %s', self)
 
     def disable_timer(self):
@@ -207,22 +201,6 @@ class Room(Entity):
         """ Sets the room to currently unoccupied. """
         self.hass.states.set(self.entity_id, STATE_NOT_OCCUPIED)
         self.disable_timer()
-
-    def motion_detected(self, entity_id, old_state, new_state):
-        """
-        Event callback when motion is detected.
-
-        Disables the countdown timer if set for this room.
-        Sets the current state of this room to STATE_OCCUPIED.
-        """
-        devices = self.hass.states.get('group.all_devices')
-        if devices and devices.state == STATE_NOT_HOME:
-            _LOGGER.warning('%s motion but no one is home', entity_id)
-            return
-        _LOGGER.info('motion %s', new_state)
-        self.disable_timer()
-        self._state = STATE_OCCUPIED
-        self.update_ha_state()
 
     def get_mode_config(self):
         """

@@ -34,6 +34,7 @@ homeassistant:
     room.kitchen:
       icon: 'mdi:home-variant'
     room.living_room:
+      friendly_name: 'Living Room'
       icon: 'mdi:home-variant'
     room.hall:
       icon: 'mdi:home-variant'
