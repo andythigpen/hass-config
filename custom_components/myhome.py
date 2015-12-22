@@ -10,8 +10,8 @@ from datetime import timedelta
 from functools import partial
 
 import homeassistant.util.dt as date_util
-from homeassistant.components.sun import next_setting
 import homeassistant.helpers.event as helper
+from homeassistant.helpers.entity import Entity
 from homeassistant.const import (
     STATE_ON, STATE_OFF, STATE_NOT_HOME, SERVICE_TURN_OFF, SERVICE_TURN_ON,
     ATTR_ENTITY_ID, EVENT_TIME_CHANGED)
@@ -129,21 +129,34 @@ class MyHome(object):
         return '<home: %s>' % self.rooms
 
 
-class Room(object):
+class Room(Entity):
     """
     Contains motion and light sensors and performs actions based on them,
     the current house mode, and a person's location in the house.
     """
     def __init__(self, hass, name, motion, light, timeout, modes):
-        self.name = name
+        self._name = name
         self.entity_id = '{}.{}'.format(DOMAIN_ROOM, name)
         self.hass = hass
-        self.hass.states.set(self.entity_id, STATE_NOT_OCCUPIED)
+        self._state = STATE_NOT_OCCUPIED
         self.motion = motion
         self.light = light
         self.timeout = timeout
         self.timer = None
         self.modes = modes
+
+    @property
+    def should_poll(self):
+        return False
+
+    @property
+    def name(self):
+        return self._name
+
+    @property
+    def state(self):
+        """ Returns the current room state (occupied/not_occupied). """
+        return self._state
 
     def register_event_listeners(self):
         """ Registers event listeners with HA so that we're notified. """
@@ -154,11 +167,6 @@ class Room(object):
             self.entity_id, self.occupied,
             from_state=STATE_NOT_OCCUPIED, to_state=STATE_OCCUPIED)
 
-    @property
-    def state(self):
-        """ Returns the current room state (occupied/not_occupied). """
-        return self.hass.states.get(self.entity_id)
-
     def start_timer(self):
         """
         Registers a countdown timer that will trigger no occupancy when fired.
@@ -168,7 +176,8 @@ class Room(object):
             return
         self.timer = helper.track_point_in_utc_time(self.hass,
             self.not_occupied, date_util.utcnow() + self.timeout)
-        self.hass.states.set(self.entity_id, STATE_COUNTDOWN)
+        self._state = STATE_COUNTDOWN
+        self.update_ha_state()
         _LOGGER.info('room_occupied set timer %s', self)
 
     def disable_timer(self):
@@ -197,7 +206,8 @@ class Room(object):
             return
         _LOGGER.info('motion %s', new_state)
         self.disable_timer()
-        self.hass.states.set(self.entity_id, STATE_OCCUPIED)
+        self._state = STATE_OCCUPIED
+        self.update_ha_state()
 
     def get_mode_config(self):
         """
@@ -219,7 +229,7 @@ class Room(object):
             return None
         conf = mode[key] or {}
         if ATTR_ENTITY_ID not in conf:
-            conf[ATTR_ENTITY_ID] = 'group.{}'.format(self.name)
+            conf[ATTR_ENTITY_ID] = 'group.{}'.format(self._name)
         return conf
 
     def not_occupied(self, now=None):
@@ -296,6 +306,7 @@ def setup(hass, config):
     for name, conf in room_conf.items():
         room = create_room(hass, name, conf)
         room.register_event_listeners()
+        room.update_ha_state()
         home.add(room)
 
     home.register_event_listeners()
