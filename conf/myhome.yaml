@@ -10,19 +10,12 @@ rooms:
       minutes: 15
     modes:
       day:
-        occupied:
-          brightness: 255
         not_occupied:
           transition: 30
       evening:
-        occupied:
-          brightness: 200
         not_occupied:
           transition: 30
       night:
-        threshold: False
-        occupied:
-          brightness: 150
         not_occupied:
           transition: 30
   kitchen:
@@ -36,24 +29,15 @@ rooms:
       minutes: 15
     modes:
       morning:
-        occupied:
-          brightness: 30
         not_occupied:
           transition: 30
       day:
-        occupied:
-          brightness: 100
         not_occupied:
           transition: 30
       evening:
-        occupied:
-          brightness: 30
         not_occupied:
           transition: 30
       night:
-        threshold: False
-        occupied:
-          brightness: 20
         not_occupied:
           transition: 30
   living_room:
@@ -71,24 +55,15 @@ rooms:
       minutes: 15
     modes:
       morning:
-        occupied:
-          brightness: 170
         not_occupied:
           transition: 30
       day:
-        occupied:
-          brightness: 255
         not_occupied:
           transition: 30
       evening:
-        occupied:
-          brightness: 200
         not_occupied:
           transition: 30
       night:
-        threshold: False
-        occupied:
-          brightness: 150
         not_occupied:
           transition: 30
   hall:
@@ -102,19 +77,10 @@ rooms:
       minutes: 10
     modes:
       morning:
-        occupied:
-          brightness: 120
         not_occupied:
       day:
-        occupied:
-          brightness: 150
         not_occupied:
       evening:
-        occupied:
-          brightness: 90
         not_occupied:
       night:
-        threshold: False
-        occupied:
-          brightness: 50
         not_occupied:

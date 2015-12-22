@@ -38,6 +38,46 @@ homeassistant:
       icon: 'mdi:home-variant'
     room.hall:
       icon: 'mdi:home-variant'
+    scene.living_room_morning:
+      hidden: True
+    scene.living_room_day:
+      hidden: True
+    scene.living_room_afternoon:
+      hidden: True
+    scene.living_room_evening:
+      hidden: True
+    scene.living_room_night:
+      hidden: True
+    scene.bedroom_morning:
+      hidden: True
+    scene.bedroom_day:
+      hidden: True
+    scene.bedroom_afternoon:
+      hidden: True
+    scene.bedroom_evening:
+      hidden: True
+    scene.bedroom_night:
+      hidden: True
+    scene.kitchen_morning:
+      hidden: True
+    scene.kitchen_day:
+      hidden: True
+    scene.kitchen_afternoon:
+      hidden: True
+    scene.kitchen_evening:
+      hidden: True
+    scene.kitchen_night:
+      hidden: True
+    scene.hall_morning:
+      hidden: True
+    scene.hall_day:
+      hidden: True
+    scene.hall_afternoon:
+      hidden: True
+    scene.hall_evening:
+      hidden: True
+    scene.hall_night:
+      hidden: True
 
 myhome: !include conf/myhome.yaml
 
@@ -99,6 +139,8 @@ group:
     - script.bedtime
 
 automation: !include conf/automation.yaml
+
+scene: !include conf/scenes.yaml
 
 script: !include conf/scripts.yaml
 

@@ -11,6 +11,7 @@ from functools import partial
 
 import homeassistant.util.dt as date_util
 import homeassistant.helpers.event as helper
+from homeassistant.util import slugify
 from homeassistant.helpers.entity import Entity
 from homeassistant.const import (
     STATE_ON, STATE_OFF, STATE_NOT_HOME, SERVICE_TURN_OFF, SERVICE_TURN_ON,
@@ -47,6 +48,7 @@ ATTR_MODE = 'mode'
 
 DOMAIN_ROOM = 'room'
 DOMAIN_LIGHT = 'light'
+DOMAIN_SCENE = 'scene'
 
 
 class MyHome(Entity):
@@ -236,9 +238,11 @@ class Room(Entity):
         """
         _LOGGER.info('occupied: %s', self)
         mode = self.get_mode_config()
-        data_on = self.get_light_data(mode, CONF_OCCUPIED)
-        if data_on is None:
-            _LOGGER.info('occupied: no configuration for current mode')
+        home_mode = self.hass.states.get(ENTITY_ID).state
+        scene_name = '{}.{}_{}'.format(DOMAIN_SCENE, slugify(self.name),
+                                       slugify(home_mode))
+        if scene_name not in self.hass.states.entity_ids(DOMAIN_SCENE):
+            _LOGGER.info('occupied: no scene configured for current mode')
             return
         for sensor_id, sensor in self.light.items():
             entity = self.hass.states.get(sensor_id)
@@ -256,8 +260,10 @@ class Room(Entity):
                     _LOGGER.info('light sensor [%s] above threshold [%s]',
                                  int(entity.state), sensor[CONF_LOW])
                     continue
-            _LOGGER.info('occupied: turning on: %s', data_on)
-            self.hass.services.call(DOMAIN_LIGHT, SERVICE_TURN_ON, data_on)
+            _LOGGER.info('occupied: turning on: %s', scene_name)
+            self.hass.services.call(DOMAIN_SCENE, SERVICE_TURN_ON, {
+                'entity_id': scene_name
+            })
             return
 
     def __repr__(self):

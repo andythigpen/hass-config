@@ -1,0 +1,208 @@
+# -----------------------
+# Living Room modes
+#
+- name: Living Room Morning
+  entities:
+    light.Living_room_standing:
+      state: on
+      brightness: 170
+      transition: 5
+    light.Living_room_table:
+      state: on
+      brightness: 170
+      transition: 5
+- name: Living Room Day
+  entities:
+    light.Living_room_standing:
+      state: on
+      brightness: 255
+    light.Living_room_table:
+      state: on
+      brightness: 255
+- name: Living Room Afternoon
+  entities:
+    light.Living_room_standing:
+      state: on
+      brightness: 255
+    light.Living_room_table:
+      state: on
+      brightness: 255
+- name: Living Room Evening
+  entities:
+    light.Living_room_standing:
+      state: on
+      brightness: 200
+      transition: 2
+    light.Living_room_table:
+      state: on
+      brightness: 200
+      transition: 2
+- name: Living Room Night
+  entities:
+    light.Living_room_standing:
+      state: on
+      brightness: 150
+      transition: 4
+    light.Living_room_table:
+      state: on
+      brightness: 150
+      transition: 4
+
+# -----------------------
+# Bedroom modes
+# No morning scene - lights triggered manually or by alarm only
+#
+- name: Bedroom Day
+  entities:
+    light.bedroom:
+      state: on
+      brightness: 255
+    light.bedroom_2:
+      state: on
+      brightness: 255
+- name: Bedroom Afternoon
+  entities:
+    light.bedroom:
+      state: on
+      brightness: 255
+    light.bedroom_2:
+      state: on
+      brightness: 255
+- name: Bedroom Evening
+  entities:
+    light.bedroom:
+      state: on
+      brightness: 200
+      transition: 2
+    light.bedroom_2:
+      state: on
+      brightness: 200
+      transition: 2
+- name: Bedroom Night
+  entities:
+    light.bedroom:
+      state: on
+      brightness: 150
+      transition: 4
+    light.bedroom_2:
+      state: on
+      brightness: 150
+      transition: 4
+
+# -----------------------
+# Kitchen modes
+#
+- name: Kitchen Morning
+  entities:
+    light.kitchen_1:
+      state: on
+      brightness: 30
+      transition: 5
+    light.kitchen_2:
+      state: on
+      brightness: 30
+      transition: 5
+    light.kitchen_3:
+      state: on
+      brightness: 30
+      transition: 5
+- name: Kitchen Day
+  entities:
+    light.kitchen_1:
+      state: on
+      brightness: 100
+    light.kitchen_2:
+      state: on
+      brightness: 100
+    light.kitchen_3:
+      state: on
+      brightness: 100
+- name: Kitchen Afternoon
+  entities:
+    light.kitchen_1:
+      state: on
+      brightness: 100
+    light.kitchen_2:
+      state: on
+      brightness: 100
+    light.kitchen_3:
+      state: on
+      brightness: 100
+- name: Kitchen Evening
+  entities:
+    light.kitchen_1:
+      state: on
+      brightness: 30
+      transition: 2
+    light.kitchen_2:
+      state: on
+      brightness: 30
+      transition: 2
+    light.kitchen_3:
+      state: on
+      brightness: 30
+      transition: 2
+- name: Kitchen Night
+  entities:
+    light.kitchen_1:
+      state: on
+      brightness: 20
+      transition: 4
+    light.kitchen_2:
+      state: on
+      brightness: 20
+      transition: 4
+    light.kitchen_3:
+      state: on
+      brightness: 20
+      transition: 4
+
+# -----------------------
+# Hall modes
+#
+- name: Hall Morning
+  entities:
+    light.hall:
+      state: on
+      brightness: 120
+      transition: 5
+    light.hall_2:
+      state: on
+      brightness: 120
+      transition: 5
+- name: Hall Day
+  entities:
+    light.hall:
+      state: on
+      brightness: 175
+    light.hall_2:
+      state: on
+      brightness: 175
+- name: Hall Afternoon
+  entities:
+    light.hall:
+      state: on
+      brightness: 175
+    light.hall_2:
+      state: on
+      brightness: 175
+- name: Hall Evening
+  entities:
+    light.hall:
+      state: on
+      brightness: 100
+      transition: 2
+    light.hall_2:
+      state: on
+      brightness: 100
+      transition: 2
+- name: Hall Night
+  entities:
+    light.hall:
+      state: on
+      brightness: 50
+      transition: 4
+    light.hall_2:
+      state: on
+      brightness: 50
+      transition: 4
