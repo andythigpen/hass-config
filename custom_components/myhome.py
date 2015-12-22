@@ -107,12 +107,11 @@ class MyHome(Entity):
         for room in self.rooms.values():
             if room.entity_id == entity_id:
                 room.state = STATE_OCCUPIED
-                room.disable_timer()
                 continue
             if room.state != STATE_OCCUPIED:
                 continue
             _LOGGER.info('starting timer for room %s', room)
-            room.start_timer()
+            room.state = STATE_COUNTDOWN
 
     def _set_away(self, service):
         """
@@ -162,14 +161,14 @@ class Room(Entity):
 
     @state.setter
     def state(self, new_state):
+        if self._state == STATE_NOT_OCCUPIED and new_state == STATE_OCCUPIED:
+            self._occupied()
         self._state = new_state
+        if self._state == STATE_COUNTDOWN:
+            self.start_timer()
+        else:
+            self.disable_timer()
         self.update_ha_state()
-
-    def register_event_listeners(self):
-        """ Registers event listeners with HA so that we're notified. """
-        helper.track_state_change(self.hass,
-            self.entity_id, self.occupied,
-            from_state=STATE_NOT_OCCUPIED, to_state=STATE_OCCUPIED)
 
     def start_timer(self):
         """
@@ -177,11 +176,11 @@ class Room(Entity):
         Sets the state to STATE_COUNTDOWN.
         """
         if self.timer is not None:
+            _LOGGER.info('start_timer: timer already set: %s', self)
             return
         self.timer = helper.track_point_in_utc_time(self.hass,
             self.not_occupied, date_util.utcnow() + self.timeout)
-        self.state = STATE_COUNTDOWN
-        _LOGGER.info('room_occupied set timer %s', self)
+        _LOGGER.info('start_timer: set timer %s', self)
 
     def disable_timer(self):
         """ Unregisters the timer, if set. """
@@ -190,11 +189,6 @@ class Room(Entity):
         _LOGGER.info('canceling timer %s', self)
         self.hass.bus.remove_listener(EVENT_TIME_CHANGED, self.timer)
         self.timer = None
-
-    def set_not_occupied(self):
-        """ Sets the room to currently unoccupied. """
-        self.hass.states.set(self.entity_id, STATE_NOT_OCCUPIED)
-        self.disable_timer()
 
     def get_mode_config(self):
         """
@@ -235,10 +229,8 @@ class Room(Entity):
         else:
             _LOGGER.info('not_occupied: no configuration for current mode')
 
-    def occupied(self, entity_id, old_state, new_state):
+    def _occupied(self):
         """
-        Event callback when room becomes occupied.
-
         Turns the lights on if one of the light sensors is below its threshold
         and the current mode is configured to do so.
         """
@@ -292,7 +284,6 @@ def setup(hass, config):
     room_conf = config[DOMAIN].get(CONF_ROOMS, {})
     for name, conf in room_conf.items():
         room = create_room(hass, name, conf)
-        room.register_event_listeners()
         room.update_ha_state()
         home.add(room)
 
