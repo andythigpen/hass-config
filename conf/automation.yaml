@@ -26,3 +26,50 @@
   action:
     service: light.turn_off
     entity_id: group.all_lights
+
+# ------------------------------
+# Home mode rules
+# Updates the state of the home based on time of day
+#
+- alias: Morning home mode
+  trigger:
+    - platform: time
+      after: '06:00:00'
+  action:
+    service: myhome.set_mode
+    data:
+      mode: morning
+- alias: Day home mode
+  trigger:
+    - platform: time
+      after: '09:00:00'
+  action:
+    service: myhome.set_mode
+    data:
+      mode: day
+- alias: Afternoon home mode
+  trigger:
+    - platform: time
+      after: '13:00:00'
+  action:
+    service: myhome.set_mode
+    data:
+      mode: afternoon
+- alias: Evening home mode
+  trigger:
+    - platform: sun
+      event: sunset
+      offset: '-02:00:00'
+  action:
+    service: myhome.set_mode
+    data:
+      mode: evening
+- alias: Night home mode
+  trigger:
+    - platform: sun
+      event: sunset
+      offset: '01:00:00'
+  action:
+    service: myhome.set_mode
+    data:
+      mode: night

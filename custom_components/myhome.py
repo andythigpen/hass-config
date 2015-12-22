@@ -30,13 +30,6 @@ STATE_COUNTDOWN = 'countdown'
 
 # default state, does nothing
 STATE_MANUAL = 'manual'
-# triggered by movement outside of bedroom > 6am
-STATE_MORNING = 'morning'
-STATE_DAY = 'day'
-STATE_EVENING = 'evening'
-STATE_NIGHT = 'night'
-# after a certain time, lights will be turned on very dim (or not at all)
-STATE_ASLEEP = 'asleep'
 
 CONF_ROOMS = 'rooms'
 CONF_LIGHT = 'light'
@@ -65,8 +58,6 @@ class MyHome(object):
         self.hass = hass
         self.rooms = {}
         self.hass.states.set(ENTITY_ID, STATE_MANUAL)
-        self.evening_offset = timedelta(hours=2)
-        self.night_offset = timedelta(hours=1)
 
     def register_event_listeners(self):
         """ Adds event listeners to HA. """
@@ -74,16 +65,6 @@ class MyHome(object):
             self.rooms.keys(), self.room_occupied, to_state=STATE_OCCUPIED)
         helper.track_state_change(self.hass,
             'group.all_devices', self.not_home, to_state=STATE_NOT_HOME)
-        helper.track_time_change(self.hass,
-            partial(self._set_mode_callback, STATE_MORNING),
-            hour=6, minute=0, second=0)
-        helper.track_time_change(self.hass,
-            partial(self._set_mode_callback, STATE_DAY),
-            hour=9, minute=0, second=0)
-        helper.track_point_in_time(self.hass,
-            self.sunset, next_setting(self.hass) - self.evening_offset)
-        helper.track_point_in_time(self.hass,
-            self.night, next_setting(self.hass) + self.night_offset)
         self.hass.services.register(DOMAIN, 'set_mode', self._set_mode_service)
 
     @property
@@ -109,33 +90,6 @@ class MyHome(object):
     def _set_mode_service(self, service):
         """ Service method for setting mode. """
         self.mode = service.data.get(ATTR_MODE)
-
-    def sunset(self, now):
-        """
-        Event callback for before the sun sets.
-
-        Sets the house mode to evening.
-        """
-        self.mode = STATE_EVENING
-
-        def reschedule(now):
-            """ Reschedules the sunset callback for the next sunset. """
-            helper.track_point_in_time(self.hass,
-                self.sunset, next_setting(self.hass) - self.evening_offset)
-
-        helper.track_point_in_time(self.hass,
-            reschedule, next_setting(self.hass) + timedelta(seconds=1))
-
-    def night(self, now):
-        """
-        Event callback for after the sun sets.
-
-        Sets the house mode to night.
-        """
-        self.mode = STATE_NIGHT
-
-        helper.track_point_in_time(self.hass,
-            self.night, next_setting(self.hass) + self.night_offset)
 
     def get(self, entity_id):
         """ Returns a Room, given an entity_id. """
