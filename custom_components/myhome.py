@@ -33,21 +33,11 @@ STATE_COUNTDOWN = 'countdown'
 STATE_RESET = 'reset'
 
 CONF_ROOMS = 'rooms'
-CONF_LIGHT = 'light'
-CONF_MOTION = 'motion'
 CONF_TIMEOUT = 'timeout'
-CONF_MODES = 'modes'
-CONF_OCCUPIED = 'occupied'
-CONF_NOT_OCCUPIED = 'not_occupied'
-CONF_THRESHOLD = 'threshold'
-CONF_LOW = 'low'
-CONF_HIGH = 'high'
 
-ATTR_TRANSITION = 'transition'
 ATTR_MODE = 'mode'
 
 DOMAIN_ROOM = 'room'
-DOMAIN_LIGHT = 'light'
 DOMAIN_SCENE = 'scene'
 
 
@@ -101,9 +91,13 @@ class MyHome(Entity):
     def _register_services(self):
         """ Adds service methods to HA. """
         self.hass.services.register(DOMAIN, 'set_mode', self._set_mode_service)
-        self.hass.services.register(DOMAIN, 'set_occupied', self._set_occupied)
+        self.hass.services.register(DOMAIN, 'set_room_occupied',
+                                    self._set_room_occupied)
         self.hass.services.register(DOMAIN, 'set_away', self._set_away)
-        self.hass.services.register(DOMAIN, 'set_scene', self._set_scene)
+        self.hass.services.register(DOMAIN, 'enable_occupied_scene',
+                                    self._enable_occupied_scene)
+        self.hass.services.register(DOMAIN, 'enable_unoccupied_scene',
+                                    self._enable_unoccupied_scene)
         self.hass.services.register(DOMAIN, 'turn_on', self._turn_on)
         self.hass.services.register(DOMAIN, 'turn_off', self._turn_off)
 
@@ -111,7 +105,7 @@ class MyHome(Entity):
         """ Service method for setting mode. """
         self.mode = service.data.get(ATTR_MODE)
 
-    def _set_occupied(self, service):
+    def _set_room_occupied(self, service):
         """
         Service method to change a room state to STATE_OCCUPIED.
 
@@ -136,7 +130,13 @@ class MyHome(Entity):
         for room in self.rooms.values():
             room.state = STATE_NOT_OCCUPIED
 
-    def _set_scene(self, service):
+    def _enable_occupied_scene(self, service):
+        return self._enable_scene(service, STATE_OCCUPIED)
+
+    def _enable_unoccupied_scene(self, service):
+        return self._enable_scene(service, STATE_NOT_OCCUPIED)
+
+    def _enable_scene(self, service, room_state):
         """
         Turns on a scene for a room with the given entity_id and the current
         house mode.
@@ -144,8 +144,9 @@ class MyHome(Entity):
         entity_id = service.data.get(ATTR_ENTITY_ID)
         if entity_id.startswith(DOMAIN_ROOM):
             entity_id = entity_id.replace('{}.'.format(DOMAIN_ROOM), '', 1)
-        scene_name = '{}.{}_{}'.format(DOMAIN_SCENE, entity_id,
-                                       slugify(self.mode))
+        scene_name = '{}.{}_{}_{}'.format(DOMAIN_SCENE, entity_id,
+                                          slugify(self.mode),
+                                          slugify(room_state))
         if scene_name not in self.hass.states.entity_ids(DOMAIN_SCENE):
             _LOGGER.warning('no scene configured with name %s', scene_name)
             return
@@ -176,16 +177,13 @@ class Room(Entity):
     Contains motion and light sensors and performs actions based on them,
     the current house mode, and a person's location in the house.
     """
-    def __init__(self, hass, name, motion, light, timeout, modes):
+    def __init__(self, hass, name, timeout):
         self._name = name
         self.entity_id = '{}.{}'.format(DOMAIN_ROOM, name)
         self.hass = hass
         self._state = STATE_NOT_OCCUPIED
-        self.motion = motion
-        self.light = light
         self.timeout = timeout
         self.timer = None
-        self.modes = modes
 
     @property
     def should_poll(self):
@@ -218,7 +216,7 @@ class Room(Entity):
             _LOGGER.info('start_timer: timer already set: %s', self)
             return
         self.timer = helper.track_point_in_utc_time(self.hass,
-            self.not_occupied, date_util.utcnow() + self.timeout)
+            self.timer_expired, date_util.utcnow() + self.timeout)
         _LOGGER.info('start_timer: set timer %s', self)
 
     def disable_timer(self):
@@ -229,44 +227,18 @@ class Room(Entity):
         self.hass.bus.remove_listener(EVENT_TIME_CHANGED, self.timer)
         self.timer = None
 
-    def get_mode_config(self):
-        """
-        Returns the config for the current mode, or None if the current mode
-        has no config.
-        """
-        home_mode = self.hass.states.get(ENTITY_ID).state_attributes['mode']
-        mode = self.modes.get(home_mode.state)
-        _LOGGER.info('modes: %s, entity: %s, mode: %s',
-                     self.modes, home_mode, mode)
-        return mode
-
-    def get_light_data(self, mode, key):
-        """
-        Returns data from a mode config dict that can be passed to a light
-        service call.   If entity_id is not present, it will be added.
-        """
-        if mode is None:
-            return None
-        conf = mode[key] or {}
-        if ATTR_ENTITY_ID not in conf:
-            conf[ATTR_ENTITY_ID] = 'group.{}'.format(self._name)
-        return conf
-
-    def not_occupied(self, now=None):
+    def timer_expired(self, now=None):
         """
         Event callback after countdown timer expires.
 
         Turns off the lights, if configured for the current mode.
         """
-        _LOGGER.info('not_occupied %s', self)
-        self.hass.states.set(self.entity_id, STATE_NOT_OCCUPIED)
-        mode = self.get_mode_config()
-        data_off = self.get_light_data(mode, CONF_NOT_OCCUPIED)
-        if data_off:
-            _LOGGER.info('not_occupied: turning off: %s', data_off)
-            self.hass.services.call(DOMAIN_LIGHT, SERVICE_TURN_OFF, data_off)
-        else:
-            _LOGGER.info('not_occupied: no configuration for current mode')
+        _LOGGER.info('timer_expired %s', self)
+        self.timer = None
+        self.state = STATE_NOT_OCCUPIED
+        self.hass.services.call(DOMAIN, 'enable_unoccupied_scene', {
+            'entity_id': self.entity_id
+        })
 
     def __repr__(self):
         return '<%s state:%s timer:%s>' % (self.entity_id, self.state,
@@ -275,14 +247,8 @@ class Room(Entity):
 
 def create_room(hass, name, conf):
     """ Returns a Room object given a configuration dict. """
-    if not conf.get(CONF_MOTION):
-        _LOGGER.warning('No motion sensors defined for room %s', name)
-        return
-    motion = conf[CONF_MOTION]
-    light = conf.get(CONF_LIGHT, {})
     timeout = timedelta(**conf.get(CONF_TIMEOUT, {'minutes': 15}))
-    modes = conf.get(CONF_MODES, {})
-    return Room(hass, name, motion, light, timeout, modes)
+    return Room(hass, name, timeout)
 
 
 def setup(hass, config):

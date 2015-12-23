@@ -1,86 +1,13 @@
 rooms:
   bedroom:
-    motion:
-      - sensor.motion_sensor_21
-    light:
-      sensor.motion_sensor_22:
-        high: 24
-        low: 12
-    timeout:
-      minutes: 15
-    modes:
-      day:
-        not_occupied:
-          transition: 30
-      evening:
-        not_occupied:
-          transition: 30
-      night:
-        not_occupied:
-          transition: 30
-  kitchen:
-    motion:
-      - sensor.motion_sensor_11
-    light:
-      sensor.motion_sensor_12:
-        high: 24
-        low: 15
-    timeout:
-      minutes: 15
-    modes:
-      morning:
-        not_occupied:
-          transition: 30
-      day:
-        not_occupied:
-          transition: 30
-      evening:
-        not_occupied:
-          transition: 30
-      night:
-        not_occupied:
-          transition: 30
-  living_room:
-    motion:
-      - sensor.motion_sensor_41
-      - sensor.motion_sensor_101
-    light:
-      sensor.motion_sensor_42:
-        high: 24
-        low: 12
-      sensor.motion_sensor_102:
-        high: 28
-        low: 16
-    timeout:
-      minutes: 15
-    modes:
-      morning:
-        not_occupied:
-          transition: 30
-      day:
-        not_occupied:
-          transition: 30
-      evening:
-        not_occupied:
-          transition: 30
-      night:
-        not_occupied:
-          transition: 30
-  hall:
-    motion:
-      - sensor.motion_sensor_51
-    light:
-      sensor.motion_sensor_52:
-        high: 24
-        low: 12
     timeout:
       minutes: 10
-    modes:
-      morning:
-        not_occupied:
-      day:
-        not_occupied:
-      evening:
-        not_occupied:
-      night:
-        not_occupied:
+  kitchen:
+    timeout:
+      minutes: 20
+  living_room:
+    timeout:
+      minutes: 20
+  hall:
+    timeout:
+      minutes: 10

@@ -92,7 +92,7 @@
       entity_id: myhome.active
       state: 'on'
   action: &motion_action
-    service: myhome.set_occupied
+    service: myhome.set_room_occupied
     data:
       entity_id: room.bedroom
 - <<: *motion
@@ -155,7 +155,7 @@
     platform: template
     value_template: '{{ states.sensor.motion_sensor_22 | float <= 12 }}'
   action: &occupied_action
-    service: myhome.set_scene
+    service: myhome.enable_occupied_scene
     data:
       entity_id: room.bedroom
 - <<: *occupied

@@ -38,45 +38,85 @@ homeassistant:
       icon: 'mdi:home-variant'
     room.hall:
       icon: 'mdi:home-variant'
-    scene.living_room_morning:
+    scene.living_room_morning_occupied:
       hidden: True
-    scene.living_room_day:
+    scene.living_room_day_occupied:
       hidden: True
-    scene.living_room_afternoon:
+    scene.living_room_afternoon_occupied:
       hidden: True
-    scene.living_room_evening:
+    scene.living_room_evening_occupied:
       hidden: True
-    scene.living_room_night:
+    scene.living_room_night_occupied:
       hidden: True
-    scene.bedroom_morning:
+    scene.bedroom_morning_occupied:
       hidden: True
-    scene.bedroom_day:
+    scene.bedroom_day_occupied:
       hidden: True
-    scene.bedroom_afternoon:
+    scene.bedroom_afternoon_occupied:
       hidden: True
-    scene.bedroom_evening:
+    scene.bedroom_evening_occupied:
       hidden: True
-    scene.bedroom_night:
+    scene.bedroom_night_occupied:
       hidden: True
-    scene.kitchen_morning:
+    scene.kitchen_morning_occupied:
       hidden: True
-    scene.kitchen_day:
+    scene.kitchen_day_occupied:
       hidden: True
-    scene.kitchen_afternoon:
+    scene.kitchen_afternoon_occupied:
       hidden: True
-    scene.kitchen_evening:
+    scene.kitchen_evening_occupied:
       hidden: True
-    scene.kitchen_night:
+    scene.kitchen_night_occupied:
       hidden: True
-    scene.hall_morning:
+    scene.hall_morning_occupied:
       hidden: True
-    scene.hall_day:
+    scene.hall_day_occupied:
       hidden: True
-    scene.hall_afternoon:
+    scene.hall_afternoon_occupied:
       hidden: True
-    scene.hall_evening:
+    scene.hall_evening_occupied:
       hidden: True
-    scene.hall_night:
+    scene.hall_night_occupied:
+      hidden: True
+    scene.living_room_morning_not_occupied:
+      hidden: True
+    scene.living_room_day_not_occupied:
+      hidden: True
+    scene.living_room_afternoon_not_occupied:
+      hidden: True
+    scene.living_room_evening_not_occupied:
+      hidden: True
+    scene.living_room_night_not_occupied:
+      hidden: True
+    scene.bedroom_morning_not_occupied:
+      hidden: True
+    scene.bedroom_day_not_occupied:
+      hidden: True
+    scene.bedroom_afternoon_not_occupied:
+      hidden: True
+    scene.bedroom_evening_not_occupied:
+      hidden: True
+    scene.bedroom_night_not_occupied:
+      hidden: True
+    scene.kitchen_morning_not_occupied:
+      hidden: True
+    scene.kitchen_day_not_occupied:
+      hidden: True
+    scene.kitchen_afternoon_not_occupied:
+      hidden: True
+    scene.kitchen_evening_not_occupied:
+      hidden: True
+    scene.kitchen_night_not_occupied:
+      hidden: True
+    scene.hall_morning_not_occupied:
+      hidden: True
+    scene.hall_day_not_occupied:
+      hidden: True
+    scene.hall_afternoon_not_occupied:
+      hidden: True
+    scene.hall_evening_not_occupied:
+      hidden: True
+    scene.hall_night_not_occupied:
       hidden: True
 
 myhome: !include conf/myhome.yaml
