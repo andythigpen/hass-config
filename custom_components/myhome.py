@@ -19,7 +19,7 @@ from homeassistant.const import (
 
 
 DOMAIN = 'myhome'
-ENTITY_ID = 'myhome.mode'
+ENTITY_ID = 'myhome.active'
 DEPENDENCIES = ['group', 'sun']
 
 _LOGGER = logging.getLogger(__name__)
@@ -30,7 +30,7 @@ STATE_NOT_OCCUPIED = 'not_occupied'
 STATE_COUNTDOWN = 'countdown'
 
 # default state, does nothing
-STATE_MANUAL = 'manual'
+STATE_RESET = 'reset'
 
 CONF_ROOMS = 'rooms'
 CONF_LIGHT = 'light'
@@ -60,8 +60,9 @@ class MyHome(Entity):
         self.hass = hass
         self.entity_id = ENTITY_ID
         self.rooms = {}
-        self._state = STATE_MANUAL
+        self._state = STATE_OFF
         self._register_services()
+        self._mode = STATE_RESET
 
     @property
     def should_poll(self):
@@ -69,7 +70,7 @@ class MyHome(Entity):
 
     @property
     def name(self):
-        return 'Home Mode'
+        return 'Active'
 
     @property
     def state(self):
@@ -77,16 +78,25 @@ class MyHome(Entity):
         return self._state
 
     @state.setter
-    def state(self, new_mode):
-        """
-        Sets the home mode, if the current mode is not STATE_MANUAL.
-
-        STATE_MANUAL must be explicitly turned off.
-        """
-        if self._state == STATE_MANUAL:
-            return
-        self._state = new_mode
+    def state(self, state):
+        """ Sets automatic control of home on/off. """
+        self._state = state
         self.update_ha_state()
+
+    @property
+    def mode(self):
+        return self._mode
+
+    @mode.setter
+    def mode(self, mode):
+        self._mode = mode
+        self.update_ha_state()
+
+    @property
+    def state_attributes(self):
+        return {
+            'mode': self._mode
+        }
 
     def _register_services(self):
         """ Adds service methods to HA. """
@@ -94,10 +104,12 @@ class MyHome(Entity):
         self.hass.services.register(DOMAIN, 'set_occupied', self._set_occupied)
         self.hass.services.register(DOMAIN, 'set_away', self._set_away)
         self.hass.services.register(DOMAIN, 'set_scene', self._set_scene)
+        self.hass.services.register(DOMAIN, 'turn_on', self._turn_on)
+        self.hass.services.register(DOMAIN, 'turn_off', self._turn_off)
 
     def _set_mode_service(self, service):
         """ Service method for setting mode. """
-        self.state = service.data.get(ATTR_MODE)
+        self.mode = service.data.get(ATTR_MODE)
 
     def _set_occupied(self, service):
         """
@@ -133,7 +145,7 @@ class MyHome(Entity):
         if entity_id.startswith(DOMAIN_ROOM):
             entity_id = entity_id.replace('{}.'.format(DOMAIN_ROOM), '', 1)
         scene_name = '{}.{}_{}'.format(DOMAIN_SCENE, entity_id,
-                                       slugify(self.state))
+                                       slugify(self.mode))
         if scene_name not in self.hass.states.entity_ids(DOMAIN_SCENE):
             _LOGGER.warning('no scene configured with name %s', scene_name)
             return
@@ -141,6 +153,14 @@ class MyHome(Entity):
         self.hass.services.call(DOMAIN_SCENE, SERVICE_TURN_ON, {
             'entity_id': scene_name
         })
+
+    def _turn_on(self, service):
+        """ Service that enables myhome control. """
+        self.state = STATE_ON
+
+    def _turn_off(self, service):
+        """ Service that disables myhome control. """
+        self.state = STATE_OFF
 
     def add(self, room):
         """ Adds a room. """
@@ -214,7 +234,7 @@ class Room(Entity):
         Returns the config for the current mode, or None if the current mode
         has no config.
         """
-        home_mode = self.hass.states.get(ENTITY_ID)
+        home_mode = self.hass.states.get(ENTITY_ID).state_attributes['mode']
         mode = self.modes.get(home_mode.state)
         _LOGGER.info('modes: %s, entity: %s, mode: %s',
                      self.modes, home_mode, mode)

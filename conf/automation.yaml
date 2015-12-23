@@ -85,9 +85,12 @@
     entity_id: sensor.motion_sensor_21
     to: 'on'
   condition:
-    platform: state
-    entity_id: group.all_devices
-    state: home
+    - platform: state
+      entity_id: group.all_devices
+      state: home
+    - platform: state
+      entity_id: myhome.active
+      state: 'on'
   action: &motion_action
     service: myhome.set_occupied
     data:
