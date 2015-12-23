@@ -78,8 +78,9 @@
 # Motion detector rules
 # Updates the state of a room if motion is detected
 #
-- alias: Bedroom motion detected
-  trigger:
+- &motion
+  alias: Bedroom motion detected
+  trigger: &motion_trigger
     platform: state
     entity_id: sensor.motion_sensor_21
     to: 'on'
@@ -87,60 +88,44 @@
     platform: state
     entity_id: group.all_devices
     state: home
-  action:
+  action: &motion_action
     service: myhome.set_occupied
     data:
       entity_id: room.bedroom
-- alias: Hall motion detected
+- <<: *motion
+  alias: Hall motion detected
   trigger:
-    platform: state
+    <<: *motion_trigger
     entity_id: sensor.motion_sensor_51
-    to: 'on'
-  condition:
-    platform: state
-    entity_id: group.all_devices
-    state: home
   action:
-    service: myhome.set_occupied
+    <<: *motion_action
     data:
       entity_id: room.hall
-- alias: Living Room motion detected
+- <<: *motion
+  alias: Living Room motion detected
   trigger:
-    platform: state
+    <<: *motion_trigger
     entity_id: sensor.motion_sensor_101
-    to: 'on'
-  condition:
-    platform: state
-    entity_id: group.all_devices
-    state: home
   action:
-    service: myhome.set_occupied
+    <<: *motion_action
     data:
       entity_id: room.living_room
-- alias: Bookcase motion detected
+- <<: *motion
+  alias: Bookcase motion detected
   trigger:
-    platform: state
+    <<: *motion_trigger
     entity_id: sensor.motion_sensor_41
-    to: 'on'
-  condition:
-    platform: state
-    entity_id: group.all_devices
-    state: home
   action:
-    service: myhome.set_occupied
+    <<: *motion_action
     data:
       entity_id: room.living_room
-- alias: Kitchen motion detected
+- <<: *motion
+  alias: Kitchen motion detected
   trigger:
-    platform: state
+    <<: *motion_trigger
     entity_id: sensor.motion_sensor_11
-    to: 'on'
-  condition:
-    platform: state
-    entity_id: group.all_devices
-    state: home
   action:
-    service: myhome.set_occupied
+    <<: *motion_action
     data:
       entity_id: room.kitchen
 
