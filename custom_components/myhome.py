@@ -15,12 +15,12 @@ from homeassistant.util import slugify
 from homeassistant.helpers.entity import Entity
 from homeassistant.const import (
     STATE_ON, STATE_OFF, STATE_NOT_HOME, SERVICE_TURN_OFF, SERVICE_TURN_ON,
-    ATTR_ENTITY_ID, EVENT_TIME_CHANGED)
+    ATTR_ENTITY_ID, EVENT_TIME_CHANGED, ATTR_HIDDEN)
 
 
 DOMAIN = 'myhome'
 ENTITY_ID = 'myhome.active'
-DEPENDENCIES = ['group', 'sun']
+DEPENDENCIES = ['group', 'scene']
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -260,6 +260,12 @@ def setup(hass, config):
         room = create_room(hass, name, conf)
         room.update_ha_state()
         home.add(room)
+        # hide all the scenes related to this room
+        for name in hass.states.entity_ids(DOMAIN_SCENE):
+            if name.startswith('{}.{}'.format(DOMAIN_SCENE, room.name.lower())):
+                Entity.overwrite_attribute(name, [ATTR_HIDDEN], [True])
+                state = hass.states.get(name)
+                hass.states.set(name, state, {ATTR_HIDDEN: True})
 
     home.update_ha_state()
     _LOGGER.info('myhome loaded: %s', home)
