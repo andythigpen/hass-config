@@ -131,7 +131,7 @@
 
 
 # ------------------------------
-# Room rules
+# Room occupancy rules
 #
 - alias: Set rooms to unoccupied when away
   trigger:
@@ -141,3 +141,53 @@
     to: 'not_home'
   action:
     service: myhome.set_away
+- &occupied
+  alias: Bedroom occupied
+  trigger: &occupied_trigger
+    platform: state
+    entity_id: room.bedroom
+    from: 'not_occupied'
+    to: 'occupied'
+  condition: &occupied_condition
+    platform: template
+    value_template: '{{ states.sensor.motion_sensor_22 | float <= 12 }}'
+  action: &occupied_action
+    service: myhome.set_scene
+    data:
+      entity_id: room.bedroom
+- <<: *occupied
+  alias: Living room occupied
+  trigger:
+    <<: *occupied_trigger
+    entity_id: room.living_room
+  condition:
+    <<: *occupied_condition
+    value_template: '{{ states.sensor.motion_sensor_102 | float <= 16 or states.sensor.motion_sensor_42 | float <= 12 }}'
+  action:
+    <<: *occupied_action
+    data:
+      entity_id: room.living_room
+- <<: *occupied
+  alias: Hall occupied
+  trigger:
+    <<: *occupied_trigger
+    entity_id: room.hall
+  condition:
+    <<: *occupied_condition
+    value_template: '{{ states.sensor.motion_sensor_52 | float <= 12 }}'
+  action:
+    <<: *occupied_action
+    data:
+      entity_id: room.hall
+- <<: *occupied
+  alias: Kitchen occupied
+  trigger:
+    <<: *occupied_trigger
+    entity_id: room.kitchen
+  condition:
+    <<: *occupied_condition
+    value_template: '{{ states.sensor.motion_sensor_12 | float <= 15 }}'
+  action:
+    <<: *occupied_action
+    data:
+      entity_id: room.kitchen

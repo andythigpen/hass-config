@@ -93,6 +93,7 @@ class MyHome(Entity):
         self.hass.services.register(DOMAIN, 'set_mode', self._set_mode_service)
         self.hass.services.register(DOMAIN, 'set_occupied', self._set_occupied)
         self.hass.services.register(DOMAIN, 'set_away', self._set_away)
+        self.hass.services.register(DOMAIN, 'set_scene', self._set_scene)
 
     def _set_mode_service(self, service):
         """ Service method for setting mode. """
@@ -122,6 +123,24 @@ class MyHome(Entity):
         _LOGGER.info('setting all rooms to not occupied')
         for room in self.rooms.values():
             room.state = STATE_NOT_OCCUPIED
+
+    def _set_scene(self, service):
+        """
+        Turns on a scene for a room with the given entity_id and the current
+        house mode.
+        """
+        entity_id = service.data.get(ATTR_ENTITY_ID)
+        if entity_id.startswith(DOMAIN_ROOM):
+            entity_id = entity_id.replace('{}.'.format(DOMAIN_ROOM), '', 1)
+        scene_name = '{}.{}_{}'.format(DOMAIN_SCENE, entity_id,
+                                       slugify(self.state))
+        if scene_name not in self.hass.states.entity_ids(DOMAIN_SCENE):
+            _LOGGER.warning('no scene configured with name %s', scene_name)
+            return
+        _LOGGER.info('turning on scene %s for room %s', scene_name, entity_id)
+        self.hass.services.call(DOMAIN_SCENE, SERVICE_TURN_ON, {
+            'entity_id': scene_name
+        })
 
     def add(self, room):
         """ Adds a room. """
@@ -163,8 +182,6 @@ class Room(Entity):
 
     @state.setter
     def state(self, new_state):
-        if self._state == STATE_NOT_OCCUPIED and new_state == STATE_OCCUPIED:
-            self._occupied()
         self._state = new_state
         if self._state == STATE_COUNTDOWN:
             self.start_timer()
@@ -230,41 +247,6 @@ class Room(Entity):
             self.hass.services.call(DOMAIN_LIGHT, SERVICE_TURN_OFF, data_off)
         else:
             _LOGGER.info('not_occupied: no configuration for current mode')
-
-    def _occupied(self):
-        """
-        Turns the lights on if one of the light sensors is below its threshold
-        and the current mode is configured to do so.
-        """
-        _LOGGER.info('occupied: %s', self)
-        mode = self.get_mode_config()
-        home_mode = self.hass.states.get(ENTITY_ID).state
-        scene_name = '{}.{}_{}'.format(DOMAIN_SCENE, slugify(self.name),
-                                       slugify(home_mode))
-        if scene_name not in self.hass.states.entity_ids(DOMAIN_SCENE):
-            _LOGGER.info('occupied: no scene configured for current mode')
-            return
-        for sensor_id, sensor in self.light.items():
-            entity = self.hass.states.get(sensor_id)
-            if not entity:
-                _LOGGER.warning('occupied: light sensor %s not found',
-                                sensor_id)
-                continue
-            if entity.state is None or len(entity.state) == 0:
-                _LOGGER.warning('occupied: no state for %s', sensor_id)
-                continue
-            _LOGGER.info('light sensor [%s], low threshold [%s]',
-                         int(entity.state), sensor[CONF_LOW])
-            if mode.get(CONF_THRESHOLD, True):
-                if int(entity.state) >= sensor[CONF_LOW]:
-                    _LOGGER.info('light sensor [%s] above threshold [%s]',
-                                 int(entity.state), sensor[CONF_LOW])
-                    continue
-            _LOGGER.info('occupied: turning on: %s', scene_name)
-            self.hass.services.call(DOMAIN_SCENE, SERVICE_TURN_ON, {
-                'entity_id': scene_name
-            })
-            return
 
     def __repr__(self):
         return '<%s state:%s timer:%s>' % (self.entity_id, self.state,
