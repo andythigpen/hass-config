@@ -97,6 +97,8 @@ group:
     - script.wakeup
     - script.snooze
     - script.bedtime
+    - script.all_off
+    - script.bedtime_now
 
 automation: !include conf/automation.yaml
 
