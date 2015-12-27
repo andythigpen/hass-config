@@ -37,6 +37,16 @@ wakeup:
 bedtime:
   alias: Bedtime
   sequence:
+    - service: light.turn_on
+      service_data:
+        entity_id: light.bedroom_2
+        transition: 10
+        brightness: 50
+    - service: light.turn_on
+      service_data:
+        entity_id: light.bedroom
+        transition: 10
+        brightness: 150
     - delay:
         minutes: 15
     - service: light.turn_off
