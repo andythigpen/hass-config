@@ -7,6 +7,8 @@ homeassistant:
   customize:
     group.living_room:
       friendly_name: Living Room
+    group.myhome:
+      friendly_name: My Home
     sensor.motion_sensor_11:
       friendly_name: Kitchen Motion
     sensor.motion_sensor_12:
@@ -64,24 +66,20 @@ group:
     - sensor.motion_sensor_42
     - sensor.motion_sensor_101
     - sensor.motion_sensor_102
-    - room.living_room
   bedroom:
     - light.Bedroom
     - light.Bedroom_2
     - sensor.motion_sensor_21
     - sensor.motion_sensor_22
-    - room.bedroom
   kitchen:
     - light.Kitchen_1
     - light.Kitchen_2
     - light.Kitchen_3
     - sensor.motion_sensor_11
     - sensor.motion_sensor_12
-    - room.kitchen
   hall:
     - light.Hall
     - light.Hall_2
-    - room.hall
     - sensor.motion_sensor_51
     - sensor.motion_sensor_52
   scripts:
@@ -90,6 +88,12 @@ group:
     - script.bedtime
     - script.all_off
     - script.bedtime_now
+  myhome:
+    - myhome.active
+    - room.living_room
+    - room.kitchen
+    - room.hall
+    - room.bedroom
 
 automation: !include conf/automation.yaml
 
