@@ -7,7 +7,6 @@
     light.Living_room_standing: &living_room_morning_occupied
       state: 'on'
       brightness: 170
-      transition: 5
     light.Living_room_table: *living_room_morning_occupied
 - name: Living Room Day Occupied
   entities:
@@ -24,14 +23,12 @@
     light.Living_room_standing: &living_room_evening_occupied
       state: 'on'
       brightness: 200
-      transition: 2
     light.Living_room_table:  *living_room_evening_occupied
 - name: Living Room Night Occupied
   entities:
     light.Living_room_standing: &living_room_night_occupied
       state: 'on'
       brightness: 150
-      transition: 4
     light.Living_room_table: *living_room_night_occupied
 
 # Not occupied
@@ -80,14 +77,12 @@
     light.bedroom: &bedroom_evening_occupied
       state: 'on'
       brightness: 200
-      transition: 2
     light.bedroom_2: *bedroom_day_occupied
 - name: Bedroom Night Occupied
   entities:
     light.bedroom: &bedroom_night_occupied
       state: 'on'
       brightness: 150
-      transition: 4
     light.bedroom_2: *bedroom_night_occupied
 
 # Not occupied
@@ -122,7 +117,6 @@
     light.kitchen_1: &kitchen_morning_occupied
       state: 'on'
       brightness: 30
-      transition: 5
     light.kitchen_2: *kitchen_morning_occupied
     light.kitchen_3: *kitchen_morning_occupied
 - name: Kitchen Day Occupied
@@ -142,7 +136,6 @@
     light.kitchen_1: &kitchen_evening_occupied
       state: 'on'
       brightness: 30
-      transition: 2
     light.kitchen_2: *kitchen_evening_occupied
     light.kitchen_3: *kitchen_evening_occupied
 - name: Kitchen Night Occupied
@@ -150,7 +143,6 @@
     light.kitchen_1: &kitchen_night_occupied
       state: 'on'
       brightness: 20
-      transition: 4
     light.kitchen_2: *kitchen_night_occupied
     light.kitchen_3: *kitchen_night_occupied
 
@@ -191,7 +183,6 @@
     light.hall: &hall_morning_occupied
       state: 'on'
       brightness: 120
-      transition: 5
     light.hall_2: *hall_morning_occupied
 - name: Hall Day Occupied
   entities:
@@ -208,14 +199,12 @@
     light.hall: &hall_evening_occupied
       state: 'on'
       brightness: 100
-      transition: 2
     light.hall_2: *hall_evening_occupied
 - name: Hall Night Occupied
   entities:
     light.hall: &hall_night_occupied
       state: 'on'
       brightness: 50
-      transition: 4
     light.hall_2: *hall_night_occupied
 
 # Not occupied
