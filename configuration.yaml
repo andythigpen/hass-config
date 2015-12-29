@@ -27,8 +27,6 @@ homeassistant:
       friendly_name: Living Room Motion
     sensor.motion_sensor_102:
       friendly_name: Living Room Light
-    myhome.active:
-      icon: 'mdi:home-variant'
     room.bedroom:
       icon: 'mdi:home-variant'
     room.kitchen:

@@ -63,6 +63,22 @@ class MyHome(Entity):
         return 'Active'
 
     @property
+    def icon(self):
+        """ Set the icon based upon the current mode. """
+        mode = self._mode.lower()
+        if mode == 'morning':
+            return 'mdi:weather-sunset-up'
+        elif mode == 'day' or mode == 'afternoon':
+            return 'mdi:weather-sunny'
+        elif mode == 'evening':
+            return 'mdi:weather-sunset-down'
+        elif mode == 'night':
+            return 'mdi:weather-night'
+        elif mode == 'asleep':
+            return 'mdi:sleep'
+        return 'mdi:home-variant'
+
+    @property
     def state(self):
         """ Returns the current house mode. """
         return self._state
