@@ -13,6 +13,7 @@ import homeassistant.util.dt as date_util
 import homeassistant.helpers.event as helper
 from homeassistant.util import slugify
 from homeassistant.helpers.entity import Entity
+from homeassistant.helpers import extract_entity_ids
 from homeassistant.const import (
     STATE_ON, STATE_OFF, STATE_NOT_HOME, SERVICE_TURN_OFF, SERVICE_TURN_ON,
     ATTR_ENTITY_ID, EVENT_TIME_CHANGED, ATTR_HIDDEN)
@@ -51,8 +52,8 @@ class MyHome(Entity):
         self.entity_id = ENTITY_ID
         self.rooms = {}
         self._state = STATE_OFF
-        self._register_services()
         self._mode = STATE_RESET
+        self._register_services()
 
     @property
     def should_poll(self):
@@ -124,7 +125,7 @@ class MyHome(Entity):
 
     def _set_room_occupied(self, service):
         """
-        Service method to change a room state to STATE_OCCUPIED.
+        Service method to change a room mode to STATE_OCCUPIED.
 
         Sets all other rooms that were STATE_OCCUPIED to STATE_COUNTDOWN.
         """
@@ -132,12 +133,12 @@ class MyHome(Entity):
         _LOGGER.info('set room %s to occupied', entity_id)
         for room in self.rooms.values():
             if room.entity_id == entity_id:
-                room.state = STATE_OCCUPIED
+                room.mode = STATE_OCCUPIED
                 continue
-            if room.state != STATE_OCCUPIED:
+            if room.mode != STATE_OCCUPIED:
                 continue
             _LOGGER.info('starting timer for room %s', room)
-            room.state = STATE_COUNTDOWN
+            room.mode = STATE_COUNTDOWN
 
     def _set_away(self, service):
         """
@@ -145,7 +146,7 @@ class MyHome(Entity):
         """
         _LOGGER.info('setting all rooms to not occupied')
         for room in self.rooms.values():
-            room.state = STATE_NOT_OCCUPIED
+            room.mode = STATE_NOT_OCCUPIED
 
     def _enable_occupied_scene(self, service):
         return self._enable_scene(service, STATE_OCCUPIED)
@@ -153,17 +154,23 @@ class MyHome(Entity):
     def _enable_unoccupied_scene(self, service):
         return self._enable_scene(service, STATE_NOT_OCCUPIED)
 
-    def _enable_scene(self, service, room_state):
+    def _enable_scene(self, service, room_mode):
         """
         Turns on a scene for a room with the given entity_id and the current
         house mode.
         """
         entity_id = service.data.get(ATTR_ENTITY_ID)
-        if entity_id.startswith(DOMAIN_ROOM):
-            entity_id = entity_id.replace('{}.'.format(DOMAIN_ROOM), '', 1)
+        room = self.get_room(entity_id)
+        if room is None:
+            _LOGGER.warning('Room %s not found, not enabling scene', entity_id)
+            return
+        if room.state != STATE_ON:
+            _LOGGER.info('Room %s is in manual override mode', entity_id)
+            return
+        entity_id = entity_id.replace('{}.'.format(DOMAIN_ROOM), '', 1)
         scene_name = '{}.{}_{}_{}'.format(DOMAIN_SCENE, entity_id,
                                           slugify(self.mode),
-                                          slugify(room_state))
+                                          slugify(room_mode))
         if scene_name not in self.hass.states.entity_ids(DOMAIN_SCENE):
             _LOGGER.warning('no scene configured with name %s', scene_name)
             return
@@ -185,6 +192,10 @@ class MyHome(Entity):
         if room is not None:
             self.rooms[room.entity_id] = room
 
+    def get_room(self, entity_id):
+        """ Returns a room for corresponding entity id. """
+        return self.rooms.get(entity_id, None)
+
     def __repr__(self):
         return '<home: %s>' % self.rooms
 
@@ -198,7 +209,8 @@ class Room(Entity):
         self._name = name
         self.entity_id = '{}.{}'.format(DOMAIN_ROOM, name)
         self.hass = hass
-        self._state = STATE_NOT_OCCUPIED
+        self._state = STATE_ON
+        self._mode = STATE_NOT_OCCUPIED
         self.timeout = timeout
         self.timer = None
 
@@ -212,42 +224,59 @@ class Room(Entity):
 
     @property
     def icon(self):
-        """ Sets the icon based upon the current state. """
-        if self._state == STATE_OCCUPIED:
+        """ Sets the icon based upon the current mode. """
+        if self._mode == STATE_OCCUPIED:
             return 'mdi:account'
-        elif self._state == STATE_NOT_OCCUPIED:
+        elif self._mode == STATE_NOT_OCCUPIED:
             return 'mdi:account-outline'
-        elif self._state == STATE_COUNTDOWN:
+        elif self._mode == STATE_COUNTDOWN:
             return 'mdi:clock'
         return 'mdi:home-variant'
 
     @property
     def state(self):
-        """ Returns the current room state (occupied/not_occupied). """
+        """ Returns the current room state (on/off). """
         return self._state
 
     @state.setter
-    def state(self, new_state):
-        self._state = new_state
-        if self._state == STATE_COUNTDOWN:
-            self.start_timer()
-        else:
-            self.disable_timer()
+    def state(self, state):
+        self._state = state
         self.update_ha_state()
 
-    def start_timer(self):
+    @property
+    def mode(self):
+        """ Returns the current room mode (occupied/not_occupied). """
+        return self._mode
+
+    @mode.setter
+    def mode(self, mode):
+        self._mode = mode
+        if self._mode == STATE_COUNTDOWN:
+            self._start_timer()
+        else:
+            self._disable_timer()
+        self.update_ha_state()
+
+    @property
+    def state_attributes(self):
+        return {
+            'mode': self._mode,
+            'timeout': str(self.timeout)
+        }
+
+    def _start_timer(self):
         """
         Registers a countdown timer that will trigger no occupancy when fired.
         Sets the state to STATE_COUNTDOWN.
         """
         if self.timer is not None:
-            _LOGGER.info('start_timer: timer already set: %s', self)
+            _LOGGER.info('timer already set: %s', self)
             return
         self.timer = helper.track_point_in_utc_time(self.hass,
-            self.timer_expired, date_util.utcnow() + self.timeout)
-        _LOGGER.info('start_timer: set timer %s', self)
+            self._timer_expired, date_util.utcnow() + self.timeout)
+        _LOGGER.info('set timer %s', self)
 
-    def disable_timer(self):
+    def _disable_timer(self):
         """ Unregisters the timer, if set. """
         if self.timer is None:
             return
@@ -255,28 +284,46 @@ class Room(Entity):
         self.hass.bus.remove_listener(EVENT_TIME_CHANGED, self.timer)
         self.timer = None
 
-    def timer_expired(self, now=None):
+    def _timer_expired(self, now=None):
         """
         Event callback after countdown timer expires.
 
-        Turns off the lights, if configured for the current mode.
+        Enable unoccupied scene, if configured for the current mode.
         """
-        _LOGGER.info('timer_expired %s', self)
+        _LOGGER.info('timer expired %s', self)
         self.timer = None
-        self.state = STATE_NOT_OCCUPIED
+        self.mode = STATE_NOT_OCCUPIED
         self.hass.services.call(DOMAIN, 'enable_unoccupied_scene', {
             'entity_id': self.entity_id
         })
 
     def __repr__(self):
-        return '<%s state:%s timer:%s>' % (self.entity_id, self.state,
-                                           self.timer)
+        return '<%s state:%s mode:%s timer:%s>' % (self.entity_id, self.state,
+                                                   self.mode, self.timer)
 
 
 def create_room(hass, name, conf):
     """ Returns a Room object given a configuration dict. """
     timeout = timedelta(**conf.get(CONF_TIMEOUT, {'minutes': 15}))
     return Room(hass, name, timeout)
+
+
+def register_room_services(hass, myhome):
+    """ Registers the services that handle rooms. """
+
+    def update_room_state(state, service):
+        entity_ids = extract_entity_ids(hass, service)
+        for entity_id in entity_ids:
+            room = myhome.get_room(entity_id)
+            if room is None:
+                _LOGGER.warning('Room %s not found', entity_id)
+                return
+            room.state = state
+
+    hass.services.register(DOMAIN_ROOM, 'turn_on',
+                           partial(update_room_state, STATE_ON))
+    hass.services.register(DOMAIN_ROOM, 'turn_off',
+                           partial(update_room_state, STATE_OFF))
 
 
 def setup(hass, config):
@@ -294,6 +341,8 @@ def setup(hass, config):
                 Entity.overwrite_attribute(name, [ATTR_HIDDEN], [True])
                 state = hass.states.get(name)
                 hass.states.set(name, state, {ATTR_HIDDEN: True})
+
+    register_room_services(hass, home)
 
     home.update_ha_state()
     _LOGGER.info('myhome loaded: %s', home)

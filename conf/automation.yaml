@@ -147,10 +147,8 @@
 - &occupied
   alias: Bedroom occupied
   trigger: &occupied_trigger
-    platform: state
-    entity_id: room.bedroom
-    from: 'not_occupied'
-    to: 'occupied'
+    platform: template
+    value_template: '{% if states.room.bedroom.attributes.mode == "occupied" %}true{% endif %}'
   condition: &occupied_condition
     platform: template
     value_template: '{{ states.sensor.motion_sensor_22 | float <= 12 }}'
@@ -162,7 +160,7 @@
   alias: Living room occupied
   trigger:
     <<: *occupied_trigger
-    entity_id: room.living_room
+    value_template: '{% if states.room.living_room.attributes.mode == "occupied" %}true{% endif %}'
   condition:
     <<: *occupied_condition
     value_template: '{{ states.sensor.motion_sensor_102 | float <= 16 or states.sensor.motion_sensor_42 | float <= 12 }}'
@@ -174,7 +172,7 @@
   alias: Hall occupied
   trigger:
     <<: *occupied_trigger
-    entity_id: room.hall
+    value_template: '{% if states.room.hall.attributes.mode == "occupied" %}true{% endif %}'
   condition:
     <<: *occupied_condition
     value_template: '{{ states.sensor.motion_sensor_52 | float <= 12 }}'
@@ -186,7 +184,7 @@
   alias: Kitchen occupied
   trigger:
     <<: *occupied_trigger
-    entity_id: room.kitchen
+    value_template: '{% if states.room.kitchen.attributes.mode == "occupied" %}true{% endif %}'
   condition:
     <<: *occupied_condition
     value_template: '{{ states.sensor.motion_sensor_12 | float <= 15 }}'
