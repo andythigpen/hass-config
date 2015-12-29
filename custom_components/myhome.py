@@ -211,6 +211,17 @@ class Room(Entity):
         return self._name
 
     @property
+    def icon(self):
+        """ Sets the icon based upon the current state. """
+        if self._state == STATE_OCCUPIED:
+            return 'mdi:account'
+        elif self._state == STATE_NOT_OCCUPIED:
+            return 'mdi:account-outline'
+        elif self._state == STATE_COUNTDOWN:
+            return 'mdi:clock'
+        return 'mdi:home-variant'
+
+    @property
     def state(self):
         """ Returns the current room state (occupied/not_occupied). """
         return self._state
