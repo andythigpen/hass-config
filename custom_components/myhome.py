@@ -60,7 +60,8 @@ class MyHome(Entity):
 
     @property
     def name(self):
-        return 'Active'
+        """ Set the name based on the current mode. """
+        return self._mode.title()
 
     @property
     def icon(self):
