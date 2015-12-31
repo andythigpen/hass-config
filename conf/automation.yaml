@@ -151,7 +151,7 @@
     value_template: '{% if states.room.bedroom.attributes.mode == "occupied" %}true{% endif %}'
   condition: &occupied_condition
     platform: template
-    value_template: '{{ states.sensor.motion_sensor_22 | float <= 12 }}'
+    value_template: '{{ states("sensor.motion_sensor_22") | float <= 12 }}'
   action: &occupied_action
     service: myhome.enable_occupied_scene
     data:
@@ -163,7 +163,7 @@
     value_template: '{% if states.room.living_room.attributes.mode == "occupied" %}true{% endif %}'
   condition:
     <<: *occupied_condition
-    value_template: '{{ states.sensor.motion_sensor_102 | float <= 16 or states.sensor.motion_sensor_42 | float <= 12 }}'
+    value_template: '{{ states("sensor.motion_sensor_102") | float <= 16 or states("sensor.motion_sensor_42") | float <= 12 }}'
   action:
     <<: *occupied_action
     data:
@@ -175,7 +175,7 @@
     value_template: '{% if states.room.hall.attributes.mode == "occupied" %}true{% endif %}'
   condition:
     <<: *occupied_condition
-    value_template: '{{ states.sensor.motion_sensor_52 | float <= 12 }}'
+    value_template: '{{ states("sensor.motion_sensor_52") | float <= 12 }}'
   action:
     <<: *occupied_action
     data:
@@ -187,7 +187,7 @@
     value_template: '{% if states.room.kitchen.attributes.mode == "occupied" %}true{% endif %}'
   condition:
     <<: *occupied_condition
-    value_template: '{{ states.sensor.motion_sensor_12 | float <= 15 }}'
+    value_template: '{{ states("sensor.motion_sensor_12") | float <= 15 }}'
   action:
     <<: *occupied_action
     data:
