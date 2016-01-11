@@ -86,10 +86,7 @@
     light.bedroom_2: *bedroom_night_occupied
 
 # Not occupied
-- name: Bedroom Morning Not Occupied
-  entities:
-    light.bedroom: *not_occupied
-    light.bedroom_2: *not_occupied
+# No morning scene
 - name: Bedroom Day Not Occupied
   entities:
     light.bedroom: *not_occupied
