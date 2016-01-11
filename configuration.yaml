@@ -101,6 +101,9 @@ group:
     - room.kitchen
     - room.hall
     - room.bedroom
+  media:
+    - media_player.living_room
+    - switch.chromecast
 
 automation: !include conf/automation.yaml
 
