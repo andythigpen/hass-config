@@ -58,6 +58,13 @@ sensor:
     debug: True
     persistence_file: mysensors.json
 
+switch:
+  - platform: rest
+    resource: http://192.168.1.148/pwr
+    name: "Chromecast"
+    body_on: "state=on"
+    body_off: "state=off"
+
 group:
   living_room:
     - light.Living_room_standing
