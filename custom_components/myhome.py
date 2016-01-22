@@ -11,12 +11,16 @@ from functools import partial
 
 import homeassistant.util.dt as date_util
 import homeassistant.helpers.event as helper
-from homeassistant.util import slugify
+from homeassistant.util import (slugify, split_entity_id)
 from homeassistant.helpers.entity import Entity
 from homeassistant.helpers import extract_entity_ids
 from homeassistant.const import (
-    STATE_ON, STATE_OFF, STATE_NOT_HOME, SERVICE_TURN_OFF, SERVICE_TURN_ON,
+    STATE_ON, STATE_OFF, STATE_HOME, STATE_NOT_HOME,
+    SERVICE_TURN_OFF, SERVICE_TURN_ON,
     ATTR_ENTITY_ID, EVENT_TIME_CHANGED, ATTR_HIDDEN)
+from homeassistant.components.device_tracker import (
+    ATTR_DEV_ID, ATTR_LOCATION_NAME, SERVICE_SEE)
+from homeassistant.components.device_tracker import DOMAIN as DEVICE_TRACKER_DOMAIN
 
 
 DOMAIN = 'myhome'
@@ -34,6 +38,7 @@ STATE_COUNTDOWN = 'countdown'
 STATE_RESET = 'reset'
 
 CONF_ROOMS = 'rooms'
+CONF_RFID = 'rfid'
 CONF_TIMEOUT = 'timeout'
 
 ATTR_MODE = 'mode'
@@ -326,6 +331,34 @@ def register_room_services(hass, myhome):
                            partial(update_room_state, STATE_OFF))
 
 
+def register_presence_handlers(hass, config):
+    """ Registers the event handlers that handle presence. """
+    rfid_sensor = config[DOMAIN].get(CONF_RFID, None)
+    if rfid_sensor is None:
+        _LOGGER.warning('RFID sensor not configured.')
+        return
+
+    def rfid_seen(now=None):
+        """ Calls see service periodically with state of RFID sensor. """
+        rfid_state = hass.states.get(rfid_sensor)
+        location = STATE_NOT_HOME
+        if rfid_state is not None and str(rfid_state.state) == '1':
+            location = STATE_HOME
+        _LOGGER.debug('rfid %s state is %s', rfid_sensor, location)
+        hass.services.call(DEVICE_TRACKER_DOMAIN, SERVICE_SEE, {
+            ATTR_DEV_ID: split_entity_id(rfid_sensor)[1],
+            ATTR_LOCATION_NAME: location,
+        })
+
+    helper.track_utc_time_change(hass, rfid_seen, second=0)
+
+    def rfid_state_change(entity_id, old_state, new_state):
+        """ Calls see service immediately with state of RFID sensor. """
+        rfid_seen()
+
+    helper.track_state_change(hass, rfid_sensor, rfid_state_change)
+
+
 def setup(hass, config):
     """ Setup myhome component. """
 
@@ -346,5 +379,8 @@ def setup(hass, config):
 
     home.update_ha_state()
     _LOGGER.info('myhome loaded: %s', home)
+
+    register_presence_handlers(hass, config)
+    _LOGGER.info('registered presense handlers')
 
     return True

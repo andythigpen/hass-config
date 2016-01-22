@@ -11,3 +11,4 @@ rooms:
   hall:
     timeout:
       minutes: 10
+rfid: sensor.rfid_sensor_121
