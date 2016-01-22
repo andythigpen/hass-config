@@ -122,3 +122,6 @@ logger:
     mysensors.mysensors: debug
     homeassistant.components.sensor.mysensors: debug
     custom_components.myhome: debug
+
+updater:
+
