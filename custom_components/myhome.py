@@ -11,9 +11,9 @@ from functools import partial
 
 import homeassistant.util.dt as date_util
 import homeassistant.helpers.event as helper
-from homeassistant.util import (slugify, split_entity_id)
-from homeassistant.helpers.entity import Entity
-from homeassistant.helpers import extract_entity_ids
+from homeassistant.util import slugify
+from homeassistant.helpers.entity import (Entity, split_entity_id)
+from homeassistant.helpers.service import extract_entity_ids
 from homeassistant.const import (
     STATE_ON, STATE_OFF, STATE_HOME, STATE_NOT_HOME,
     SERVICE_TURN_OFF, SERVICE_TURN_ON,
