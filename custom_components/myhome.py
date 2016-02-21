@@ -11,29 +11,35 @@ from functools import partial
 
 import homeassistant.util.dt as date_util
 import homeassistant.helpers.event as helper
-from homeassistant.util import slugify
+from homeassistant.util import (slugify, convert)
 from homeassistant.helpers.entity import (Entity, split_entity_id)
-from homeassistant.helpers.service import extract_entity_ids
+from homeassistant.helpers.service import (
+    extract_entity_ids, call_from_config)
 from homeassistant.const import (
-    STATE_ON, STATE_OFF, STATE_HOME, STATE_NOT_HOME,
+    STATE_ON, STATE_OFF, STATE_HOME, STATE_NOT_HOME, STATE_UNAVAILABLE,
     SERVICE_TURN_OFF, SERVICE_TURN_ON,
     ATTR_ENTITY_ID, EVENT_TIME_CHANGED, ATTR_HIDDEN)
 from homeassistant.components.device_tracker import (
     ATTR_DEV_ID, ATTR_LOCATION_NAME, SERVICE_SEE)
 from homeassistant.components.device_tracker import (
     DOMAIN as DOMAIN_DEVICE_TRACKER)
+import homeassistant.components as core
 from homeassistant.components.input_select import DOMAIN as DOMAIN_INPUT_SELECT
 from homeassistant.components.input_select import SERVICE_SELECT_OPTION
+from homeassistant.components.light import ATTR_BRIGHTNESS
+from homeassistant.components.light import DOMAIN as DOMAIN_LIGHT
 from homeassistant.components.scene import DOMAIN as DOMAIN_SCENE
 
 
 DOMAIN = 'myhome'
+DOMAIN_ROOM = 'room'
 ENTITY_ID = 'myhome.active'
 DEPENDENCIES = ['group', 'scene', 'input_select', 'mysensors']
 
 _LOGGER = logging.getLogger(__name__)
 
 
+# room states
 STATE_OCCUPIED = 'occupied'
 STATE_NOT_OCCUPIED = 'not_occupied'
 STATE_COUNTDOWN = 'countdown'
@@ -41,14 +47,25 @@ STATE_COUNTDOWN = 'countdown'
 # default mode, does nothing
 MODE_RESET = 'reset'
 
+# configuration
 CONF_ROOMS = 'rooms'
 CONF_RFID = 'rfid'
 CONF_TIMEOUT = 'timeout'
 CONF_MODE = 'mode'
+CONF_TOUCH = 'touch'
 
+# services
+SERVICE_DIM = 'dim'
+SERVICE_BRIGHTEN = 'brighten'
+SERVICE_SET_MODE = 'set_mode'
+SERVICE_SET_ROOM_OCCUPIED = 'set_room_occupied'
+SERVICE_SET_AWAY = 'set_away'
+SERVICE_ENABLE_OCCUPIED_SCENE = 'enable_occupied_scene'
+SERVICE_ENABLE_UNOCCUPIED_SCENE = 'enable_unoccupied_scene'
+
+# attributes
 ATTR_MODE = 'mode'
-
-DOMAIN_ROOM = 'room'
+ATTR_BRIGHTNESS_STEP = 'brightness_step'
 
 
 class MyHome(Entity):
@@ -109,21 +126,22 @@ class MyHome(Entity):
 
     def _register_services(self):
         """ Adds service methods to HA. """
-        self.hass.services.register(DOMAIN, 'set_mode', self._set_mode_service)
-        self.hass.services.register(DOMAIN, 'set_room_occupied',
+        self.hass.services.register(DOMAIN, SERVICE_SET_MODE,
+                                    self._set_mode_service)
+        self.hass.services.register(DOMAIN, SERVICE_SET_ROOM_OCCUPIED,
                                     self._set_room_occupied)
-        self.hass.services.register(DOMAIN, 'set_away', self._set_away)
-        self.hass.services.register(DOMAIN, 'enable_occupied_scene',
+        self.hass.services.register(DOMAIN, SERVICE_SET_AWAY, self._set_away)
+        self.hass.services.register(DOMAIN, SERVICE_ENABLE_OCCUPIED_SCENE,
                                     self._enable_occupied_scene)
-        self.hass.services.register(DOMAIN, 'enable_unoccupied_scene',
+        self.hass.services.register(DOMAIN, SERVICE_ENABLE_UNOCCUPIED_SCENE,
                                     self._enable_unoccupied_scene)
-        self.hass.services.register(DOMAIN, 'turn_on', self._turn_on)
-        self.hass.services.register(DOMAIN, 'turn_off', self._turn_off)
+        self.hass.services.register(DOMAIN, SERVICE_TURN_ON, self._turn_on)
+        self.hass.services.register(DOMAIN, SERVICE_TURN_OFF, self._turn_off)
 
     def _set_mode_service(self, service):
         """ Service method for setting mode. """
         self.hass.services.call(DOMAIN_INPUT_SELECT, SERVICE_SELECT_OPTION, {
-            'entity_id': self.mode_entity,
+            ATTR_ENTITY_ID: self.mode_entity,
             'option': service.data.get(ATTR_MODE).title(),
         })
 
@@ -180,7 +198,7 @@ class MyHome(Entity):
             return
         _LOGGER.info('turning on scene %s for room %s', scene_name, entity_id)
         self.hass.services.call(DOMAIN_SCENE, SERVICE_TURN_ON, {
-            'entity_id': scene_name
+            ATTR_ENTITY_ID: scene_name
         })
 
     def _turn_on(self, service):
@@ -298,7 +316,7 @@ class Room(Entity):
         self.timer = None
         self.mode = STATE_NOT_OCCUPIED
         self.hass.services.call(DOMAIN, 'enable_unoccupied_scene', {
-            'entity_id': self.entity_id
+            ATTR_ENTITY_ID: self.entity_id
         })
 
     def __repr__(self):
@@ -358,6 +376,73 @@ def register_presence_handlers(hass, config):
     helper.track_state_change(hass, rfid_sensor, rfid_state_change)
 
 
+def get_brightness(hass, service):
+    """ Returns the brightness for a group. """
+    # there's no brightness attribute for a group so just pick the first one
+    # in the group and return that
+    target_ids = extract_entity_ids(hass, service)
+    target_id = target_ids[0]
+    state = hass.states.get(target_id)
+    return state.attributes.get(ATTR_BRIGHTNESS, 0)
+
+
+def change_brightness(hass, service, bri):
+    """ Actually brightens/dims a group. """
+    target_ids = extract_entity_ids(hass, service)
+    if bri <= 0:
+        core.turn_off(hass, target_ids)
+    elif bri <= 255:
+        core.turn_on(hass, target_ids, brightness=bri)
+
+
+def service_light_dim(hass, service):
+    """ Dims lights by a step value. """
+    bri = get_brightness(hass, service)
+    bri -= convert(service.data.get(ATTR_BRIGHTNESS_STEP), int, 50)
+    bri = max(0, bri)
+    change_brightness(hass, service, bri)
+
+
+def service_light_brighten(hass, service):
+    """ Brightens lights by a step value. """
+    bri = get_brightness(hass, service)
+    bri += convert(service.data.get(ATTR_BRIGHTNESS_STEP), int, 50)
+    bri = min(255, bri)
+    change_brightness(hass, service, bri)
+
+
+def register_touch_control_handlers(hass, config):
+    hass.services.register(DOMAIN, SERVICE_DIM,
+            partial(service_light_dim, hass))
+    hass.services.register(DOMAIN, SERVICE_BRIGHTEN,
+            partial(service_light_brighten, hass))
+
+    controllers = config[DOMAIN].get(CONF_TOUCH, None)
+    if controllers is None:
+        _LOGGER.info('No touch controllers configured.')
+        return
+
+    def controller_state_change(entity_id, old_state, new_state):
+        """ Callback for touch controller state change. """
+        state = new_state.state
+        if state == STATE_UNAVAILABLE or state == '0' or state == 0:
+            return
+        controller = controllers[entity_id]
+        try:
+            action = controller.get(int(state), None)
+        except ValueError:
+            action = None
+        if action is not None:
+            _LOGGER.debug('Calling config %s', action)
+            call_from_config(hass, action)
+        else:
+            _LOGGER.warning('Action %s not found for %s', state, controller)
+        hass.states.set(entity_id, 0)
+
+    for controller in controllers:
+        helper.track_state_change(hass, controller, controller_state_change)
+
+
 def setup(hass, config):
     """ Setup myhome component. """
 
@@ -386,5 +471,8 @@ def setup(hass, config):
 
     register_presence_handlers(hass, config)
     _LOGGER.info('registered presense handlers')
+
+    register_touch_control_handlers(hass, config)
+    _LOGGER.info('registered touch control handlers')
 
     return True
