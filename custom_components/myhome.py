@@ -20,7 +20,11 @@ from homeassistant.const import (
     ATTR_ENTITY_ID, EVENT_TIME_CHANGED, ATTR_HIDDEN)
 from homeassistant.components.device_tracker import (
     ATTR_DEV_ID, ATTR_LOCATION_NAME, SERVICE_SEE)
-from homeassistant.components.device_tracker import DOMAIN as DEVICE_TRACKER_DOMAIN
+from homeassistant.components.device_tracker import (
+    DOMAIN as DOMAIN_DEVICE_TRACKER)
+from homeassistant.components.input_select import DOMAIN as DOMAIN_INPUT_SELECT
+from homeassistant.components.input_select import SERVICE_SELECT_OPTION
+from homeassistant.components.scene import DOMAIN as DOMAIN_SCENE
 
 
 DOMAIN = 'myhome'
@@ -34,8 +38,8 @@ STATE_OCCUPIED = 'occupied'
 STATE_NOT_OCCUPIED = 'not_occupied'
 STATE_COUNTDOWN = 'countdown'
 
-# default state, does nothing
-STATE_RESET = 'reset'
+# default mode, does nothing
+MODE_RESET = 'reset'
 
 CONF_ROOMS = 'rooms'
 CONF_RFID = 'rfid'
@@ -43,8 +47,9 @@ CONF_TIMEOUT = 'timeout'
 
 ATTR_MODE = 'mode'
 
+ENTITY_MODE = 'input_select.myhome_mode'
+
 DOMAIN_ROOM = 'room'
-DOMAIN_SCENE = 'scene'
 
 
 class MyHome(Entity):
@@ -57,7 +62,6 @@ class MyHome(Entity):
         self.entity_id = ENTITY_ID
         self.rooms = {}
         self._state = STATE_OFF
-        self._mode = STATE_RESET
         self._register_services()
 
     @property
@@ -66,13 +70,13 @@ class MyHome(Entity):
 
     @property
     def name(self):
-        """ Set the name based on the current mode. """
-        return self._mode.title()
+        """ Return the name based on the current state. """
+        return 'Active' if self._state == STATE_ON else 'Not active'
 
     @property
     def icon(self):
         """ Set the icon based upon the current mode. """
-        mode = self._mode.lower()
+        mode = self.mode
         if mode == 'morning':
             return 'mdi:weather-sunset-up'
         elif mode == 'day' or mode == 'afternoon':
@@ -98,18 +102,10 @@ class MyHome(Entity):
 
     @property
     def mode(self):
-        return self._mode
-
-    @mode.setter
-    def mode(self, mode):
-        self._mode = mode
-        self.update_ha_state()
-
-    @property
-    def state_attributes(self):
-        return {
-            'mode': self._mode
-        }
+        mode = self.hass.states.get(ENTITY_MODE)
+        if mode is None:
+            return MODE_RESET
+        return mode.state.lower()
 
     def _register_services(self):
         """ Adds service methods to HA. """
@@ -126,7 +122,10 @@ class MyHome(Entity):
 
     def _set_mode_service(self, service):
         """ Service method for setting mode. """
-        self.mode = service.data.get(ATTR_MODE)
+        self.hass.services.call(DOMAIN_INPUT_SELECT, SERVICE_SELECT_OPTION, {
+            'entity_id': ENTITY_MODE,
+            'option': service.data.get(ATTR_MODE).title(),
+        })
 
     def _set_room_occupied(self, service):
         """
@@ -345,7 +344,7 @@ def register_presence_handlers(hass, config):
         if rfid_state is not None and str(rfid_state.state) == '1':
             location = STATE_HOME
         _LOGGER.debug('rfid %s state is %s', rfid_sensor, location)
-        hass.services.call(DEVICE_TRACKER_DOMAIN, SERVICE_SEE, {
+        hass.services.call(DOMAIN_DEVICE_TRACKER, SERVICE_SEE, {
             ATTR_DEV_ID: split_entity_id(rfid_sensor)[1],
             ATTR_LOCATION_NAME: location,
         })
