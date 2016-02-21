@@ -12,3 +12,4 @@ rooms:
     timeout:
       minutes: 10
 rfid: sensor.rfid_sensor_121
+mode: input_select.myhome_mode

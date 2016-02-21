@@ -29,7 +29,7 @@ from homeassistant.components.scene import DOMAIN as DOMAIN_SCENE
 
 DOMAIN = 'myhome'
 ENTITY_ID = 'myhome.active'
-DEPENDENCIES = ['group', 'scene']
+DEPENDENCIES = ['group', 'scene', 'input_select', 'mysensors']
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -44,10 +44,9 @@ MODE_RESET = 'reset'
 CONF_ROOMS = 'rooms'
 CONF_RFID = 'rfid'
 CONF_TIMEOUT = 'timeout'
+CONF_MODE = 'mode'
 
 ATTR_MODE = 'mode'
-
-ENTITY_MODE = 'input_select.myhome_mode'
 
 DOMAIN_ROOM = 'room'
 
@@ -57,8 +56,9 @@ class MyHome(Entity):
     Contains Room objects with sensors for tracking presence and performing
     actions based on location and "house mode".
     """
-    def __init__(self, hass):
+    def __init__(self, hass, mode_entity):
         self.hass = hass
+        self.mode_entity = mode_entity
         self.entity_id = ENTITY_ID
         self.rooms = {}
         self._state = STATE_OFF
@@ -102,7 +102,7 @@ class MyHome(Entity):
 
     @property
     def mode(self):
-        mode = self.hass.states.get(ENTITY_MODE)
+        mode = self.hass.states.get(self.mode_entity)
         if mode is None:
             return MODE_RESET
         return mode.state.lower()
@@ -123,7 +123,7 @@ class MyHome(Entity):
     def _set_mode_service(self, service):
         """ Service method for setting mode. """
         self.hass.services.call(DOMAIN_INPUT_SELECT, SERVICE_SELECT_OPTION, {
-            'entity_id': ENTITY_MODE,
+            'entity_id': self.mode_entity,
             'option': service.data.get(ATTR_MODE).title(),
         })
 
@@ -361,7 +361,12 @@ def register_presence_handlers(hass, config):
 def setup(hass, config):
     """ Setup myhome component. """
 
-    home = MyHome(hass)
+    mode_entity = config[DOMAIN].get(CONF_MODE, None)
+    if mode_entity is None:
+        _LOGGER.error('Missing mode entity configuration')
+        return
+
+    home = MyHome(hass, mode_entity)
     room_conf = config[DOMAIN].get(CONF_ROOMS, {})
     for name, conf in room_conf.items():
         room = create_room(hass, name, conf)
