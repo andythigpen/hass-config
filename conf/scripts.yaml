@@ -4,7 +4,7 @@ snooze:
     - delay:
         seconds: 30
     - service: light.turn_on
-      service_data:
+      data:
         entity_id: group.Bedroom
         transition: 600
         brightness: 255
@@ -12,10 +12,10 @@ wakeup:
   alias: Wake up
   sequence:
     - service: myhome.set_mode
-      service_data:
+      data:
         mode: morning
     - service: light.turn_on
-      service_data:
+      data:
         entity_id: group.Bedroom
         transition: 30
         brightness: 255
@@ -23,14 +23,14 @@ wakeup:
     - delay:
         minutes: 1
     - service: light.turn_on
-      service_data:
+      data:
         entity_id: group.hall
         brightness: 40
       alias: Hall lights on
     - delay:
         minutes: 30
     - service: light.turn_on
-      service_data:
+      data:
         entity_id: group.hall
         brightness: 150
       alias: Hall lights brighter
@@ -38,51 +38,51 @@ bedtime:
   alias: Bedtime
   sequence:
     - service: light.turn_on
-      service_data:
+      data:
         entity_id: light.bedroom_2
         transition: 10
         brightness: 50
     - service: light.turn_on
-      service_data:
+      data:
         entity_id: light.bedroom
         transition: 10
         brightness: 150
     - delay:
         minutes: 15
     - service: light.turn_off
-      service_data:
+      data:
         entity_id: group.Bedroom
         transition: 600
       alias: Bedroom lights off
     - service: myhome.set_mode
-      service_data:
+      data:
         mode: asleep
     - delay:
         minutes: 10
         seconds: 30
     - service: light.turn_off
-      service_data:
+      data:
         entity_id: group.all_lights
 bedtime_now:
   alias: Bedtime Now
   sequence:
     - service: light.turn_off
-      service_data:
+      data:
         entity_id: group.Bedroom
         transition: 60
       alias: Bedroom lights off
     - service: myhome.set_mode
-      service_data:
+      data:
         mode: asleep
     - delay:
         minutes: 1
         seconds: 30
     - service: light.turn_off
-      service_data:
+      data:
         entity_id: group.all_lights
 all_off:
   alias: All Off
   sequence:
     - service: light.turn_off
-      service_data:
+      data:
         entity_id: group.all_lights
