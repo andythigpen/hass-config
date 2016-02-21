@@ -101,6 +101,7 @@ group:
     - script.bedtime_now
   myhome:
     - myhome.active
+    - input_select.myhome_mode
     - room.living_room
     - room.kitchen
     - room.hall
@@ -128,3 +129,15 @@ logger:
 
 updater:
 
+input_select:
+  myhome_mode:
+    name: Mode
+    options:
+      - Reset
+      - Morning
+      - Day
+      - Evening
+      - Night
+      - Asleep
+    initial: Reset
+    icon: mdi:format-list-bulleted
