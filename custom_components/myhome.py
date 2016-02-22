@@ -22,7 +22,6 @@ from homeassistant.components.device_tracker import (
 from homeassistant.components.input_select import DOMAIN as DOMAIN_INPUT_SELECT
 from homeassistant.components.input_select import SERVICE_SELECT_OPTION
 from homeassistant.components.light import ATTR_BRIGHTNESS
-from homeassistant.components.light import DOMAIN as DOMAIN_LIGHT
 from homeassistant.components.mysensors import (ATTR_NODE_ID, ATTR_CHILD_ID)
 from homeassistant.components.scene import DOMAIN as DOMAIN_SCENE
 
@@ -89,6 +88,7 @@ class MyHome(Entity):
 
     @property
     def should_poll(self):
+        """ Push state to HA instead of polling. """
         return False
 
     @property
@@ -125,6 +125,7 @@ class MyHome(Entity):
 
     @property
     def mode(self):
+        """ Get the current house mode via the configured entity. """
         mode = self.hass.states.get(self.mode_entity)
         if mode is None:
             return MODE_RESET
@@ -177,9 +178,11 @@ class MyHome(Entity):
             room.mode = STATE_NOT_OCCUPIED
 
     def _enable_occupied_scene(self, service):
+        """ Service that turns on an occupied scene. """
         return self._enable_scene(service, STATE_OCCUPIED)
 
     def _enable_unoccupied_scene(self, service):
+        """ Service that turns on an unoccupied scene. """
         return self._enable_scene(service, STATE_NOT_OCCUPIED)
 
     def _enable_scene(self, service, room_mode):
@@ -233,6 +236,7 @@ class Room(Entity):
     Contains motion and light sensors and performs actions based on them,
     the current house mode, and a person's location in the house.
     """
+    # pylint: disable=too-many-instance-attributes
     def __init__(self, hass, name, timeout):
         self._name = name
         self.entity_id = '{}.{}'.format(DOMAIN_ROOM, name)
@@ -244,10 +248,12 @@ class Room(Entity):
 
     @property
     def should_poll(self):
+        """ Push state to HA instead of polling. """
         return False
 
     @property
     def name(self):
+        """ Returns the name of this room. """
         return self._name
 
     @property
@@ -268,6 +274,7 @@ class Room(Entity):
 
     @state.setter
     def state(self, state):
+        """ Sets the current state of the room. """
         self._state = state
         self.update_ha_state()
 
@@ -278,6 +285,7 @@ class Room(Entity):
 
     @mode.setter
     def mode(self, mode):
+        """ Sets the current room mode, triggering the timer as necessary. """
         self._mode = mode
         if self._mode == STATE_COUNTDOWN:
             self._start_timer()
@@ -287,6 +295,7 @@ class Room(Entity):
 
     @property
     def state_attributes(self):
+        """ Returns the current room attributes. """
         return {
             'mode': self._mode,
             'timeout': str(self.timeout)
@@ -340,6 +349,7 @@ def register_room_services(hass, myhome):
     """ Registers the services that handle rooms. """
 
     def update_room_state(state, service):
+        """ Service that updates the room states. """
         entity_ids = extract_entity_ids(hass, service)
         for entity_id in entity_ids:
             room = myhome.get_room(entity_id)
