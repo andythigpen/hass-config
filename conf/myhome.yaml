@@ -14,28 +14,44 @@ rooms:
 rfid: sensor.rfid_sensor_121
 mode: input_select.myhome_mode
 touch:
-  sensor.touch_light_controller_131:
+  sensor.touch_controller_131:
     1:
       service: myhome.brighten
       data:
-        entity_id: group.Bedroom
+        entity_id: group.bedroom
+      response: 1
     2:
       service: myhome.dim
       data:
-        entity_id: group.Bedroom
+        entity_id: group.bedroom
+      response: 2
     3:
       service: light.turn_on
       data:
-        entity_id: group.Bedroom
+        entity_id: group.bedroom
+      response: 3
     4:
       service: light.turn_off
       data:
-        entity_id: group.Bedroom
+        entity_id: group.bedroom
+      response: 4
     5:
       service: script.turn_on
       data:
         entity_id: script.bedtime
+      response: 5
     6:
       service: script.turn_on
       data:
         entity_id: script.bedtime_now
+      response: 6
+    8:
+      service: light.turn_on
+      data:
+        entity_id: group.hall
+      response: 1
+    9:
+      service: light.turn_off
+      data:
+        entity_id: group.hall
+      response: 2

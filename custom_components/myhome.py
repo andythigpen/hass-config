@@ -9,27 +9,33 @@ import logging
 from datetime import timedelta
 from functools import partial
 
-import homeassistant.util.dt as date_util
+import homeassistant.components as core
+import homeassistant.components.mysensors as mysensors
 import homeassistant.helpers.event as helper
-from homeassistant.util import (slugify, convert)
-from homeassistant.helpers.entity import (Entity, split_entity_id)
-from homeassistant.helpers.service import (
-    extract_entity_ids, call_from_config)
-from homeassistant.const import (
-    STATE_ON, STATE_OFF, STATE_HOME, STATE_NOT_HOME, STATE_UNAVAILABLE,
-    SERVICE_TURN_OFF, SERVICE_TURN_ON,
-    ATTR_ENTITY_ID, EVENT_TIME_CHANGED, ATTR_HIDDEN)
+import homeassistant.util.dt as date_util
+
 from homeassistant.components.device_tracker import (
     ATTR_DEV_ID, ATTR_LOCATION_NAME, SERVICE_SEE)
 from homeassistant.components.device_tracker import (
     DOMAIN as DOMAIN_DEVICE_TRACKER)
-import homeassistant.components as core
+
 from homeassistant.components.input_select import DOMAIN as DOMAIN_INPUT_SELECT
 from homeassistant.components.input_select import SERVICE_SELECT_OPTION
 from homeassistant.components.light import ATTR_BRIGHTNESS
 from homeassistant.components.light import DOMAIN as DOMAIN_LIGHT
+from homeassistant.components.mysensors import (ATTR_NODE_ID, ATTR_CHILD_ID)
 from homeassistant.components.scene import DOMAIN as DOMAIN_SCENE
 
+from homeassistant.const import (
+    STATE_ON, STATE_OFF, STATE_HOME, STATE_NOT_HOME, STATE_UNAVAILABLE,
+    SERVICE_TURN_OFF, SERVICE_TURN_ON,
+    ATTR_ENTITY_ID, EVENT_TIME_CHANGED, ATTR_HIDDEN)
+
+from homeassistant.helpers.entity import (Entity, split_entity_id)
+from homeassistant.helpers.service import (
+    extract_entity_ids, call_from_config)
+
+from homeassistant.util import (slugify, convert)
 
 DOMAIN = 'myhome'
 DOMAIN_ROOM = 'room'
@@ -37,7 +43,6 @@ ENTITY_ID = 'myhome.active'
 DEPENDENCIES = ['group', 'scene', 'input_select', 'mysensors']
 
 _LOGGER = logging.getLogger(__name__)
-
 
 # room states
 STATE_OCCUPIED = 'occupied'
@@ -53,6 +58,7 @@ CONF_RFID = 'rfid'
 CONF_TIMEOUT = 'timeout'
 CONF_MODE = 'mode'
 CONF_TOUCH = 'touch'
+CONF_RESPONSE = 'response'
 
 # services
 SERVICE_DIM = 'dim'
@@ -411,7 +417,18 @@ def service_light_brighten(hass, service):
     change_brightness(hass, service, bri)
 
 
+def send_scene_response(node_id, child_id, value):
+    """ Sends a response to a sensor. """
+    if mysensors.GATEWAYS is None:
+        _LOGGER.warning("MySensors GATEWAYS is unavailable")
+        return
+    for gateway in mysensors.GATEWAYS.values():
+        value_type = gateway.const.SetReq.V_SCENE_ON
+        gateway.set_child_value(node_id, child_id, value_type, value)
+
+
 def register_touch_control_handlers(hass, config):
+    """ Registers handlers for touch scene controllers. """
     hass.services.register(DOMAIN, SERVICE_DIM,
             partial(service_light_dim, hass))
     hass.services.register(DOMAIN, SERVICE_BRIGHTEN,
@@ -424,20 +441,29 @@ def register_touch_control_handlers(hass, config):
 
     def controller_state_change(entity_id, old_state, new_state):
         """ Callback for touch controller state change. """
-        state = new_state.state
-        if state == STATE_UNAVAILABLE or state == '0' or state == 0:
+        if new_state.state == STATE_UNAVAILABLE:
             return
-        controller = controllers[entity_id]
         try:
-            action = controller.get(int(state), None)
+            state = int(new_state.state)
         except ValueError:
-            action = None
+            _LOGGER.error("Invalid state %s", new_state.state)
+            return
+        attr = new_state.attributes
+        controller = controllers[entity_id]
+        action = controller.get(state, None)
         if action is not None:
-            _LOGGER.debug('Calling config %s', action)
             call_from_config(hass, action)
-        else:
-            _LOGGER.warning('Action %s not found for %s', state, controller)
-        hass.states.set(entity_id, 0)
+            response = action.get(CONF_RESPONSE, int(state))
+            if response is not None:
+                node_id = attr.get(ATTR_NODE_ID, None)
+                child_id = attr.get(ATTR_CHILD_ID, None)
+                _LOGGER.debug("Sending response %s to %s.%s",
+                              response, node_id, child_id)
+                send_scene_response(node_id, child_id, response)
+        elif state != 0:
+            _LOGGER.warning('Action not found for state %s', state)
+        # reset the touch controller state
+        hass.states.set(entity_id, 0, attr)
 
     for controller in controllers:
         helper.track_state_change(hass, controller, controller_state_change)
@@ -445,8 +471,8 @@ def register_touch_control_handlers(hass, config):
 
 def setup(hass, config):
     """ Setup myhome component. """
-
     mode_entity = config[DOMAIN].get(CONF_MODE, None)
+
     if mode_entity is None:
         _LOGGER.error('Missing mode entity configuration')
         return
