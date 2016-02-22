@@ -67,10 +67,12 @@ SERVICE_SET_ROOM_OCCUPIED = 'set_room_occupied'
 SERVICE_SET_AWAY = 'set_away'
 SERVICE_ENABLE_OCCUPIED_SCENE = 'enable_occupied_scene'
 SERVICE_ENABLE_UNOCCUPIED_SCENE = 'enable_unoccupied_scene'
+SERVICE_SET_TOUCH = 'set_touch'
 
 # attributes
 ATTR_MODE = 'mode'
 ATTR_BRIGHTNESS_STEP = 'brightness_step'
+ATTR_COMMAND = 'command'
 
 
 class MyHome(Entity):
@@ -448,6 +450,19 @@ def register_touch_control_handlers(hass, config):
     if controllers is None:
         _LOGGER.info('No touch controllers configured.')
         return
+
+    def set_touch_service(service):
+        """ Service that sends a command to a touch controller. """
+        entity_ids = extract_entity_ids(hass, service)
+        for entity_id in entity_ids:
+            state = hass.states.get(entity_id)
+            attr = state.attributes
+            node_id = attr.get(ATTR_NODE_ID, None)
+            child_id = attr.get(ATTR_CHILD_ID, None)
+            cmd = service.data.get(ATTR_COMMAND, 0)
+            send_scene_response(node_id, child_id, cmd)
+
+    hass.services.register(DOMAIN, SERVICE_SET_TOUCH, set_touch_service)
 
     def controller_state_change(entity_id, old_state, new_state):
         """ Callback for touch controller state change. """
