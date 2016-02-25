@@ -1,7 +1,12 @@
 snooze:
   alias: Snooze Alarm
   sequence:
+    - service: myhome.set_touch
+      data:
+        entity_id: sensor.touch_sensor_131
+        command: 7
     - delay:
+        minutes: 4
         seconds: 30
     - service: light.turn_on
       data:
