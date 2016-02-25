@@ -56,15 +56,24 @@ bedtime:
         minutes: 15
     - service: light.turn_off
       data:
-        entity_id: group.Bedroom
+        entity_id: light.bedroom
         transition: 600
       alias: Bedroom lights off
+    - service: light.turn_off
+      data:
+        entity_id: light.bedroom_2
+        transition: 30
     - service: myhome.set_mode
       data:
         mode: asleep
     - delay:
-        minutes: 10
-        seconds: 30
+        minutes: 9
+    - service: light.turn_off
+      data:
+        entity_id: group.hall
+        transition: 10
+    - delay:
+        minutes: 1
     - service: light.turn_off
       data:
         entity_id: group.all_lights
