@@ -9,23 +9,23 @@ homeassistant:
       friendly_name: Living Room
     group.myhome:
       friendly_name: My Home
-    sensor.motion_sensor_11:
+    binary_sensor.motion_sensor_11:
       friendly_name: Kitchen Motion
     sensor.motion_sensor_12:
       friendly_name: Kitchen Light
-    sensor.motion_sensor_21:
+    binary_sensor.motion_sensor_21:
       friendly_name: Bedroom Motion
     sensor.motion_sensor_22:
       friendly_name: Bedroom Light
-    sensor.motion_sensor_41:
+    binary_sensor.motion_sensor_41:
       friendly_name: Bookcase Motion
     sensor.motion_sensor_42:
       friendly_name: Bookcase Light
-    sensor.motion_sensor_51:
+    binary_sensor.motion_sensor_51:
       friendly_name: Front Door Motion
     sensor.motion_sensor_52:
       friendly_name: Front Door Light
-    sensor.motion_sensor_101:
+    binary_sensor.motion_sensor_101:
       friendly_name: Living Room Motion
     sensor.motion_sensor_102:
       friendly_name: Living Room Light
@@ -73,25 +73,25 @@ group:
   living_room:
     - light.Living_room_standing
     - light.Living_room_table
-    - sensor.motion_sensor_41
+    - binary_sensor.motion_sensor_41
     - sensor.motion_sensor_42
-    - sensor.motion_sensor_101
+    - binary_sensor.motion_sensor_101
     - sensor.motion_sensor_102
   bedroom:
     - light.Bedroom
     - light.Bedroom_2
-    - sensor.motion_sensor_21
+    - binary_sensor.motion_sensor_21
     - sensor.motion_sensor_22
   kitchen:
     - light.Kitchen_1
     - light.Kitchen_2
     - light.Kitchen_3
-    - sensor.motion_sensor_11
+    - binary_sensor.motion_sensor_11
     - sensor.motion_sensor_12
   hall:
     - light.Hall
     - light.Hall_2
-    - sensor.motion_sensor_51
+    - binary_sensor.motion_sensor_51
     - sensor.motion_sensor_52
   scripts:
     - script.wakeup

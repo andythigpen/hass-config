@@ -82,7 +82,7 @@
   alias: Bedroom motion detected
   trigger: &motion_trigger
     platform: state
-    entity_id: sensor.motion_sensor_21
+    entity_id: binary_sensor.motion_sensor_21
     to: 'on'
   condition:
     - platform: state
@@ -99,7 +99,7 @@
   alias: Hall motion detected
   trigger:
     <<: *motion_trigger
-    entity_id: sensor.motion_sensor_51
+    entity_id: binary_sensor.motion_sensor_51
   action:
     <<: *motion_action
     data:
@@ -108,7 +108,7 @@
   alias: Living Room motion detected
   trigger:
     <<: *motion_trigger
-    entity_id: sensor.motion_sensor_101
+    entity_id: binary_sensor.motion_sensor_101
   action:
     <<: *motion_action
     data:
@@ -117,7 +117,7 @@
   alias: Bookcase motion detected
   trigger:
     <<: *motion_trigger
-    entity_id: sensor.motion_sensor_41
+    entity_id: binary_sensor.motion_sensor_41
   action:
     <<: *motion_action
     data:
@@ -126,7 +126,7 @@
   alias: Kitchen motion detected
   trigger:
     <<: *motion_trigger
-    entity_id: sensor.motion_sensor_11
+    entity_id: binary_sensor.motion_sensor_11
   action:
     <<: *motion_action
     data:
