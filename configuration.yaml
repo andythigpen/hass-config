@@ -32,6 +32,8 @@ homeassistant:
     sensor.rfid_sensor_121:
       friendly_name: RFID Sensor
       hidden: true
+    sensor.touch_controller_131:
+      hidden: true
     room.living_room:
       friendly_name: 'Living Room'
 
