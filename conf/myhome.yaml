@@ -36,12 +36,12 @@ touch:
         entity_id: group.bedroom
       response: 4
     5:
-      service: script.turn_on
+      service: script.toggle
       data:
         entity_id: script.bedtime
       response: 5
     6:
-      service: script.turn_on
+      service: script.toggle
       data:
         entity_id: script.bedtime_now
       response: 6
