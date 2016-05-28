@@ -82,7 +82,7 @@
   trigger:
     platform: state
     to: 'on'
-    entity_id: binary_sensor.motion_sensor_21
+    entity_id: binary_sensor.motion_sensor_2_1
   condition: &motion_condition
     condition: and
     conditions:
@@ -100,7 +100,7 @@
   trigger:
     platform: state
     to: 'on'
-    entity_id: binary_sensor.motion_sensor_51
+    entity_id: binary_sensor.motion_sensor_5_1
   condition:
     <<: *motion_condition
   action:
@@ -111,7 +111,7 @@
   trigger:
     platform: state
     to: 'on'
-    entity_id: binary_sensor.motion_sensor_101
+    entity_id: binary_sensor.motion_sensor_10_1
   condition:
     <<: *motion_condition
   action:
@@ -122,7 +122,7 @@
   trigger:
     platform: state
     to: 'on'
-    entity_id: binary_sensor.motion_sensor_41
+    entity_id: binary_sensor.motion_sensor_4_1
   condition:
     <<: *motion_condition
   action:
@@ -133,7 +133,7 @@
   trigger:
     platform: state
     to: 'on'
-    entity_id: binary_sensor.motion_sensor_11
+    entity_id: binary_sensor.motion_sensor_1_1
   condition:
     <<: *motion_condition
   action:
@@ -159,7 +159,7 @@
     value_template: '{{ is_state_attr("room.bedroom", "mode", "occupied") }}'
   condition:
     platform: template
-    value_template: '{{ states("sensor.motion_sensor_22") | float <= 12 }}'
+    value_template: '{{ states("sensor.motion_sensor_2_2") | float <= 12 }}'
   action:
     service: myhome.enable_occupied_scene
     data:
@@ -170,7 +170,7 @@
     value_template: '{{ is_state_attr("room.living_room", "mode", "occupied") }}'
   condition:
     platform: template
-    value_template: '{{ states("sensor.motion_sensor_102") | float <= 16 or states("sensor.motion_sensor_42") | float <= 12 }}'
+    value_template: '{{ states("sensor.motion_sensor_10_2") | float <= 16 or states("sensor.motion_sensor_4_2") | float <= 12 }}'
   action:
     service: myhome.enable_occupied_scene
     data:
@@ -181,7 +181,7 @@
     value_template: '{{ is_state_attr("room.hall", "mode", "occupied") }}'
   condition:
     platform: template
-    value_template: '{{ states("sensor.motion_sensor_52") | float <= 12 }}'
+    value_template: '{{ states("sensor.motion_sensor_5_2") | float <= 12 }}'
   action:
     service: myhome.enable_occupied_scene
     data:
@@ -192,7 +192,7 @@
     value_template: '{{ is_state_attr("room.kitchen", "mode", "occupied") }}'
   condition:
     platform: template
-    value_template: '{{ states("sensor.motion_sensor_12") | float <= 15 }}'
+    value_template: '{{ states("sensor.motion_sensor_1_2") | float <= 15 }}'
   action:
     service: myhome.enable_occupied_scene
     data:

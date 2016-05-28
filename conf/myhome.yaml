@@ -11,10 +11,10 @@ rooms:
   hall:
     timeout:
       minutes: 10
-rfid: sensor.rfid_sensor_121
+rfid: sensor.rfid_sensor_12_1
 mode: input_select.myhome_mode
 touch:
-  sensor.touch_controller_131:
+  sensor.touch_controller_13_1:
     1:
       service: myhome.brighten
       data:
