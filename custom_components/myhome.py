@@ -477,8 +477,9 @@ def register_touch_control_handlers(hass, config):
         controller = controllers[entity_id]
         action = controller.get(state, None)
         if action is not None:
+            # remove response before call or config will not validate
+            response = action.pop(CONF_RESPONSE, int(state))
             call_from_config(hass, action)
-            response = action.get(CONF_RESPONSE, int(state))
             if response is not None:
                 node_id = attr.get(ATTR_NODE_ID, None)
                 child_id = attr.get(ATTR_CHILD_ID, None)
