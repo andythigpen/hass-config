@@ -11,7 +11,7 @@ homeassistant:
       friendly_name: My Home
     binary_sensor.motion_sensor_1_1:
       friendly_name: Kitchen Motion
-    sensor.motion_sensor_12:
+    sensor.motion_sensor_1_2:
       friendly_name: Kitchen Light
     binary_sensor.motion_sensor_2_1:
       friendly_name: Bedroom Motion
