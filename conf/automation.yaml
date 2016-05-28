@@ -11,7 +11,7 @@
       entity_id: group.all_devices
       state: home
   condition:
-    platform: state
+    condition: state
     entity_id: group.all_devices
     state: home
   action:
@@ -78,57 +78,66 @@
 # Motion detector rules
 # Updates the state of a room if motion is detected
 #
-- &motion
-  alias: Bedroom motion detected
-  trigger: &motion_trigger
+- alias: Bedroom motion detected
+  trigger:
     platform: state
-    entity_id: binary_sensor.motion_sensor_21
     to: 'on'
-  condition:
-    - platform: state
-      entity_id: group.all_devices
-      state: home
-    - platform: state
-      entity_id: myhome.active
-      state: 'on'
-  action: &motion_action
+    entity_id: binary_sensor.motion_sensor_21
+  condition: &motion_condition
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: group.all_devices
+        state: home
+      - condition: state
+        entity_id: myhome.active
+        state: 'on'
+  action:
     service: myhome.set_room_occupied
     data:
       entity_id: room.bedroom
-- <<: *motion
-  alias: Hall motion detected
+- alias: Hall motion detected
   trigger:
-    <<: *motion_trigger
+    platform: state
+    to: 'on'
     entity_id: binary_sensor.motion_sensor_51
+  condition:
+    <<: *motion_condition
   action:
-    <<: *motion_action
+    service: myhome.set_room_occupied
     data:
       entity_id: room.hall
-- <<: *motion
-  alias: Living Room motion detected
+- alias: Living Room motion detected
   trigger:
-    <<: *motion_trigger
+    platform: state
+    to: 'on'
     entity_id: binary_sensor.motion_sensor_101
+  condition:
+    <<: *motion_condition
   action:
-    <<: *motion_action
+    service: myhome.set_room_occupied
     data:
       entity_id: room.living_room
-- <<: *motion
-  alias: Bookcase motion detected
+- alias: Bookcase motion detected
   trigger:
-    <<: *motion_trigger
+    platform: state
+    to: 'on'
     entity_id: binary_sensor.motion_sensor_41
+  condition:
+    <<: *motion_condition
   action:
-    <<: *motion_action
+    service: myhome.set_room_occupied
     data:
       entity_id: room.living_room
-- <<: *motion
-  alias: Kitchen motion detected
+- alias: Kitchen motion detected
   trigger:
-    <<: *motion_trigger
+    platform: state
+    to: 'on'
     entity_id: binary_sensor.motion_sensor_11
+  condition:
+    <<: *motion_condition
   action:
-    <<: *motion_action
+    service: myhome.set_room_occupied
     data:
       entity_id: room.kitchen
 
@@ -144,51 +153,47 @@
     to: 'not_home'
   action:
     service: myhome.set_away
-- &occupied
-  alias: Bedroom occupied
-  trigger: &occupied_trigger
+- alias: Bedroom occupied
+  trigger:
     platform: template
     value_template: '{{ is_state_attr("room.bedroom", "mode", "occupied") }}'
-  condition: &occupied_condition
+  condition:
     platform: template
     value_template: '{{ states("sensor.motion_sensor_22") | float <= 12 }}'
-  action: &occupied_action
+  action:
     service: myhome.enable_occupied_scene
     data:
       entity_id: room.bedroom
-- <<: *occupied
-  alias: Living room occupied
+- alias: Living room occupied
   trigger:
-    <<: *occupied_trigger
+    platform: template
     value_template: '{{ is_state_attr("room.living_room", "mode", "occupied") }}'
   condition:
-    <<: *occupied_condition
+    platform: template
     value_template: '{{ states("sensor.motion_sensor_102") | float <= 16 or states("sensor.motion_sensor_42") | float <= 12 }}'
   action:
-    <<: *occupied_action
+    service: myhome.enable_occupied_scene
     data:
       entity_id: room.living_room
-- <<: *occupied
-  alias: Hall occupied
+- alias: Hall occupied
   trigger:
-    <<: *occupied_trigger
+    platform: template
     value_template: '{{ is_state_attr("room.hall", "mode", "occupied") }}'
   condition:
-    <<: *occupied_condition
+    platform: template
     value_template: '{{ states("sensor.motion_sensor_52") | float <= 12 }}'
   action:
-    <<: *occupied_action
+    service: myhome.enable_occupied_scene
     data:
       entity_id: room.hall
-- <<: *occupied
-  alias: Kitchen occupied
+- alias: Kitchen occupied
   trigger:
-    <<: *occupied_trigger
+    platform: template
     value_template: '{{ is_state_attr("room.kitchen", "mode", "occupied") }}'
   condition:
-    <<: *occupied_condition
+    platform: template
     value_template: '{{ states("sensor.motion_sensor_12") | float <= 15 }}'
   action:
-    <<: *occupied_action
+    service: myhome.enable_occupied_scene
     data:
       entity_id: room.kitchen
