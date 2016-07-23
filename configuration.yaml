@@ -39,6 +39,8 @@ homeassistant:
 
 myhome: !include conf/myhome.yaml
 
+frontend:
+
 history:
 
 logbook:
