@@ -509,12 +509,6 @@ def setup(hass, config):
         room = create_room(hass, name, conf)
         room.update_ha_state()
         home.add(room)
-        # hide all the scenes related to this room
-        for name in hass.states.entity_ids(DOMAIN_SCENE):
-            if name.startswith('{}.{}'.format(DOMAIN_SCENE, room.name.lower())):
-                Entity.overwrite_attribute(name, [ATTR_HIDDEN], [True])
-                state = hass.states.get(name)
-                hass.states.set(name, state, {ATTR_HIDDEN: True})
 
     register_room_services(hass, home)
 

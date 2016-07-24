@@ -4,38 +4,7 @@ homeassistant:
   longitude: !include conf/longitude.yaml
   temperature_unit: F
   time_zone: America/Chicago
-  customize:
-    group.living_room:
-      friendly_name: Living Room
-    group.myhome:
-      friendly_name: My Home
-    binary_sensor.motion_sensor_1_1:
-      friendly_name: Kitchen Motion
-    sensor.motion_sensor_1_2:
-      friendly_name: Kitchen Light
-    binary_sensor.motion_sensor_2_1:
-      friendly_name: Bedroom Motion
-    sensor.motion_sensor_2_2:
-      friendly_name: Bedroom Light
-    binary_sensor.motion_sensor_4_1:
-      friendly_name: Bookcase Motion
-    sensor.motion_sensor_4_2:
-      friendly_name: Bookcase Light
-    binary_sensor.motion_sensor_5_1:
-      friendly_name: Front Door Motion
-    sensor.motion_sensor_5_2:
-      friendly_name: Front Door Light
-    binary_sensor.motion_sensor_10_1:
-      friendly_name: Living Room Motion
-    sensor.motion_sensor_10_2:
-      friendly_name: Living Room Light
-    sensor.rfid_sensor_12_1:
-      friendly_name: RFID Sensor
-      hidden: true
-    sensor.touch_controller_13_1:
-      hidden: true
-    room.living_room:
-      friendly_name: 'Living Room'
+  customize: !include conf/customize.yaml
 
 myhome: !include conf/myhome.yaml
 
