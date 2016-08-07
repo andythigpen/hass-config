@@ -15,8 +15,8 @@
     entity_id: group.all_devices
     state: home
   action:
-    service: light.turn_on
-    entity_id: group.living_room
+    service: scene.turn_on
+    entity_id: scene.living_room_evening_occupied
 - alias: Turn lights off when not home
   trigger:
     platform: state
@@ -59,7 +59,7 @@
   trigger:
     platform: sun
     event: sunset
-    offset: '-02:00:00'
+    offset: '-01:30:00'
   action:
     service: myhome.set_mode
     data:
@@ -68,7 +68,7 @@
   trigger:
     platform: sun
     event: sunset
-    offset: '01:00:00'
+    offset: '01:30:00'
   action:
     service: myhome.set_mode
     data:
@@ -159,7 +159,7 @@
     value_template: '{{ is_state_attr("room.bedroom", "mode", "occupied") }}'
   condition:
     condition: template
-    value_template: '{{ states("sensor.motion_sensor_2_2") | float <= 12 }}'
+    value_template: '{{ states("sensor.motion_sensor_2_2") | float <= 9 }}'
   action:
     service: myhome.enable_occupied_scene
     data:
@@ -170,7 +170,7 @@
     value_template: '{{ is_state_attr("room.living_room", "mode", "occupied") }}'
   condition:
     condition: template
-    value_template: '{{ states("sensor.motion_sensor_10_2") | float <= 16 or states("sensor.motion_sensor_4_2") | float <= 12 }}'
+    value_template: '{{ states("sensor.motion_sensor_10_2") | float <= 14 or states("sensor.motion_sensor_4_2") | float <= 7 }}'
   action:
     service: myhome.enable_occupied_scene
     data:
@@ -181,7 +181,7 @@
     value_template: '{{ is_state_attr("room.hall", "mode", "occupied") }}'
   condition:
     condition: template
-    value_template: '{{ states("sensor.motion_sensor_5_2") | float <= 12 }}'
+    value_template: '{{ states("sensor.motion_sensor_5_2") | float <= 20 }}'
   action:
     service: myhome.enable_occupied_scene
     data:
@@ -192,7 +192,7 @@
     value_template: '{{ is_state_attr("room.kitchen", "mode", "occupied") }}'
   condition:
     condition: template
-    value_template: '{{ states("sensor.motion_sensor_1_2") | float <= 15 }}'
+    value_template: '{{ states("sensor.motion_sensor_1_2") | float <= 2 }}'
   action:
     service: myhome.enable_occupied_scene
     data:
