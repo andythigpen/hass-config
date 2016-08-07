@@ -161,48 +161,38 @@
     light.hall: &hall_morning_occupied
       state: 'on'
       brightness: 120
-    light.hall_2: *hall_morning_occupied
 - name: Hall Day Occupied
   entities:
     light.hall: &hall_day_occupied
       state: 'on'
       brightness: 175
-    light.hall_2: *hall_day_occupied
 - name: Hall Afternoon Occupied
   entities:
     light.hall: *hall_day_occupied
-    light.hall_2: *hall_day_occupied
 - name: Hall Evening Occupied
   entities:
     light.hall: &hall_evening_occupied
       state: 'on'
       brightness: 100
-    light.hall_2: *hall_evening_occupied
 - name: Hall Night Occupied
   entities:
     light.hall: &hall_night_occupied
       state: 'on'
       brightness: 50
-    light.hall_2: *hall_night_occupied
 
 # Not occupied
 - name: Hall Morning Not Occupied
   entities:
     light.hall: *not_occupied
-    light.hall_2: *not_occupied
 - name: Hall Day Not Occupied
   entities:
     light.hall: *not_occupied
-    light.hall_2: *not_occupied
 - name: Hall Afternoon Not Occupied
   entities:
     light.hall: *not_occupied
-    light.hall_2: *not_occupied
 - name: Hall Evening Not Occupied
   entities:
     light.hall: *not_occupied
-    light.hall_2: *not_occupied
 - name: Hall Night Not Occupied
   entities:
     light.hall: *not_occupied
-    light.hall_2: *not_occupied
