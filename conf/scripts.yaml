@@ -25,20 +25,6 @@ wakeup:
         transition: 30
         brightness: 255
       alias: Bedroom lights on
-    - delay:
-        minutes: 1
-    - service: light.turn_on
-      data:
-        entity_id: group.hall
-        brightness: 40
-      alias: Hall lights on
-    - delay:
-        minutes: 30
-    - service: light.turn_on
-      data:
-        entity_id: group.hall
-        brightness: 150
-      alias: Hall lights brighter
 bedtime:
   alias: Bedtime
   sequence:
@@ -70,7 +56,7 @@ bedtime:
         minutes: 9
     - service: light.turn_off
       data:
-        entity_id: group.hall
+        entity_id: group.living_room
         transition: 10
     - delay:
         minutes: 1
