@@ -12,6 +12,9 @@ frontend:
 
 history:
 
+recorder:
+  purge_days: 7
+
 logbook:
 
 http:
