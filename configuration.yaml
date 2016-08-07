@@ -51,9 +51,6 @@ group:
     - binary_sensor.motion_sensor_2_1
     - sensor.motion_sensor_2_2
   kitchen:
-    - light.Kitchen_1
-    - light.Kitchen_2
-    - light.Kitchen_3
     - binary_sensor.motion_sensor_1_1
     - sensor.motion_sensor_1_2
   hall:

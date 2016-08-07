@@ -7,29 +7,24 @@
     light.Living_room_standing: &living_room_morning_occupied
       state: 'on'
       brightness: 170
-    light.Living_room_table: *living_room_morning_occupied
 - name: Living Room Day Occupied
   entities:
     light.Living_room_standing: &living_room_day_occupied
       state: 'on'
       brightness: 255
-    light.Living_room_table: *living_room_day_occupied
 - name: Living Room Afternoon Occupied
   entities:
     light.Living_room_standing: *living_room_day_occupied
-    light.Living_room_table: *living_room_day_occupied
 - name: Living Room Evening Occupied
   entities:
     light.Living_room_standing: &living_room_evening_occupied
       state: 'on'
       brightness: 200
-    light.Living_room_table:  *living_room_evening_occupied
 - name: Living Room Night Occupied
   entities:
     light.Living_room_standing: &living_room_night_occupied
       state: 'on'
       brightness: 150
-    light.Living_room_table: *living_room_night_occupied
 
 # Not occupied
 - name: Living Room Morning Not Occupied
@@ -37,23 +32,18 @@
     light.Living_room_standing: &not_occupied
       state: 'off'
       transition: 30
-    light.Living_room_table: *not_occupied
 - name: Living Room Day Not Occupied
   entities:
     light.Living_room_standing: *not_occupied
-    light.Living_room_table: *not_occupied
 - name: Living Room Afternoon Not Occupied
   entities:
     light.Living_room_standing: *not_occupied
-    light.Living_room_table: *not_occupied
 - name: Living Room Evening Not Occupied
   entities:
     light.Living_room_standing: *not_occupied
-    light.Living_room_table:  *not_occupied
 - name: Living Room Night Not Occupied
   entities:
     light.Living_room_standing: *not_occupied
-    light.Living_room_table: *not_occupied
 
 
 
@@ -103,72 +93,6 @@
   entities:
     light.bedroom: *not_occupied
     light.bedroom_2: *not_occupied
-
-
-# -----------------------
-# Kitchen modes
-#
-# Occupied
-- name: Kitchen Morning Occupied
-  entities:
-    light.kitchen_1: &kitchen_morning_occupied
-      state: 'on'
-      brightness: 30
-    light.kitchen_2: *kitchen_morning_occupied
-    light.kitchen_3: *kitchen_morning_occupied
-- name: Kitchen Day Occupied
-  entities:
-    light.kitchen_1: &kitchen_day_occupied
-      state: 'on'
-      brightness: 100
-    light.kitchen_2: *kitchen_day_occupied
-    light.kitchen_3: *kitchen_day_occupied
-- name: Kitchen Afternoon Occupied
-  entities:
-    light.kitchen_1: *kitchen_day_occupied
-    light.kitchen_2: *kitchen_day_occupied
-    light.kitchen_3: *kitchen_day_occupied
-- name: Kitchen Evening Occupied
-  entities:
-    light.kitchen_1: &kitchen_evening_occupied
-      state: 'on'
-      brightness: 30
-    light.kitchen_2: *kitchen_evening_occupied
-    light.kitchen_3: *kitchen_evening_occupied
-- name: Kitchen Night Occupied
-  entities:
-    light.kitchen_1: &kitchen_night_occupied
-      state: 'on'
-      brightness: 20
-    light.kitchen_2: *kitchen_night_occupied
-    light.kitchen_3: *kitchen_night_occupied
-
-# Not occupied
-- name: Kitchen Morning Not Occupied
-  entities:
-    light.kitchen_1: *not_occupied
-    light.kitchen_2: *not_occupied
-    light.kitchen_3: *not_occupied
-- name: Kitchen Day Not Occupied
-  entities:
-    light.kitchen_1: *not_occupied
-    light.kitchen_2: *not_occupied
-    light.kitchen_3: *not_occupied
-- name: Kitchen Afternoon Not Occupied
-  entities:
-    light.kitchen_1: *not_occupied
-    light.kitchen_2: *not_occupied
-    light.kitchen_3: *not_occupied
-- name: Kitchen Evening Not Occupied
-  entities:
-    light.kitchen_1: *not_occupied
-    light.kitchen_2: *not_occupied
-    light.kitchen_3: *not_occupied
-- name: Kitchen Night Not Occupied
-  entities:
-    light.kitchen_1: *not_occupied
-    light.kitchen_2: *not_occupied
-    light.kitchen_3: *not_occupied
 
 
 # -----------------------
