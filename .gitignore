@@ -2,7 +2,7 @@
 *.bak
 .*.swp
 .HA_VERSION
-home-assistant.db
+home-assistant*.db
 home-assistant.log*
 home-assistant.pid
 known_devices.csv
@@ -12,3 +12,5 @@ conf/latitude.yaml
 conf/longitude.yaml
 build/
 lib/
+deps/
+mysensors.json
