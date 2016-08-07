@@ -40,7 +40,8 @@ mysensors:
 group:
   living_room:
     - light.Living_room_standing
-    - light.Living_room_table
+    - light.tv_left
+    - light.tv_right
     - binary_sensor.motion_sensor_4_1
     - sensor.motion_sensor_4_2
     - binary_sensor.motion_sensor_10_1
