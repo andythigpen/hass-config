@@ -2,21 +2,24 @@
 # Home presence rules
 # Turns lights on/off based on presence
 #
-- alias: Turn on light when sun sets or arriving home
+- alias: Turn on occupied room lights when sun sets
   trigger:
-    - platform: sun
-      event: sunset
-      offset: "-01:00:00"
-    - platform: state
-      entity_id: group.all_devices
-      state: home
+    platform: sun
+    event: sunset
+    offset: "-01:00:00"
   condition:
     condition: state
     entity_id: group.all_devices
     state: home
   action:
-    service: scene.turn_on
-    entity_id: scene.living_room_evening_occupied
+    - service: myhome.enable_scene
+      entity_id: room.living_room
+    - service: myhome.enable_scene
+      entity_id: room.bedroom
+    - service: myhome.enable_scene
+      entity_id: room.kitchen
+    - service: myhome.enable_scene
+      entity_id: room.hall
 - alias: Turn lights off when not home
   trigger:
     platform: state
@@ -26,6 +29,20 @@
   action:
     service: light.turn_off
     entity_id: group.all_lights
+- alias: Turn on hall light when arriving home
+  trigger:
+    platform: state
+    entity_id: group.all_devices
+    from: 'not_home'
+    to: 'home'
+  condition:
+    condition: state
+    entity_id: myhome.active
+    state: 'on'
+  action:
+    service: myhome.set_room_occupied
+    data:
+      entity_id: room.hall
 
 # ------------------------------
 # Home mode rules

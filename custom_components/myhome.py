@@ -65,6 +65,7 @@ SERVICE_BRIGHTEN = 'brighten'
 SERVICE_SET_MODE = 'set_mode'
 SERVICE_SET_ROOM_OCCUPIED = 'set_room_occupied'
 SERVICE_SET_AWAY = 'set_away'
+SERVICE_ENABLE_SCENE = 'enable_scene'
 SERVICE_ENABLE_OCCUPIED_SCENE = 'enable_occupied_scene'
 SERVICE_ENABLE_UNOCCUPIED_SCENE = 'enable_unoccupied_scene'
 SERVICE_SET_TOUCH = 'set_touch'
@@ -140,10 +141,12 @@ class MyHome(Entity):
         self.hass.services.register(DOMAIN, SERVICE_SET_ROOM_OCCUPIED,
                                     self._set_room_occupied)
         self.hass.services.register(DOMAIN, SERVICE_SET_AWAY, self._set_away)
+        self.hass.services.register(DOMAIN, SERVICE_ENABLE_SCENE,
+                                    self._enable_scene_service)
         self.hass.services.register(DOMAIN, SERVICE_ENABLE_OCCUPIED_SCENE,
-                                    self._enable_occupied_scene)
+                                    self._enable_occupied_scene_service)
         self.hass.services.register(DOMAIN, SERVICE_ENABLE_UNOCCUPIED_SCENE,
-                                    self._enable_unoccupied_scene)
+                                    self._enable_unoccupied_scene_service)
         self.hass.services.register(DOMAIN, SERVICE_TURN_ON, self._turn_on)
         self.hass.services.register(DOMAIN, SERVICE_TURN_OFF, self._turn_off)
 
@@ -179,15 +182,19 @@ class MyHome(Entity):
         for room in self.rooms.values():
             room.mode = STATE_NOT_OCCUPIED
 
-    def _enable_occupied_scene(self, service):
+    def _enable_occupied_scene_service(self, service):
         """ Service that turns on an occupied scene. """
         return self._enable_scene(service, STATE_OCCUPIED)
 
-    def _enable_unoccupied_scene(self, service):
+    def _enable_unoccupied_scene_service(self, service):
         """ Service that turns on an unoccupied scene. """
         return self._enable_scene(service, STATE_NOT_OCCUPIED)
 
-    def _enable_scene(self, service, room_mode):
+    def _enable_scene_service(self, service):
+        """ Service that turns on a scene based on room mode. """
+        return self._enable_scene(service)
+
+    def _enable_scene(self, service, room_mode=None):
         """
         Turns on a scene for a room with the given entity_id and the current
         house mode.
@@ -200,6 +207,8 @@ class MyHome(Entity):
         if room.state != STATE_ON:
             _LOGGER.info('Room %s is in manual override mode', entity_id)
             return
+        if room_mode is None:
+            room_mode = room.mode
         entity_id = entity_id.replace('{}.'.format(DOMAIN_ROOM), '', 1)
         scene_name = '{}.{}_{}_{}'.format(DOMAIN_SCENE, entity_id,
                                           slugify(self.mode),
