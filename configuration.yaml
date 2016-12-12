@@ -2,7 +2,7 @@ homeassistant:
   # Location required to calculate the time the sun rises and sets
   latitude: !include conf/latitude.yaml
   longitude: !include conf/longitude.yaml
-  temperature_unit: F
+  unit_system: imperial
   time_zone: America/Chicago
   customize: !include conf/customize.yaml
 

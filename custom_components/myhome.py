@@ -30,7 +30,8 @@ from homeassistant.const import (
     SERVICE_TURN_OFF, SERVICE_TURN_ON,
     ATTR_ENTITY_ID, EVENT_TIME_CHANGED, ATTR_HIDDEN)
 
-from homeassistant.helpers.entity import (Entity, split_entity_id)
+from homeassistant.core import split_entity_id
+from homeassistant.helpers.entity import Entity
 from homeassistant.helpers.service import (
     extract_entity_ids, call_from_config)
 
