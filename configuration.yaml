@@ -36,6 +36,7 @@ sensor:
 
 light:
   platform: hue
+  host: 192.168.1.124
 
 device_tracker: !include conf/device_tracker.yaml
 

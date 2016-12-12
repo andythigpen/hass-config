@@ -3,6 +3,7 @@
 # Turns lights on/off based on presence
 #
 - alias: Turn on occupied room lights when sun sets
+  hide_entity: True
   trigger:
     platform: sun
     event: sunset
@@ -21,6 +22,7 @@
     - service: myhome.enable_scene
       entity_id: room.hall
 - alias: Turn lights off when not home
+  hide_entity: True
   trigger:
     platform: state
     entity_id: group.all_devices
@@ -30,6 +32,7 @@
     service: light.turn_off
     entity_id: group.all_lights
 - alias: Turn on hall light when arriving home
+  hide_entity: True
   trigger:
     platform: state
     entity_id: group.all_devices
@@ -49,6 +52,7 @@
 # Updates the state of the home based on time of day
 #
 - alias: Morning home mode
+  hide_entity: True
   trigger:
     platform: time
     after: '06:00:00'
@@ -57,6 +61,7 @@
     data:
       mode: morning
 - alias: Day home mode
+  hide_entity: True
   trigger:
     platform: time
     after: '09:00:00'
@@ -65,6 +70,7 @@
     data:
       mode: day
 - alias: Afternoon home mode
+  hide_entity: True
   trigger:
     platform: time
     after: '13:00:00'
@@ -73,6 +79,7 @@
     data:
       mode: afternoon
 - alias: Evening home mode
+  hide_entity: True
   trigger:
     platform: sun
     event: sunset
@@ -82,6 +89,7 @@
     data:
       mode: evening
 - alias: Night home mode
+  hide_entity: True
   trigger:
     platform: sun
     event: sunset
@@ -96,6 +104,7 @@
 # Updates the state of a room if motion is detected
 #
 - alias: Bedroom motion detected
+  hide_entity: True
   trigger:
     platform: state
     to: 'on'
@@ -114,6 +123,7 @@
     data:
       entity_id: room.bedroom
 - alias: Hall motion detected
+  hide_entity: True
   trigger:
     platform: state
     to: 'on'
@@ -125,6 +135,7 @@
     data:
       entity_id: room.hall
 - alias: Living Room motion detected
+  hide_entity: True
   trigger:
     platform: state
     to: 'on'
@@ -136,6 +147,7 @@
     data:
       entity_id: room.living_room
 - alias: Bookcase motion detected
+  hide_entity: True
   trigger:
     platform: state
     to: 'on'
@@ -147,6 +159,7 @@
     data:
       entity_id: room.living_room
 - alias: Kitchen motion detected
+  hide_entity: True
   trigger:
     platform: state
     to: 'on'
@@ -163,6 +176,7 @@
 # Room occupancy rules
 #
 - alias: Set rooms to unoccupied when away
+  hide_entity: True
   trigger:
     platform: state
     entity_id: group.all_devices
@@ -171,6 +185,7 @@
   action:
     service: myhome.set_away
 - alias: Bedroom occupied
+  hide_entity: True
   trigger:
     platform: template
     value_template: '{{ is_state_attr("room.bedroom", "mode", "occupied") }}'
@@ -182,6 +197,7 @@
     data:
       entity_id: room.bedroom
 - alias: Living room occupied
+  hide_entity: True
   trigger:
     platform: template
     value_template: '{{ is_state_attr("room.living_room", "mode", "occupied") }}'
@@ -193,6 +209,7 @@
     data:
       entity_id: room.living_room
 - alias: Hall occupied
+  hide_entity: True
   trigger:
     platform: template
     value_template: '{{ is_state_attr("room.hall", "mode", "occupied") }}'
@@ -204,6 +221,7 @@
     data:
       entity_id: room.hall
 - alias: Kitchen occupied
+  hide_entity: True
   trigger:
     platform: template
     value_template: '{{ is_state_attr("room.kitchen", "mode", "occupied") }}'
