@@ -21,6 +21,19 @@ http:
 
 sun:
 
+sensor:
+  - platform: yweather
+    monitored_conditions:
+      - weather
+      - weather_current
+      - temp_min
+      - temp_max
+      - wind_speed
+      - pressure
+      - visibility
+      - humidity
+      - temperature
+
 light:
   platform: hue
 
