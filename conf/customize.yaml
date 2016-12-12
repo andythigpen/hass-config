@@ -4,6 +4,12 @@ group.living_room:
 group.myhome:
   friendly_name: My Home
 
+# lights
+light.rgbw_15_1:
+  friendly_name: Cabinet Top
+light.rgbw_15_2:
+  friendly_name: Cabinet Bottom
+
 # sensors
 binary_sensor.motion_sensor_1_1:
   friendly_name: Kitchen Motion

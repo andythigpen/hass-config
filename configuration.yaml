@@ -68,6 +68,8 @@ group:
   kitchen:
     - binary_sensor.motion_sensor_1_1
     - sensor.motion_sensor_1_2
+    - light.rgbw_15_1
+    - light.rgbw_15_2
   hall:
     - light.Hall
     - light.Hall_2
