@@ -29,8 +29,6 @@ device_tracker: !include conf/device_tracker.yaml
 media_player:
   - platform: cast
     host: 192.168.1.115
-  - platform: roku
-    host: 192.168.1.117
 
 mysensors:
   gateways:
