@@ -92,6 +92,20 @@ group:
   media:
     - media_player.living_room
     - switch.chromecast
+  weather:
+    - sensor.yweather_condition
+    - sensor.yweather_current
+    - sensor.yweather_humidity
+    - sensor.yweather_pressure
+    - sensor.yweather_temperature
+    - sensor.yweather_temperature_max
+    - sensor.yweather_temperature_min
+    - sensor.yweather_visibility
+    - sensor.yweather_wind_speed
+    - sun.sun
+  presence:
+    - device_tracker.nexus5
+    - device_tracker.rfid_sensor_12_1
 
 automation: !include conf/automation.yaml
 
