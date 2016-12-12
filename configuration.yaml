@@ -126,6 +126,7 @@ logger:
     custom_components.myhome: debug
 
 updater:
+  reporting: no
 
 input_select:
   myhome_mode:
