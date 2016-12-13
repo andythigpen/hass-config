@@ -40,10 +40,6 @@ light:
 
 device_tracker: !include conf/device_tracker.yaml
 
-media_player:
-  - platform: cast
-    host: 192.168.1.115
-
 mysensors:
   gateways:
     - device: '/dev/ttyUSB0'
