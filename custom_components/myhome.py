@@ -330,7 +330,8 @@ class Room(Entity):
         if self.timer is None:
             return
         _LOGGER.info('canceling timer %s', self)
-        self.hass.bus.remove_listener(EVENT_TIME_CHANGED, self.timer)
+        # call to remove event listener
+        self.timer()
         self.timer = None
 
     def _timer_expired(self, now=None):
