@@ -440,16 +440,6 @@ def service_light_brighten(hass, service):
     change_brightness(hass, service, bri)
 
 
-def send_scene_response(node_id, child_id, value):
-    """ Sends a response to a sensor. """
-    if mysensors.GATEWAYS is None:
-        _LOGGER.warning("MySensors GATEWAYS is unavailable")
-        return
-    for gateway in mysensors.GATEWAYS.values():
-        value_type = gateway.const.SetReq.V_SCENE_ON
-        gateway.set_child_value(node_id, child_id, value_type, value)
-
-
 def register_touch_control_handlers(hass, config):
     """ Registers handlers for touch scene controllers. """
     hass.services.register(DOMAIN, SERVICE_DIM,
@@ -461,6 +451,16 @@ def register_touch_control_handlers(hass, config):
     if controllers is None:
         _LOGGER.info('No touch controllers configured.')
         return
+
+    def send_scene_response(node_id, child_id, value):
+        """ Sends a response to a sensor. """
+        gateways = hass.data.get(mysensors.MYSENSORS_GATEWAYS)
+        if gateways is None:
+            _LOGGER.warning("MySensors gateways config is unavailable")
+            return
+        for gateway in gateways:
+            value_type = gateway.const.SetReq.V_SCENE_ON
+            gateway.set_child_value(node_id, child_id, value_type, value)
 
     def set_touch_service(service):
         """ Service that sends a command to a touch controller. """

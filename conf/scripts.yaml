@@ -3,7 +3,7 @@ snooze:
   sequence:
     - service: myhome.set_touch
       data:
-        entity_id: sensor.touch_sensor_131
+        entity_id: sensor.touch_controller_13_1
         command: 7
     - delay:
         minutes: 4
