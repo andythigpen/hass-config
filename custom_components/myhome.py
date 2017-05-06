@@ -125,7 +125,7 @@ class MyHome(Entity):
     def state(self, state):
         """ Sets automatic control of home on/off. """
         self._state = state
-        self.update_ha_state()
+        self.schedule_update_ha_state()
 
     @property
     def mode(self):
@@ -288,7 +288,7 @@ class Room(Entity):
     def state(self, state):
         """ Sets the current state of the room. """
         self._state = state
-        self.update_ha_state()
+        self.schedule_update_ha_state()
 
     @property
     def mode(self):
@@ -303,7 +303,7 @@ class Room(Entity):
             self._start_timer()
         else:
             self._disable_timer()
-        self.update_ha_state()
+        self.schedule_update_ha_state()
 
     @property
     def state_attributes(self):
@@ -518,12 +518,12 @@ def setup(hass, config):
     room_conf = config[DOMAIN].get(CONF_ROOMS, {})
     for name, conf in room_conf.items():
         room = create_room(hass, name, conf)
-        room.update_ha_state()
+        room.schedule_update_ha_state()
         home.add(room)
 
     register_room_services(hass, home)
 
-    home.update_ha_state()
+    home.schedule_update_ha_state()
     _LOGGER.info('myhome loaded: %s', home)
 
     register_presence_handlers(hass, config)

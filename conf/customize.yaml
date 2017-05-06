@@ -1,9 +1,3 @@
-# groups
-group.living_room:
-  friendly_name: Living Room
-group.myhome:
-  friendly_name: My Home
-
 # lights
 light.rgbw_15_1:
   friendly_name: Cabinet Top
@@ -40,81 +34,9 @@ sensor.touch_controller_13_1:
 # rooms
 room.living_room:
   friendly_name: 'Living Room'
-
-# scenes
-scene.bedroom_afternoon_not_occupied:
-  hidden: true
-scene.bedroom_afternoon_occupied:
-  hidden: true
-scene.bedroom_day_not_occupied:
-  hidden: true
-scene.bedroom_day_occupied:
-  hidden: true
-scene.bedroom_evening_not_occupied:
-  hidden: true
-scene.bedroom_evening_occupied:
-  hidden: true
-scene.bedroom_night_not_occupied:
-  hidden: true
-scene.bedroom_night_occupied:
-  hidden: true
-scene.hall_afternoon_not_occupied:
-  hidden: true
-scene.hall_afternoon_occupied:
-  hidden: true
-scene.hall_day_not_occupied:
-  hidden: true
-scene.hall_day_occupied:
-  hidden: true
-scene.hall_evening_not_occupied:
-  hidden: true
-scene.hall_evening_occupied:
-  hidden: true
-scene.hall_morning_not_occupied:
-  hidden: true
-scene.hall_morning_occupied:
-  hidden: true
-scene.hall_night_not_occupied:
-  hidden: true
-scene.hall_night_occupied:
-  hidden: true
-scene.living_room_afternoon_not_occupied:
-  hidden: true
-scene.living_room_afternoon_occupied:
-  hidden: true
-scene.living_room_day_not_occupied:
-  hidden: true
-scene.living_room_day_occupied:
-  hidden: true
-scene.living_room_evening_not_occupied:
-  hidden: true
-scene.living_room_evening_occupied:
-  hidden: true
-scene.living_room_morning_not_occupied:
-  hidden: true
-scene.living_room_morning_occupied:
-  hidden: true
-scene.living_room_night_not_occupied:
-  hidden: true
-scene.living_room_night_occupied:
-  hidden: true
-scene.kitchen_afternoon_not_occupied:
-  hidden: true
-scene.kitchen_afternoon_occupied:
-  hidden: true
-scene.kitchen_day_not_occupied:
-  hidden: true
-scene.kitchen_day_occupied:
-  hidden: true
-scene.kitchen_evening_not_occupied:
-  hidden: true
-scene.kitchen_evening_occupied:
-  hidden: true
-scene.kitchen_morning_not_occupied:
-  hidden: true
-scene.kitchen_morning_occupied:
-  hidden: true
-scene.kitchen_night_not_occupied:
-  hidden: true
-scene.kitchen_night_occupied:
-  hidden: true
+room.kitchen:
+  friendly_name: Kitchen
+room.hall:
+  friendly_name: Hall
+room.bedroom:
+  friendly_name: Bedroom
