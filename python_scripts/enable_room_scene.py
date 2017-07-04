@@ -10,7 +10,8 @@ def set_scene(hass, data, logger):
     - mode: mode of the room (slugified, ex: occupied, not_occupied)
     """
     room_name = data.get('room').lower()
-    if not hass.states.is_state('room.{}'.format(room_name), 'on'):
+    room_entity_id = 'room.{}'.format(room_name)
+    if not hass.states.is_state(room_entity_id, 'on'):
         logger.info('Room %s not found or not enabled', room_name)
         return
 
@@ -20,9 +21,12 @@ def set_scene(hass, data, logger):
         return
 
     mode = mode.state.lower()
-    room_mode = data.get('mode').lower()
-    scene_name = 'scene.{}_{}_{}'.format(room_name, mode, room_mode)
+    room_mode = data.get('mode', None)
+    if room_mode is None:
+        room_state = hass.states.get(room_entity_id)
+        room_mode = room_state.attributes['mode']
 
+    scene_name = 'scene.{}_{}_{}'.format(room_name, mode, room_mode)
     if scene_name not in hass.states.entity_ids('scene'):
         logger.warning('no scene configured with name %s', scene_name)
         return

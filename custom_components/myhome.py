@@ -67,7 +67,6 @@ SERVICE_DIM = 'dim'
 SERVICE_BRIGHTEN = 'brighten'
 SERVICE_SET_ROOM_OCCUPIED = 'set_room_occupied'
 SERVICE_SET_AWAY = 'set_away'
-SERVICE_ENABLE_SCENE = 'enable_scene'
 SERVICE_SET_TOUCH = 'set_touch'
 
 # attributes
@@ -139,8 +138,6 @@ class MyHome(Entity):
         self.hass.services.register(DOMAIN, SERVICE_SET_ROOM_OCCUPIED,
                                     self._set_room_occupied)
         self.hass.services.register(DOMAIN, SERVICE_SET_AWAY, self._set_away)
-        self.hass.services.register(DOMAIN, SERVICE_ENABLE_SCENE,
-                                    self._enable_scene_service)
         self.hass.services.register(DOMAIN, SERVICE_TURN_ON, self._turn_on)
         self.hass.services.register(DOMAIN, SERVICE_TURN_OFF, self._turn_off)
 
@@ -168,39 +165,6 @@ class MyHome(Entity):
         _LOGGER.info('setting all rooms to not occupied')
         for room in self.rooms.values():
             room.mode = STATE_NOT_OCCUPIED
-
-    def _enable_scene_service(self, service):
-        """ Service that turns on a scene based on room mode. """
-        return self._enable_scene(service)
-
-    def _enable_scene(self, service, room_mode=None):
-        """
-        Turns on a scene for a room with the given entity_id and the current
-        house mode.
-        """
-        entity_id = service.data.get(ATTR_ENTITY_ID)
-        if isinstance(entity_id, list):
-            entity_id = entity_id[0]
-        room = self.get_room(entity_id)
-        if room is None:
-            _LOGGER.warning('Room %s not found, not enabling scene', entity_id)
-            return
-        if room.state != STATE_ON:
-            _LOGGER.info('Room %s is in manual override mode', entity_id)
-            return
-        if room_mode is None:
-            room_mode = room.mode
-        entity_id = entity_id.replace('{}.'.format(DOMAIN_ROOM), '', 1)
-        scene_name = '{}.{}_{}_{}'.format(DOMAIN_SCENE, entity_id,
-                                          slugify(self.mode),
-                                          slugify(room_mode))
-        if scene_name not in self.hass.states.entity_ids(DOMAIN_SCENE):
-            _LOGGER.warning('no scene configured with name %s', scene_name)
-            return
-        _LOGGER.info('turning on scene %s for room %s', scene_name, entity_id)
-        self.hass.services.call(DOMAIN_SCENE, SERVICE_TURN_ON, {
-            ATTR_ENTITY_ID: scene_name
-        })
 
     def _turn_on(self, service):
         """ Service that enables myhome control. """

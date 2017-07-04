@@ -13,14 +13,18 @@
     entity_id: group.all_devices
     state: home
   action:
-    - service: myhome.enable_scene
-      entity_id: room.living_room
-    - service: myhome.enable_scene
-      entity_id: room.bedroom
-    - service: myhome.enable_scene
-      entity_id: room.kitchen
-    - service: myhome.enable_scene
-      entity_id: room.hall
+    - service: python_script.enable_room_scene
+      data:
+        room: living_room
+    - service: python_script.enable_room_scene
+      data:
+        room: bedroom
+    - service: python_script.enable_room_scene
+      data:
+        room: kitchen
+    - service: python_script.enable_room_scene
+      data:
+        room: hall
 - alias: Turn lights off when not home
   hide_entity: True
   trigger:
