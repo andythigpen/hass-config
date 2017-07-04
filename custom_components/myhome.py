@@ -29,7 +29,6 @@ from homeassistant.components.python_script import (
 
 from homeassistant.const import (
     STATE_ON, STATE_OFF, STATE_HOME, STATE_NOT_HOME, STATE_UNAVAILABLE,
-    SERVICE_TURN_OFF, SERVICE_TURN_ON,
     ATTR_ENTITY_ID, EVENT_TIME_CHANGED, ATTR_HIDDEN)
 
 from homeassistant.core import split_entity_id
@@ -138,8 +137,6 @@ class MyHome(Entity):
         self.hass.services.register(DOMAIN, SERVICE_SET_ROOM_OCCUPIED,
                                     self._set_room_occupied)
         self.hass.services.register(DOMAIN, SERVICE_SET_AWAY, self._set_away)
-        self.hass.services.register(DOMAIN, SERVICE_TURN_ON, self._turn_on)
-        self.hass.services.register(DOMAIN, SERVICE_TURN_OFF, self._turn_off)
 
     def _set_room_occupied(self, service):
         """
@@ -165,14 +162,6 @@ class MyHome(Entity):
         _LOGGER.info('setting all rooms to not occupied')
         for room in self.rooms.values():
             room.mode = STATE_NOT_OCCUPIED
-
-    def _turn_on(self, service):
-        """ Service that enables myhome control. """
-        self.state = STATE_ON
-
-    def _turn_off(self, service):
-        """ Service that disables myhome control. """
-        self.state = STATE_OFF
 
     def add(self, room):
         """ Adds a room. """
