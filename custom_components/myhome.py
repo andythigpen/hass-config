@@ -24,6 +24,8 @@ from homeassistant.components.input_select import SERVICE_SELECT_OPTION
 from homeassistant.components.light import ATTR_BRIGHTNESS
 from homeassistant.components.mysensors import (ATTR_NODE_ID, ATTR_CHILD_ID)
 from homeassistant.components.scene import DOMAIN as DOMAIN_SCENE
+from homeassistant.components.python_script import (
+    DOMAIN as DOMAIN_PYTHON_SCRIPT)
 
 from homeassistant.const import (
     STATE_ON, STATE_OFF, STATE_HOME, STATE_NOT_HOME, STATE_UNAVAILABLE,
@@ -66,7 +68,6 @@ SERVICE_BRIGHTEN = 'brighten'
 SERVICE_SET_ROOM_OCCUPIED = 'set_room_occupied'
 SERVICE_SET_AWAY = 'set_away'
 SERVICE_ENABLE_SCENE = 'enable_scene'
-SERVICE_ENABLE_UNOCCUPIED_SCENE = 'enable_unoccupied_scene'
 SERVICE_SET_TOUCH = 'set_touch'
 
 # attributes
@@ -140,8 +141,6 @@ class MyHome(Entity):
         self.hass.services.register(DOMAIN, SERVICE_SET_AWAY, self._set_away)
         self.hass.services.register(DOMAIN, SERVICE_ENABLE_SCENE,
                                     self._enable_scene_service)
-        self.hass.services.register(DOMAIN, SERVICE_ENABLE_UNOCCUPIED_SCENE,
-                                    self._enable_unoccupied_scene_service)
         self.hass.services.register(DOMAIN, SERVICE_TURN_ON, self._turn_on)
         self.hass.services.register(DOMAIN, SERVICE_TURN_OFF, self._turn_off)
 
@@ -169,10 +168,6 @@ class MyHome(Entity):
         _LOGGER.info('setting all rooms to not occupied')
         for room in self.rooms.values():
             room.mode = STATE_NOT_OCCUPIED
-
-    def _enable_unoccupied_scene_service(self, service):
-        """ Service that turns on an unoccupied scene. """
-        return self._enable_scene(service, STATE_NOT_OCCUPIED)
 
     def _enable_scene_service(self, service):
         """ Service that turns on a scene based on room mode. """
@@ -328,8 +323,9 @@ class Room(Entity):
         _LOGGER.info('timer expired %s', self)
         self.timer = None
         self.mode = STATE_NOT_OCCUPIED
-        self.hass.services.call(DOMAIN, 'enable_unoccupied_scene', {
-            ATTR_ENTITY_ID: self.entity_id
+        self.hass.services.call(DOMAIN_PYTHON_SCRIPT, 'enable_room_scene', {
+            'room': self._name,
+            'mode': self.mode,
         })
 
     def __repr__(self):
