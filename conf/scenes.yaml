@@ -111,45 +111,45 @@
 # Occupied
 - name: Bedroom Day Occupied
   entities:
-    light.bedroom: &bedroom_day_occupied
+    light.night_stand: &bedroom_day_occupied
       state: 'on'
       brightness: 255
-    light.bedroom_2: *bedroom_day_occupied
+    light.dresser: *bedroom_day_occupied
 - name: Bedroom Afternoon Occupied
   entities:
-    light.bedroom: *bedroom_day_occupied
-    light.bedroom_2: *bedroom_day_occupied
+    light.night_stand: *bedroom_day_occupied
+    light.dresser: *bedroom_day_occupied
 - name: Bedroom Evening Occupied
   entities:
-    light.bedroom: &bedroom_evening_occupied
+    light.night_stand: &bedroom_evening_occupied
       state: 'on'
       brightness: 200
-    light.bedroom_2: *bedroom_day_occupied
+    light.dresser: *bedroom_day_occupied
 - name: Bedroom Night Occupied
   entities:
-    light.bedroom: &bedroom_night_occupied
+    light.night_stand: &bedroom_night_occupied
       state: 'on'
       brightness: 150
-    light.bedroom_2: *bedroom_night_occupied
+    light.dresser: *bedroom_night_occupied
 
 # Not occupied
 # No morning scene
 - name: Bedroom Day Not Occupied
   entities:
-    light.bedroom: *not_occupied
-    light.bedroom_2: *not_occupied
+    light.night_stand: *not_occupied
+    light.dresser: *not_occupied
 - name: Bedroom Afternoon Not Occupied
   entities:
-    light.bedroom: *not_occupied
-    light.bedroom_2: *not_occupied
+    light.night_stand: *not_occupied
+    light.dresser: *not_occupied
 - name: Bedroom Evening Not Occupied
   entities:
-    light.bedroom: *not_occupied
-    light.bedroom_2: *not_occupied
+    light.night_stand: *not_occupied
+    light.dresser: *not_occupied
 - name: Bedroom Night Not Occupied
   entities:
-    light.bedroom: *not_occupied
-    light.bedroom_2: *not_occupied
+    light.night_stand: *not_occupied
+    light.dresser: *not_occupied
 
 
 # -----------------------

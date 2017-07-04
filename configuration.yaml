@@ -62,7 +62,6 @@ group:
   living_room:
     name: Living Room
     entities:
-    - light.living_room
     - light.living_room_standing
     - light.tv_left
     - light.tv_right
@@ -73,7 +72,6 @@ group:
   bedroom:
     name: Bedroom
     entities:
-    - light.bedroom
     - light.night_stand
     - light.dresser
     - binary_sensor.motion_sensor_2_1
@@ -88,9 +86,9 @@ group:
   hall:
     name: Hall
     entities:
-    - light.hall
     - binary_sensor.motion_sensor_5_1
     - sensor.motion_sensor_5_2
+    - light.hall
   scripts:
     name: Scripts
     entities:
@@ -108,6 +106,8 @@ group:
     - room.kitchen
     - room.hall
     - room.bedroom
+    - light.living_room
+    - light.bedroom
   weather:
     name: Weather
     entities:
