@@ -162,3 +162,5 @@ input_select:
       - Asleep
     initial: Reset
     icon: mdi:format-list-bulleted
+
+python_script:

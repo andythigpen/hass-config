@@ -63,7 +63,6 @@ CONF_RESPONSE = 'response'
 # services
 SERVICE_DIM = 'dim'
 SERVICE_BRIGHTEN = 'brighten'
-SERVICE_SET_MODE = 'set_mode'
 SERVICE_SET_ROOM_OCCUPIED = 'set_room_occupied'
 SERVICE_SET_AWAY = 'set_away'
 SERVICE_ENABLE_SCENE = 'enable_scene'
@@ -137,8 +136,6 @@ class MyHome(Entity):
 
     def _register_services(self):
         """ Adds service methods to HA. """
-        self.hass.services.register(DOMAIN, SERVICE_SET_MODE,
-                                    self._set_mode_service)
         self.hass.services.register(DOMAIN, SERVICE_SET_ROOM_OCCUPIED,
                                     self._set_room_occupied)
         self.hass.services.register(DOMAIN, SERVICE_SET_AWAY, self._set_away)
@@ -150,13 +147,6 @@ class MyHome(Entity):
                                     self._enable_unoccupied_scene_service)
         self.hass.services.register(DOMAIN, SERVICE_TURN_ON, self._turn_on)
         self.hass.services.register(DOMAIN, SERVICE_TURN_OFF, self._turn_off)
-
-    def _set_mode_service(self, service):
-        """ Service method for setting mode. """
-        self.hass.services.call(DOMAIN_INPUT_SELECT, SERVICE_SELECT_OPTION, {
-            ATTR_ENTITY_ID: self.mode_entity,
-            'option': service.data.get(ATTR_MODE).title(),
-        })
 
     def _set_room_occupied(self, service):
         """
