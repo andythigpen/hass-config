@@ -201,6 +201,8 @@ class MyHome(Entity):
         house mode.
         """
         entity_id = service.data.get(ATTR_ENTITY_ID)
+        if isinstance(entity_id, list):
+            entity_id = entity_id[0]
         room = self.get_room(entity_id)
         if room is None:
             _LOGGER.warning('Room %s not found, not enabling scene', entity_id)
