@@ -125,7 +125,7 @@ group:
   presence:
     name: Presence
     entities:
-    - device_tracker.nexus5
+    - device_tracker.pixel
     - device_tracker.rfid_sensor_12_1
 
 automation: !include conf/automation.yaml
