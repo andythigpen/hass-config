@@ -30,6 +30,9 @@ sensor.rfid_sensor_12_1:
   hidden: true
 sensor.touch_controller_13_1:
   hidden: true
+binary_sensor.bed_sensor_16_1:
+  friendly_name: Bed Occupancy
+  icon: mdi:hotel
 
 # rooms
 room.living_room:

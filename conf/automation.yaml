@@ -232,3 +232,39 @@
     service: myhome.enable_occupied_scene
     data:
       entity_id: room.kitchen
+
+# ------------------------------
+# Bed sensor rules
+#
+- alias: Bed occupied
+  hide_entity: True
+  trigger:
+    platform: state
+    entity_id: binary_sensor.bed_sensor_16_1
+    to: 'on'
+    for:
+      minutes: 2
+  condition:
+    condition: time
+    after: '21:00:00'
+  action:
+    service: script.bedtime
+- alias: Bed not occupied
+  hide_entity: True
+  trigger:
+    platform: state
+    entity_id: binary_sensor.bed_sensor_16_1
+    to: 'off'
+    for:
+      minutes: 3
+  condition:
+    condition: and
+    conditions:
+      - condition: time
+        after: '21:00:00'
+      - condition: state
+        entity_id: script.bedtime
+        state: 'on'
+  action:
+    service: script.turn_off
+    entity_id: script.bedtime

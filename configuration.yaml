@@ -76,6 +76,7 @@ group:
     - light.dresser
     - binary_sensor.motion_sensor_2_1
     - sensor.motion_sensor_2_2
+    - binary_sensor.bed_sensor_16_1
   kitchen:
     name: Kitchen
     entities:

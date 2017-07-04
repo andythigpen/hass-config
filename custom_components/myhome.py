@@ -392,7 +392,7 @@ def register_presence_handlers(hass, config):
         location = STATE_NOT_HOME
         if rfid_state is not None and str(rfid_state.state) == '1':
             location = STATE_HOME
-        _LOGGER.debug('rfid %s state is %s', rfid_sensor, location)
+        # _LOGGER.debug('rfid %s state is %s', rfid_sensor, location)
         hass.services.call(DOMAIN_DEVICE_TRACKER, SERVICE_SEE, {
             ATTR_DEV_ID: split_entity_id(rfid_sensor)[1],
             ATTR_LOCATION_NAME: location,
