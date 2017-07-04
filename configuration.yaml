@@ -102,6 +102,7 @@ group:
     name: My Home
     entities:
     - myhome.active
+    - input_boolean.myhome_active
     - input_select.myhome_mode
     - room.living_room
     - room.kitchen
@@ -162,5 +163,11 @@ input_select:
       - Asleep
     initial: Reset
     icon: mdi:format-list-bulleted
+
+input_boolean:
+  myhome_active:
+    name: Active
+    initial: off
+    icon: mdi:home-variant
 
 python_script:

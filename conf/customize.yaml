@@ -35,6 +35,8 @@ binary_sensor.bed_sensor_16_1:
   icon: mdi:hotel
 
 # rooms
+myhome.active:
+  hidden: true
 room.living_room:
   friendly_name: 'Living Room'
 room.kitchen:

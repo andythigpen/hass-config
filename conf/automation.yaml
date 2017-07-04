@@ -44,7 +44,7 @@
     to: 'home'
   condition:
     condition: state
-    entity_id: myhome.active
+    entity_id: input_boolean.myhome_active
     state: 'on'
   action:
     service: myhome.set_room_occupied
@@ -102,6 +102,13 @@
     service: python_script.set_home_mode
     data:
       mode: night
+- alias: Update mode icon in interface
+  hide_entity: True
+  trigger:
+    platform: state
+    entity_id: input_select.myhome_mode
+  action:
+    service: python_script.update_myhome_icon
 
 # ------------------------------
 # Motion detector rules
@@ -120,7 +127,7 @@
         entity_id: group.all_devices
         state: home
       - condition: state
-        entity_id: myhome.active
+        entity_id: input_boolean.myhome_active
         state: 'on'
   action:
     service: myhome.set_room_occupied
