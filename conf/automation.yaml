@@ -193,9 +193,10 @@
     condition: template
     value_template: '{{ states("sensor.motion_sensor_2_2") | float <= 9 }}'
   action:
-    service: myhome.enable_occupied_scene
+    service: python_script.enable_room_scene
     data:
-      entity_id: room.bedroom
+      room: bedroom
+      mode: occupied
 - alias: Living room occupied
   hide_entity: True
   trigger:
@@ -205,9 +206,10 @@
     condition: template
     value_template: '{{ states("sensor.motion_sensor_10_2") | float <= 14 or states("sensor.motion_sensor_4_2") | float <= 7 }}'
   action:
-    service: myhome.enable_occupied_scene
+    service: python_script.enable_room_scene
     data:
-      entity_id: room.living_room
+      room: living_room
+      mode: occupied
 - alias: Hall occupied
   hide_entity: True
   trigger:
@@ -217,9 +219,10 @@
     condition: template
     value_template: '{{ states("sensor.motion_sensor_5_2") | float <= 20 }}'
   action:
-    service: myhome.enable_occupied_scene
+    service: python_script.enable_room_scene
     data:
-      entity_id: room.hall
+      room: hall
+      mode: occupied
 - alias: Kitchen occupied
   hide_entity: True
   trigger:
@@ -229,9 +232,10 @@
     condition: template
     value_template: '{{ states("sensor.motion_sensor_1_2") | float <= 2 }}'
   action:
-    service: myhome.enable_occupied_scene
+    service: python_script.enable_room_scene
     data:
-      entity_id: room.kitchen
+      room: kitchen
+      mode: occupied
 
 # ------------------------------
 # Bed sensor rules

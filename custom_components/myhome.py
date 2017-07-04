@@ -66,7 +66,6 @@ SERVICE_BRIGHTEN = 'brighten'
 SERVICE_SET_ROOM_OCCUPIED = 'set_room_occupied'
 SERVICE_SET_AWAY = 'set_away'
 SERVICE_ENABLE_SCENE = 'enable_scene'
-SERVICE_ENABLE_OCCUPIED_SCENE = 'enable_occupied_scene'
 SERVICE_ENABLE_UNOCCUPIED_SCENE = 'enable_unoccupied_scene'
 SERVICE_SET_TOUCH = 'set_touch'
 
@@ -141,8 +140,6 @@ class MyHome(Entity):
         self.hass.services.register(DOMAIN, SERVICE_SET_AWAY, self._set_away)
         self.hass.services.register(DOMAIN, SERVICE_ENABLE_SCENE,
                                     self._enable_scene_service)
-        self.hass.services.register(DOMAIN, SERVICE_ENABLE_OCCUPIED_SCENE,
-                                    self._enable_occupied_scene_service)
         self.hass.services.register(DOMAIN, SERVICE_ENABLE_UNOCCUPIED_SCENE,
                                     self._enable_unoccupied_scene_service)
         self.hass.services.register(DOMAIN, SERVICE_TURN_ON, self._turn_on)
@@ -172,10 +169,6 @@ class MyHome(Entity):
         _LOGGER.info('setting all rooms to not occupied')
         for room in self.rooms.values():
             room.mode = STATE_NOT_OCCUPIED
-
-    def _enable_occupied_scene_service(self, service):
-        """ Service that turns on an occupied scene. """
-        return self._enable_scene(service, STATE_OCCUPIED)
 
     def _enable_unoccupied_scene_service(self, service):
         """ Service that turns on an unoccupied scene. """
