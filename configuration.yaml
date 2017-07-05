@@ -54,7 +54,7 @@ device_tracker:
 mysensors:
   gateways:
     - device: '/dev/ttyUSB0'
-      persistence_file: '/srv/hass-config/mysensors.json'
+      persistence_file: '/home/homeassistant/hass-config/mysensors.json'
   persistence: true
   version: '1.5'
 
