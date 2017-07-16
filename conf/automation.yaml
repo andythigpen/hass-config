@@ -95,9 +95,15 @@
 - alias: Night home mode
   hide_entity: True
   trigger:
-    platform: sun
-    event: sunset
-    offset: '01:30:00'
+    - platform: sun
+      event: sunset
+      offset: '01:30:00'
+    - platform: time
+      at: '21:00:00'
+  condition:
+    condition: state
+    entity_id: input_select.myhome_mode
+    state: Evening
   action:
     service: python_script.set_home_mode
     data:
