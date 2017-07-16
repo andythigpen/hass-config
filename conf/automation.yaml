@@ -260,8 +260,14 @@
     for:
       minutes: 2
   condition:
-    condition: time
-    after: '21:00:00'
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_select.myhome_mode
+        state: Night
+      - condition: state
+        entity_id: input_boolean.myhome_active
+        state: 'on'
   action:
     service: script.bedtime
 - alias: Bed not occupied
@@ -275,8 +281,12 @@
   condition:
     condition: and
     conditions:
-      - condition: time
-        after: '21:00:00'
+      - condition: state
+        entity_id: input_select.myhome_mode
+        state: Night
+      - condition: state
+        entity_id: input_boolean.myhome_active
+        state: 'on'
       - condition: state
         entity_id: script.bedtime
         state: 'on'
