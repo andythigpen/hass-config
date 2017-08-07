@@ -171,3 +171,15 @@ input_boolean:
     icon: mdi:home-variant
 
 python_script:
+
+hdmi_cec:
+  devices:
+    TV: 0.0.0.0
+    Xbox One: 1.0.0.0
+    Pi: 2.0.0.0
+    Fire TV: 3.0.0.0
+  types:
+    hdmi_cec.hdmi_8: media_player
+
+media_player:
+  - platform: firetv
