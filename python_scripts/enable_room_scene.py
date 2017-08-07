@@ -24,7 +24,7 @@ def set_scene(hass, data, logger):
     room_mode = data.get('mode', None)
     if room_mode is None:
         room_state = hass.states.get(room_entity_id)
-        room_mode = room_state.attributes['mode']
+        room_mode = room_state.attributes.get('mode')
 
     scene_name = 'scene.{}_{}_{}'.format(room_name, mode, room_mode)
     if scene_name not in hass.states.entity_ids('scene'):
