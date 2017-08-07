@@ -5,6 +5,7 @@ custom_components.myhome
 Custom rules/automation for my home
 """
 import logging
+import time
 
 from datetime import timedelta
 from functools import partial
@@ -440,6 +441,28 @@ def register_touch_control_handlers(hass, config):
         helper.track_state_change(hass, controller, controller_state_change)
 
 
+def monkeypatch_serial_gateway(hass):
+    """
+    Monkey patch the send method to rate limit writes since
+    my gateway fails even at low baud rates.
+    """
+    from mysensors.mysensors import SerialGateway
+    gateways = hass.data.get(mysensors.MYSENSORS_GATEWAYS)
+    if gateways is None:
+        _LOGGER.warning("MySensors gateways config is unavailable")
+        return
+    for gateway in gateways:
+        if not isinstance(gateway._wrapped_gateway, SerialGateway):
+            continue
+        _LOGGER.info("monkeypatching MySensors serial gateway")
+        send = gateway.send
+        def send_delay(*args, **kwargs):
+            ret = send(*args, **kwargs)
+            time.sleep(0.05)
+            return ret
+        gateway.send = send_delay
+
+
 def setup(hass, config):
     """ Setup myhome component. """
     mode_entity = config[DOMAIN].get(CONF_MODE, None)
@@ -462,6 +485,9 @@ def setup(hass, config):
 
     register_presence_handlers(hass, config)
     _LOGGER.info('registered presense handlers')
+
+    monkeypatch_serial_gateway(hass)
+    _LOGGER.info('monkey patched serial gateway')
 
     register_touch_control_handlers(hass, config)
     _LOGGER.info('registered touch control handlers')
