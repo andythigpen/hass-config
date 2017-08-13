@@ -4,17 +4,12 @@ Hotword detector
 import sys
 import snowboy
 
-from homeassistant.const import EVENT_HOMEASSISTANT_STOP
-
 # fix import path for snowboy
 sys.path.extend(snowboy.__path__._path)
-
 import snowboydecoder
 
-DOMAIN = 'myvoice'
-CONF_MODEL = 'model'
-CONF_SENSITIVITY = 'sensitivity'
-EVENT_DETECTED = 'detected'
+from homeassistant.const import EVENT_HOMEASSISTANT_STOP
+from .const import (DOMAIN, CONF_MODEL, CONF_SENSITIVITY, EVENT_DETECTED)
 
 
 def setup(hass, config):
