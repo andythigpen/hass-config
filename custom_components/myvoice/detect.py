@@ -1,6 +1,7 @@
 """
 Hotword detector
 """
+import asyncio
 import logging
 import os
 import sys
@@ -37,10 +38,14 @@ def setup(hass, config):
         """Fires an event when the keyword is detected"""
         hass.bus.fire(EVENT_DETECTED, {'hotword': hotword})
 
+    @asyncio.coroutine
     def detect_job():
+        if shutting_down:
+            return
         data = detector.ring_buffer.get()
         if len(data) == 0:
-            hass.add_job(detect_job)
+            yield from asyncio.sleep(0.03)
+            hass.async_add_job(detect_job)
             return
 
         ans = detector.detector.RunDetection(data)
@@ -52,21 +57,13 @@ def setup(hass, config):
                                      time.localtime(time.time()))
             _LOGGER.info(message)
             detected(ans - 1)
-        hass.add_job(detect_job)
+        hass.async_add_job(detect_job)
 
     def stop_detector(event):
         """Stops the detector instance on shutdown"""
         shutting_down = True
         detector.terminate()
 
-    def interrupt_callback():
-        """Called periodically by the detector.  Return True to stop."""
-        return shutting_down
-
-    #detector.start(detected_callback=detected,
-    #               interrupt_check=interrupt_callback,
-    #               sleep_time=0.03)
-
-    hass.add_job(detect_job)
+    hass.async_add_job(detect_job)
     hass.bus.listen_once(EVENT_HOMEASSISTANT_STOP, stop_detector)
     return True
