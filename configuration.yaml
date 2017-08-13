@@ -13,6 +13,8 @@ homeassistant:
 
 myhome: !include conf/myhome.yaml
 
+myvoice:
+
 frontend:
 
 history:
