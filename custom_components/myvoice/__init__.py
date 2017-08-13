@@ -5,8 +5,10 @@ import voluptuous as vol
 import homeassistant.helpers.config_validation as cv
 from .const import (
     DOMAIN, CONF_MODEL, DEFAULT_MODEL, CONF_SENSITIVITY, DEFAULT_SENSITIVITY,
-    CONF_AUDIO_GAIN, DEFAULT_AUDIO_GAIN, EVENT_DETECTED)
+    CONF_AUDIO_GAIN, DEFAULT_AUDIO_GAIN, EVENT_DETECTED, SERVICE_LEDS,
+    ATTR_MODE)
 from .detect import setup as detect_setup
+from .respeaker_hid import setup as respeaker_hid_setup
 
 
 CONFIG_SCHEMA = vol.Schema({
@@ -20,9 +22,11 @@ CONFIG_SCHEMA = vol.Schema({
 
 def setup(hass, config):
     detect_setup(hass, config)
+    respeaker_hid_setup(hass, config)
 
     def handle_event(event):
         print(event)
+        hass.services.call(DOMAIN, SERVICE_LEDS, {ATTR_MODE: 'recognize'})
 
     hass.bus.listen(EVENT_DETECTED, handle_event)
     return True
