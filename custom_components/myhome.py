@@ -393,7 +393,7 @@ def register_touch_control_handlers(hass, config):
         if gateways is None:
             _LOGGER.warning("MySensors gateways config is unavailable")
             return
-        for gateway in gateways:
+        for _, gateway in gateways.items():
             value_type = gateway.const.SetReq.V_SCENE_ON
             gateway.set_child_value(node_id, child_id, value_type, value)
 
@@ -451,16 +451,29 @@ def monkeypatch_serial_gateway(hass):
     if gateways is None:
         _LOGGER.warning("MySensors gateways config is unavailable")
         return
-    for gateway in gateways:
-        if not isinstance(gateway._wrapped_gateway, SerialGateway):
+    for _, gateway in gateways.items():
+        if not isinstance(gateway, SerialGateway):
             continue
         _LOGGER.info("monkeypatching MySensors serial gateway")
         send = gateway.send
         def send_delay(*args, **kwargs):
             ret = send(*args, **kwargs)
-            time.sleep(0.05)
+            time.sleep(0.095)
             return ret
         gateway.send = send_delay
+
+
+def monkeypatch_mysensors_validation():
+    """
+    Monkey patch mysensors to disable validation since it breaks
+    messages from the gateway, which causes the protocol_version
+    for nodes to be wiped out.
+    """
+    from mysensors import Message, ChildSensor
+    def validate(self, protocol_version, value=None):
+        pass
+    Message.validate = validate
+    ChildSensor.validate = validate
 
 
 def setup(hass, config):
@@ -487,7 +500,8 @@ def setup(hass, config):
     _LOGGER.info('registered presense handlers')
 
     monkeypatch_serial_gateway(hass)
-    _LOGGER.info('monkey patched serial gateway')
+    monkeypatch_mysensors_validation()
+    _LOGGER.info('monkey patched mysensors')
 
     register_touch_control_handlers(hass, config)
     _LOGGER.info('registered touch control handlers')

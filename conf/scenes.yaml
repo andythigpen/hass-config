@@ -244,23 +244,34 @@
     light.rgbw_15_2: *kitchen_night_occupied
 
 # Not occupied
+# Note: mysensors does not support transition attr
 - name: Kitchen Morning Not Occupied
   entities:
-    light.rgbw_15_1: *not_occupied
-    light.rgbw_15_2: *not_occupied
+    light.rgbw_15_1:
+      state: 'off'
+    light.rgbw_15_2:
+      state: 'off'
 - name: Kitchen Day Not Occupied
   entities:
-    light.rgbw_15_1: *not_occupied
-    light.rgbw_15_2: *not_occupied
+    light.rgbw_15_1:
+      state: 'off'
+    light.rgbw_15_2:
+      state: 'off'
 - name: Kitchen Afternoon Not Occupied
   entities:
-    light.rgbw_15_1: *not_occupied
-    light.rgbw_15_2: *not_occupied
+    light.rgbw_15_1:
+      state: 'off'
+    light.rgbw_15_2:
+      state: 'off'
 - name: Kitchen Evening Not Occupied
   entities:
-    light.rgbw_15_1: *not_occupied
-    light.rgbw_15_2: *not_occupied
+    light.rgbw_15_1:
+      state: 'off'
+    light.rgbw_15_2:
+      state: 'off'
 - name: Kitchen Night Not Occupied
   entities:
-    light.rgbw_15_1: *not_occupied
-    light.rgbw_15_2: *not_occupied
+    light.rgbw_15_1:
+      state: 'off'
+    light.rgbw_15_2:
+      state: 'off'
