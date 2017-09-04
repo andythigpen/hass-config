@@ -14,6 +14,7 @@ homeassistant:
 myhome: !include conf/myhome.yaml
 
 frontend:
+  themes: !include_dir_merge_named themes/
 
 history:
 
