@@ -1,0 +1,72 @@
+# ------------------------------
+# Motion detector rules
+# Updates the state of a room if motion is detected
+#
+- alias: Bedroom motion detected
+  hide_entity: True
+  trigger:
+    platform: state
+    to: 'on'
+    entity_id: binary_sensor.motion_sensor_2_1
+  condition: &motion_condition
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: group.all_devices
+        state: home
+      - condition: state
+        entity_id: input_boolean.myhome_active
+        state: 'on'
+  action:
+    service: myhome.set_room_occupied
+    data:
+      entity_id: room.bedroom
+- alias: Hall motion detected
+  hide_entity: True
+  trigger:
+    platform: state
+    to: 'on'
+    entity_id: binary_sensor.motion_sensor_5_1
+  condition:
+    <<: *motion_condition
+  action:
+    service: myhome.set_room_occupied
+    data:
+      entity_id: room.hall
+- alias: Living Room motion detected
+  hide_entity: True
+  trigger:
+    platform: state
+    to: 'on'
+    entity_id: binary_sensor.motion_sensor_10_1
+  condition:
+    <<: *motion_condition
+  action:
+    service: myhome.set_room_occupied
+    data:
+      entity_id: room.living_room
+- alias: Bookcase motion detected
+  hide_entity: True
+  trigger:
+    platform: state
+    to: 'on'
+    entity_id: binary_sensor.motion_sensor_4_1
+  condition:
+    <<: *motion_condition
+  action:
+    service: myhome.set_room_occupied
+    data:
+      entity_id: room.living_room
+- alias: Kitchen motion detected
+  hide_entity: True
+  trigger:
+    platform: state
+    to: 'on'
+    entity_id: binary_sensor.motion_sensor_1_1
+  condition:
+    <<: *motion_condition
+  action:
+    service: myhome.set_room_occupied
+    data:
+      entity_id: room.kitchen
+

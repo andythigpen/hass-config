@@ -1,0 +1,65 @@
+# ------------------------------
+# Home mode rules
+# Updates the state of the home based on time of day
+#
+- alias: Morning home mode
+  hide_entity: True
+  trigger:
+    platform: time
+    at: '06:00:00'
+  action:
+    service: python_script.set_home_mode
+    data:
+      mode: morning
+- alias: Day home mode
+  hide_entity: True
+  trigger:
+    platform: time
+    at: '09:00:00'
+  action:
+    service: python_script.set_home_mode
+    data:
+      mode: day
+- alias: Afternoon home mode
+  hide_entity: True
+  trigger:
+    platform: time
+    at: '13:00:00'
+  action:
+    service: python_script.set_home_mode
+    data:
+      mode: afternoon
+- alias: Evening home mode
+  hide_entity: True
+  trigger:
+    platform: sun
+    event: sunset
+    offset: '-01:30:00'
+  action:
+    service: python_script.set_home_mode
+    data:
+      mode: evening
+- alias: Night home mode
+  hide_entity: True
+  trigger:
+    - platform: sun
+      event: sunset
+      offset: '01:30:00'
+    - platform: time
+      at: '21:00:00'
+  condition:
+    condition: state
+    entity_id: input_select.myhome_mode
+    state: Evening
+  action:
+    service: python_script.set_home_mode
+    data:
+      mode: night
+- alias: Update mode icon in interface
+  hide_entity: True
+  trigger:
+    platform: state
+    entity_id: input_select.myhome_mode
+  action:
+    service: python_script.update_myhome_icon
+

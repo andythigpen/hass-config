@@ -1,0 +1,64 @@
+# ------------------------------
+# Room occupancy rules
+#
+- alias: Set rooms to unoccupied when away
+  hide_entity: True
+  trigger:
+    platform: state
+    entity_id: group.all_devices
+    from: 'home'
+    to: 'not_home'
+  action:
+    service: myhome.set_away
+- alias: Bedroom occupied
+  hide_entity: True
+  trigger:
+    platform: template
+    value_template: '{{ is_state_attr("room.bedroom", "mode", "occupied") }}'
+  condition:
+    condition: template
+    value_template: '{{ states("sensor.motion_sensor_2_2") | float <= 9 }}'
+  action:
+    service: python_script.enable_room_scene
+    data:
+      room: bedroom
+      mode: occupied
+- alias: Living room occupied
+  hide_entity: True
+  trigger:
+    platform: template
+    value_template: '{{ is_state_attr("room.living_room", "mode", "occupied") }}'
+  condition:
+    condition: template
+    value_template: '{{ states("sensor.motion_sensor_10_2") | float <= 14 or states("sensor.motion_sensor_4_2") | float <= 7 }}'
+  action:
+    service: python_script.enable_room_scene
+    data:
+      room: living_room
+      mode: occupied
+- alias: Hall occupied
+  hide_entity: True
+  trigger:
+    platform: template
+    value_template: '{{ is_state_attr("room.hall", "mode", "occupied") }}'
+  condition:
+    condition: template
+    value_template: '{{ states("sensor.motion_sensor_5_2") | float <= 20 }}'
+  action:
+    service: python_script.enable_room_scene
+    data:
+      room: hall
+      mode: occupied
+- alias: Kitchen occupied
+  hide_entity: True
+  trigger:
+    platform: template
+    value_template: '{{ is_state_attr("room.kitchen", "mode", "occupied") }}'
+  condition:
+    condition: template
+    value_template: '{{ states("sensor.motion_sensor_1_2") | float <= 2 }}'
+  action:
+    service: python_script.enable_room_scene
+    data:
+      room: kitchen
+      mode: occupied
