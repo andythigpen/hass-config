@@ -1,0 +1,12 @@
+wakeup:
+  alias: Wake up
+  sequence:
+    - service: python_script.set_home_mode
+      data:
+        mode: morning
+    - service: light.turn_on
+      data:
+        entity_id: group.Bedroom
+        transition: 30
+        brightness: 255
+      alias: Bedroom lights on

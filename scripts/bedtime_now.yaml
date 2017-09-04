@@ -1,0 +1,17 @@
+bedtime_now:
+  alias: Bedtime Now
+  sequence:
+    - service: light.turn_off
+      data:
+        entity_id: group.Bedroom
+        transition: 60
+      alias: Bedroom lights off
+    - service: python_script.set_home_mode
+      data:
+        mode: asleep
+    - delay:
+        minutes: 1
+        seconds: 30
+    - service: light.turn_off
+      data:
+        entity_id: group.all_lights
