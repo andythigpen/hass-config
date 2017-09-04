@@ -60,12 +60,52 @@ mysensors:
   version: '1.5'
 
 group:
+  default_view:
+    view: yes
+    icon: mdi:home
+    entities:
+    - group.living_room
+    - group.bedroom
+    - group.kitchen
+    - group.hall
+    - group.weather
+  all_view:
+    view: yes
+    icon: mdi:all-inclusive
+    entities:
+    - group.living_room
+    - group.living_room_sensors
+    - group.bedroom
+    - group.bedroom_sensors
+    - group.kitchen
+    - group.kitchen_sensors
+    - group.hall
+    - group.hall_sensors
+    - group.myhome
+    - group.weather_full
+    - group.presence
+  presence_view:
+    view: yes
+    icon: mdi:account-multiple
+    entities:
+    - group.presence
+    - group.myhome
+  automations_scripts:
+    view: yes
+    icon: mdi:wrench
+    entities:
+    - group.theme
+    - group.scripts
+    - group.living_room
   living_room:
     name: Living Room
     entities:
     - light.living_room_standing
     - light.tv_left
     - light.tv_right
+  living_room_sensors:
+    name: Living Room Sensors
+    entities:
     - binary_sensor.motion_sensor_4_1
     - sensor.motion_sensor_4_2
     - binary_sensor.motion_sensor_10_1
@@ -75,22 +115,31 @@ group:
     entities:
     - light.night_stand
     - light.dresser
+  bedroom_sensors:
+    name: Bedroom Sensors
+    entities:
     - binary_sensor.motion_sensor_2_1
     - sensor.motion_sensor_2_2
     - binary_sensor.bed_sensor_16_1
   kitchen:
     name: Kitchen
     entities:
-    - binary_sensor.motion_sensor_1_1
-    - sensor.motion_sensor_1_2
     - light.rgbw_15_1
     - light.rgbw_15_2
+  kitchen_sensors:
+    name: Kitchen Sensors
+    entities:
+    - binary_sensor.motion_sensor_1_1
+    - sensor.motion_sensor_1_2
   hall:
     name: Hall
     entities:
+    - light.hall
+  hall_sensors:
+    name: Hall Sensors
+    entities:
     - binary_sensor.motion_sensor_5_1
     - sensor.motion_sensor_5_2
-    - light.hall
   scripts:
     name: Scripts
     entities:
@@ -117,6 +166,12 @@ group:
     - light.living_room
     - light.bedroom
   weather:
+    name: Weather
+    entities:
+    - sensor.yweather_condition
+    - sensor.yweather_current
+    - sensor.yweather_temperature
+  weather_full:
     name: Weather
     entities:
     - sensor.yweather_condition
