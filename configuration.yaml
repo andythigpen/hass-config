@@ -137,7 +137,7 @@ group:
 
 automation: !include_dir_merge_list automations/
 
-scene: !include conf/scenes.yaml
+scene: !include_dir_merge_list scenes/
 
 script: !include_dir_merge_named scripts/
 
