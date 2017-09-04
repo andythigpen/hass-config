@@ -1,16 +1,3 @@
-rooms:
-  bedroom:
-    timeout:
-      minutes: 10
-  kitchen:
-    timeout:
-      minutes: 5
-  living_room:
-    timeout:
-      minutes: 20
-  hall:
-    timeout:
-      minutes: 5
 rfid: sensor.rfid_sensor_12_1
 mode: input_select.myhome_mode
 touch:

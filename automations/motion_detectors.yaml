@@ -18,9 +18,10 @@
         entity_id: input_boolean.myhome_active
         state: 'on'
   action:
-    service: myhome.set_room_occupied
+    service: python_script.set_room_state
     data:
       entity_id: room.bedroom
+      state: 'occupied'
 - alias: Hall motion detected
   hide_entity: True
   trigger:
@@ -30,9 +31,10 @@
   condition:
     <<: *motion_condition
   action:
-    service: myhome.set_room_occupied
+    service: python_script.set_room_state
     data:
       entity_id: room.hall
+      state: 'occupied'
 - alias: Living Room motion detected
   hide_entity: True
   trigger:
@@ -42,9 +44,10 @@
   condition:
     <<: *motion_condition
   action:
-    service: myhome.set_room_occupied
+    service: python_script.set_room_state
     data:
       entity_id: room.living_room
+      state: 'occupied'
 - alias: Bookcase motion detected
   hide_entity: True
   trigger:
@@ -54,9 +57,10 @@
   condition:
     <<: *motion_condition
   action:
-    service: myhome.set_room_occupied
+    service: python_script.set_room_state
     data:
       entity_id: room.living_room
+      state: 'occupied'
 - alias: Kitchen motion detected
   hide_entity: True
   trigger:
@@ -66,7 +70,8 @@
   condition:
     <<: *motion_condition
   action:
-    service: myhome.set_room_occupied
+    service: python_script.set_room_state
     data:
       entity_id: room.kitchen
+      state: 'occupied'
 

@@ -63,15 +63,17 @@ group:
   default_view:
     view: yes
     icon: mdi:home
+    name: Home
     entities:
-    - group.living_room
-    - group.bedroom
-    - group.kitchen
-    - group.hall
+    - group.default_living_room
+    - group.default_bedroom
+    - group.default_kitchen
+    - group.default_hall
     - group.weather
   all_view:
     view: yes
     icon: mdi:all-inclusive
+    name: All
     entities:
     - group.living_room
     - group.living_room_sensors
@@ -81,28 +83,35 @@ group:
     - group.kitchen_sensors
     - group.hall
     - group.hall_sensors
-    - group.myhome
-    - group.weather_full
-    - group.presence
+    - group.hue_lights
   presence_view:
     view: yes
     icon: mdi:account-multiple
+    name: Presence
     entities:
-    - group.presence
     - group.myhome
+    - group.rooms
+    - group.presence
+  weather_view:
+    view: yes
+    icon: mdi:weather-sunny
+    name: Weather
+    entities:
+    - group.weather_full
   automations_scripts:
     view: yes
     icon: mdi:wrench
+    name: Setup
     entities:
     - group.theme
     - group.scripts
-    - group.living_room
-  living_room:
+  living_room: &living_room
     name: Living Room
     entities:
     - light.living_room_standing
     - light.tv_left
     - light.tv_right
+  default_living_room: *living_room
   living_room_sensors:
     name: Living Room Sensors
     entities:
@@ -110,31 +119,34 @@ group:
     - sensor.motion_sensor_4_2
     - binary_sensor.motion_sensor_10_1
     - sensor.motion_sensor_10_2
-  bedroom:
+  bedroom: &bedroom
     name: Bedroom
     entities:
     - light.night_stand
     - light.dresser
+  default_bedroom: *bedroom
   bedroom_sensors:
     name: Bedroom Sensors
     entities:
     - binary_sensor.motion_sensor_2_1
     - sensor.motion_sensor_2_2
     - binary_sensor.bed_sensor_16_1
-  kitchen:
+  kitchen: &kitchen
     name: Kitchen
     entities:
     - light.rgbw_15_1
     - light.rgbw_15_2
+  default_kitchen: *kitchen
   kitchen_sensors:
     name: Kitchen Sensors
     entities:
     - binary_sensor.motion_sensor_1_1
     - sensor.motion_sensor_1_2
-  hall:
+  hall: &hall
     name: Hall
     entities:
     - light.hall
+  default_hall: *hall
   hall_sensors:
     name: Hall Sensors
     entities:
@@ -156,15 +168,22 @@ group:
   myhome:
     name: My Home
     entities:
-    - myhome.active
     - input_boolean.myhome_active
     - input_select.myhome_mode
+    - input_boolean.room_living_room
+    - input_boolean.room_kitchen
+    - input_boolean.room_hall
+    - input_boolean.room_bedroom
+  hue_lights:
+    - light.living_room
+    - light.bedroom
+  rooms:
+    name: Rooms
+    entities:
     - room.living_room
     - room.kitchen
     - room.hall
     - room.bedroom
-    - light.living_room
-    - light.bedroom
   weather:
     name: Weather
     entities:
@@ -238,6 +257,22 @@ input_boolean:
     name: Active
     initial: off
     icon: mdi:home-variant
+  room_bedroom:
+    name: Bedroom
+    initial: on
+    icon: mdi:hotel
+  room_kitchen:
+    name: Kitchen
+    initial: on
+    icon: mdi:silverware-spoon
+  room_hall:
+    name: Hall
+    initial: on
+    icon: mdi:glassdoor
+  room_living_room:
+    name: Living Room
+    initial: on
+    icon: mdi:television-classic
   autodark_theme:
     name: Auto-dark theme
     initial: on
