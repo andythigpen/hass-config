@@ -1,0 +1,39 @@
+- alias: 'Set dark theme for night'
+  hide_entity: True
+  trigger:
+    - platform: state
+      entity_id: input_select.myhome_mode
+      to: 'Night'
+  condition:
+    condition: state
+    entity_id: input_boolean.autodark_theme
+    state: 'on'
+  action:
+    - service: input_select.select_option
+      data:
+        entity_id: 'input_select.current_theme'
+        option: 'midnight'
+- alias: 'Set light theme for morning'
+  hide_entity: True
+  trigger:
+    - platform: state
+      entity_id: input_select.myhome_mode
+      to: 'Morning'
+  condition:
+    condition: state
+    entity_id: input_boolean.autodark_theme
+    state: 'on'
+  action:
+    - service: input_select.select_option
+      data:
+        entity_id: 'input_select.current_theme'
+        option: 'default'
+- alias: 'Update theme from select'
+  hide_entity: True
+  trigger:
+    - platform: state
+      entity_id: input_select.current_theme
+  action:
+    - service: frontend.set_theme
+      data_template:
+        name: '{{states.input_select.current_theme.state}}' 

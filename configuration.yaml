@@ -99,6 +99,11 @@ group:
     - script.bedtime
     - script.all_off
     - script.bedtime_now
+  theme:
+    name: Theme
+    entities:
+    - input_boolean.autodark_theme
+    - input_select.current_theme
   myhome:
     name: My Home
     entities:
@@ -164,12 +169,24 @@ input_select:
       - Asleep
     initial: Reset
     icon: mdi:format-list-bulleted
+  current_theme:
+    name: Theme
+    options:
+     - default
+     - midnight
+    initial: default
+    icon: mdi:theme-light-dark
+
 
 input_boolean:
   myhome_active:
     name: Active
     initial: off
     icon: mdi:home-variant
+  autodark_theme:
+    name: Auto-dark theme
+    initial: on
+    icon: mdi:theme-light-dark
 
 python_script:
 

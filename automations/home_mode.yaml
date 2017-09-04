@@ -62,4 +62,3 @@
     entity_id: input_select.myhome_mode
   action:
     service: python_script.update_myhome_icon
-
