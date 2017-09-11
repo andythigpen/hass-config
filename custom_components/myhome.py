@@ -45,10 +45,44 @@ CONF_RESPONSE = 'response'
 SERVICE_DIM = 'dim'
 SERVICE_BRIGHTEN = 'brighten'
 SERVICE_SET_TOUCH = 'set_touch'
+SERVICE_SEND_MSG = 'send_msg'
 
 # attributes
 ATTR_BRIGHTNESS_STEP = 'brightness_step'
 ATTR_COMMAND = 'command'
+ATTR_VALUE_TYPE = 'value_type'
+ATTR_SUB_TYPE = 'sub_type'
+ATTR_ACK = 'ack'
+ATTR_PAYLOAD = 'payload'
+
+
+def service_send_message(hass, service):
+    """Send an arbitrary message to a MySensors node"""
+    from mysensors.mysensors import Message
+    gateways = hass.data.get(mysensors.MYSENSORS_GATEWAYS)
+    if gateways is None:
+        _LOGGER.warning("MySensors gateways config is unavailable")
+        return
+    entity_ids = extract_entity_ids(hass, service)
+    for entity_id in entity_ids:
+        state = hass.states.get(entity_id)
+        attr = state.attributes
+        node_id = attr.get(ATTR_NODE_ID, 0)
+        child_id = attr.get(ATTR_CHILD_ID, 0)
+        value_type = service.data.get(ATTR_VALUE_TYPE, 0)
+        sub_type = service.data.get(ATTR_SUB_TYPE, 0)
+        ack = service.data.get(ATTR_ACK, 0)
+        payload = service.data.get(ATTR_PAYLOAD, '')
+        for _, gateway in gateways.items():
+            msg = Message().modify(
+                node_id=node_id,
+                child_id=child_id,
+                type=value_type,
+                sub_type=sub_type,
+                ack=ack,
+                payload=payload,
+            )
+            gateway.fill_queue(msg.encode)
 
 
 def register_presence_handlers(hass, config):
@@ -220,6 +254,8 @@ def setup(hass, config):
     register_presence_handlers(hass, config)
     _LOGGER.info('registered presense handlers')
 
+    hass.services.register(DOMAIN, SERVICE_SEND_MSG,
+        partial(service_send_message, hass))
     monkeypatch_serial_gateway(hass)
     monkeypatch_mysensors_validation()
     _LOGGER.info('monkey patched mysensors')

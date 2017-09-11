@@ -160,6 +160,7 @@ group:
     - script.bedtime
     - script.all_off
     - script.bedtime_now
+    - script.reset_bed
   theme:
     name: Theme
     entities:

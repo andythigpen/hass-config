@@ -1,0 +1,9 @@
+reset_bed:
+  alias: Reset Bed
+  sequence:
+    - service: myhome.send_msg
+      data:
+        entity_id: binary_sensor.bed_sensor_16_1
+        value_type: 1
+        sub_type: 24
+        payload: 1
