@@ -71,20 +71,25 @@ group:
     - group.default_kitchen
     - group.default_hall
     - group.weather
-  all_view:
+  light_view:
     view: yes
-    icon: mdi:all-inclusive
-    name: All
+    icon: mdi:lightbulb-outline
+    name: Lights
     entities:
     - group.living_room
-    - group.living_room_sensors
     - group.bedroom
-    - group.bedroom_sensors
     - group.kitchen
-    - group.kitchen_sensors
     - group.hall
-    - group.hall_sensors
     - group.hue_lights
+  sensors_view:
+    view: yes
+    icon: mdi:router-wireless
+    name: Sensors
+    entities:
+    - group.living_room_sensors
+    - group.bedroom_sensors
+    - group.kitchen_sensors
+    - group.hall_sensors
   presence_view:
     view: yes
     icon: mdi:account-multiple
@@ -177,6 +182,8 @@ group:
     - input_boolean.room_hall
     - input_boolean.room_bedroom
   hue_lights:
+    name: Hue Groups
+    entities:
     - light.living_room
     - light.bedroom
   rooms:
