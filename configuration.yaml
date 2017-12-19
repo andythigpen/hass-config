@@ -19,7 +19,8 @@ frontend:
 history:
 
 recorder:
-  purge_days: 7
+  purge_interval: 1
+  purge_keep_days: 7
 
 logbook:
 
@@ -40,9 +41,11 @@ sensor:
       - humidity
       - temperature
 
-light:
-  platform: hue
-  host: 192.168.1.124
+
+hue:
+  bridges:
+    - host: 192.168.1.124
+      filename: phue.conf
 
 device_tracker:
 - platform: !secret device_tracker_platform
