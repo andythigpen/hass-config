@@ -45,9 +45,6 @@ room.bedroom:
   friendly_name: Bedroom
 
 # scripts
-script.exit_tv:
-  can_cancel: False
-  icon: mdi:exit-to-app
 script.watch_tv:
   can_cancel: False
   entity_picture: /local/images/vue.jpg
@@ -62,4 +59,29 @@ script.watch_fsgo:
   entity_picture: /local/images/fsgo.png
 script.firetv_home:
   can_cancel: False
-  icon: mdi:fire
+  entity_picture: /local/images/firetv.png
+
+
+# tiles
+input_text.tv_tiles:
+  custom_ui_state_card: state-card-tiles
+  config:
+    columns: 4
+    column_width: 75px
+    row_height: 75px
+    entities:
+      - entity: script.firetv_home
+        image: /local/images/firetv.png
+        image_size: 75px
+      - entity: script.watch_tv
+        image: /local/images/vue.jpg
+        image_size: 75px
+      - entity: script.watch_netflix
+        image: /local/images/netflix.png
+        image_size: 75px
+      - entity: script.watch_espn
+        image: /local/images/espn.png
+        image_size: 75px
+      - entity: script.watch_fsgo
+        image: /local/images/fsgo.png
+        image_size: 75px

@@ -53,7 +53,7 @@
   action:
     service: group.set_visibility
     data_template:
-      entity_id: group.tv_scripts
+      entity_id: group.default_tv_scripts
       visible: >
         {{
            states("media_player.amazon_fire_tv") in ["standby", "playing"] or
