@@ -60,6 +60,6 @@ script.watch_espn:
 script.watch_fsgo:
   can_cancel: False
   entity_picture: /local/images/fsgo.png
-script.select_firetv:
+script.firetv_home:
   can_cancel: False
   icon: mdi:fire

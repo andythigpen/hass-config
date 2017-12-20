@@ -1,0 +1,16 @@
+firetv_home:
+  alias: FireTV Home
+  sequence:
+    - service: hdmi_cec.select_device
+      alias: "hdmi select_device firetv"
+      data:
+        device: "Fire TV"
+    - wait_template: "{{ states.switch.hdmi_0.state == 'on' }}"
+    - delay:
+        seconds: 1
+    - service: hdmi_cec.send_command
+      alias: "hdmi command home"
+      data:
+        raw: "F8:44:09" # home
+    - delay:
+        seconds: 1

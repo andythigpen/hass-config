@@ -1,6 +1,0 @@
-select_firetv:
-  alias: Select FireTV
-  sequence:
-    - service: hdmi_cec.select_device
-      data:
-        device: "Fire TV"

@@ -1,35 +1,20 @@
 watch_espn:
   alias: Watch ESPN
   sequence:
-    - service: hdmi_cec.select_device
-      data:
-        device: "Fire TV"
-    - delay:
-        milliseconds: 500
+    - service: script.firetv_recents
+      alias: "call firetv_recents"
+    - wait_template: "{{ states.script.firetv_recents.state == 'off' }}"
     - service: hdmi_cec.send_command
-      data:
-        raw: "F8:44:09" # home
-    - delay:
-        milliseconds: 100
-    - service: hdmi_cec.send_command
-      data:
-        raw: "F8:44:02" # down
-    - service: hdmi_cec.send_command
-      data:
-        raw: "F8:44:02" # down
-    - service: hdmi_cec.send_command
-      data:
-        raw: "F8:44:02" # down
-    - delay:
-        milliseconds: 1 
-    - service: hdmi_cec.send_command
+      alias: "hdmi command right"
       data:
         raw: "F8:44:04" # right
     - service: hdmi_cec.send_command
+      alias: "hdmi command right"
       data:
         raw: "F8:44:04" # right
     - delay:
         milliseconds: 1
     - service: hdmi_cec.send_command
+      alias: "hdmi command select"
       data:
         raw: "F8:44:00" # select
