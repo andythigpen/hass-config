@@ -1,0 +1,27 @@
+watch_tv:
+  alias: Watch TV
+  sequence:
+    - service: hdmi_cec.select_device
+      data:
+        device: "Fire TV"
+    - delay:
+        milliseconds: 500
+    - service: hdmi_cec.send_command
+      data:
+        raw: "F8:44:09" # home
+    - delay:
+        milliseconds: 100
+    - service: hdmi_cec.send_command
+      data:
+        raw: "F8:44:02" # down
+    - service: hdmi_cec.send_command
+      data:
+        raw: "F8:44:02" # down
+    - service: hdmi_cec.send_command
+      data:
+        raw: "F8:44:02" # down
+    - delay:
+        milliseconds: 1
+    - service: hdmi_cec.send_command
+      data:
+        raw: "F8:44:00" # select

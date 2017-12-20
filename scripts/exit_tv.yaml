@@ -1,0 +1,7 @@
+exit_tv:
+  alias: Exit TV
+  sequence:
+    # home
+    - service: hdmi_cec.send_command
+      data:
+        raw: "F8:44:09"

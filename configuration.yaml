@@ -41,7 +41,6 @@ sensor:
       - humidity
       - temperature
 
-
 hue:
   bridges:
     - host: 192.168.1.124
@@ -84,6 +83,15 @@ group:
     - group.kitchen
     - group.hall
     - group.hue_lights
+  media_view:
+    view: yes
+    icon: mdi:television-classic
+    name: Media
+    entities:
+    - media_player.amazon_fire_tv
+    - switch.hdmi_0
+    - switch.hdmi_8
+    - group.tv_scripts
   sensors_view:
     view: yes
     icon: mdi:router-wireless
@@ -170,6 +178,15 @@ group:
     - script.all_off
     - script.bedtime_now
     - script.reset_bed
+  tv_scripts:
+    name: TV Scripts
+    entities:
+    - script.exit_tv
+    - script.watch_tv
+    - script.watch_netflix
+    - script.watch_espn
+    - script.watch_fsgo
+    - script.select_firetv
   theme:
     name: Theme
     entities:
@@ -295,11 +312,9 @@ python_script:
 hdmi_cec:
   devices:
     TV: 0.0.0.0
-    Xbox One: 1.0.0.0
-    Pi: 2.0.0.0
-    Fire TV: 3.0.0.0
-  types:
-    hdmi_cec.hdmi_8: media_player
+    Xbox One: 2.0.0.0
+    Fire TV: 1.0.0.0
+    Pi: 3.0.0.0
 
 media_player:
   - platform: firetv

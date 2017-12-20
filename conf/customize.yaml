@@ -43,3 +43,23 @@ room.hall:
   friendly_name: Hall
 room.bedroom:
   friendly_name: Bedroom
+
+# scripts
+script.exit_tv:
+  can_cancel: False
+  icon: mdi:exit-to-app
+script.watch_tv:
+  can_cancel: False
+  entity_picture: /local/images/vue.jpg
+script.watch_netflix:
+  can_cancel: False
+  entity_picture: /local/images/netflix.png
+script.watch_espn:
+  can_cancel: False
+  entity_picture: /local/images/espn.png
+script.watch_fsgo:
+  can_cancel: False
+  entity_picture: /local/images/fsgo.png
+script.select_firetv:
+  can_cancel: False
+  icon: mdi:fire
