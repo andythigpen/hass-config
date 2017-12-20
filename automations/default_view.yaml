@@ -48,8 +48,10 @@
 - alias: TV scripts visible
   hide_entity: True
   trigger:
-    platform: state
-    entity_id: media_player.amazon_fire_tv
+    - platform: state
+      entity_id: media_player.amazon_fire_tv
+    - platform: state
+      entity_id: room.living_room
   action:
     service: group.set_visibility
     data_template:
