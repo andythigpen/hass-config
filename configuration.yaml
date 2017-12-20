@@ -68,6 +68,7 @@ group:
     icon: mdi:home
     name: Home
     entities:
+    - group.tv_scripts
     - group.default_living_room
     - group.default_bedroom
     - group.default_kitchen
@@ -179,14 +180,14 @@ group:
     - script.bedtime_now
     - script.reset_bed
   tv_scripts:
-    name: TV Scripts
+    name: TV
+    control: hidden
     entities:
-    - script.exit_tv
+    - script.firetv_home
     - script.watch_tv
     - script.watch_netflix
     - script.watch_espn
     - script.watch_fsgo
-    - script.firetv_home
   theme:
     name: Theme
     entities:
