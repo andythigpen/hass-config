@@ -19,7 +19,8 @@ from homeassistant.components.device_tracker import (
     DOMAIN as DOMAIN_DEVICE_TRACKER)
 
 from homeassistant.components.light import ATTR_BRIGHTNESS
-from homeassistant.components.mysensors import (ATTR_NODE_ID, ATTR_CHILD_ID)
+from homeassistant.components.mysensors.device import (
+    ATTR_NODE_ID, ATTR_CHILD_ID)
 
 from homeassistant.const import (
     STATE_HOME, STATE_NOT_HOME, STATE_UNAVAILABLE)
@@ -236,19 +237,6 @@ def monkeypatch_serial_gateway(hass):
         gateway.send = send_delay
 
 
-def monkeypatch_mysensors_validation():
-    """
-    Monkey patch mysensors to disable validation since it breaks
-    messages from the gateway, which causes the protocol_version
-    for nodes to be wiped out.
-    """
-    from mysensors import Message, ChildSensor
-    def validate(self, protocol_version, value=None):
-        pass
-    Message.validate = validate
-    ChildSensor.validate = validate
-
-
 def setup(hass, config):
     """ Setup myhome component. """
     register_presence_handlers(hass, config)
@@ -257,7 +245,6 @@ def setup(hass, config):
     hass.services.register(DOMAIN, SERVICE_SEND_MSG,
         partial(service_send_message, hass))
     monkeypatch_serial_gateway(hass)
-    monkeypatch_mysensors_validation()
     _LOGGER.info('monkey patched mysensors')
 
     register_touch_control_handlers(hass, config)
