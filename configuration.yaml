@@ -104,7 +104,8 @@ group:
     icon: mdi:television-classic
     name: Media
     entities:
-    - media_player.amazon_fire_tv
+    - media_player.fire_tv
+    - media_player.samsung_tv
     - switch.hdmi_0
     - switch.hdmi_8
     - group.tv_scripts
@@ -357,3 +358,11 @@ hdmi_cec:
 
 media_player:
   - platform: firetv
+    name: Fire TV
+    host: 192.168.1.129
+    adbkey: "/home/homeassistant/hass-config/android/adbkey"
+    scan_interval: 4
+  - platform: samsungtv
+    name: Samsung TV
+    host: 192.168.1.134
+    port: 8001

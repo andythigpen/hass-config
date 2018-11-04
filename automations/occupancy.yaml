@@ -72,9 +72,26 @@
 - alias: Living room occupied
   hide_entity: True
   trigger:
-    platform: state
-    entity_id: room.living_room
-    to: 'occupied'
+    - platform: state
+      entity_id: room.living_room
+      to: 'occupied'
+    - platform: state
+      entity_id: media_player.fire_tv
+      # listing each state is a workaround so this is not
+      # triggered by attribute changes
+      to: 'playing'
+    - platform: state
+      entity_id: media_player.fire_tv
+      to: 'paused'
+    - platform: state
+      entity_id: media_player.fire_tv
+      to: 'standby'
+    - platform: state
+      entity_id: media_player.fire_tv
+      to: 'idle'
+    - platform: state
+      entity_id: media_player.fire_tv
+      to: 'off'
   condition:
     condition: and
     conditions:
@@ -100,8 +117,17 @@
         state: 'on'
   action:
     service: python_script.enable_room_scene
-    data:
+    data_template:
       room: living_room
+      modifier: >
+          {% if is_state('media_player.fire_tv', 'playing') %}
+          {% set source = state_attr('media_player.fire_tv', 'source') %}
+          {% if source in ('com.amazon.avod', 'com.netflix.ninja') %}
+          movie
+          {% else %}
+          tv
+          {% endif %}
+          {% endif %}
 - alias: Living room countdown
   hide_entity: True
   trigger:

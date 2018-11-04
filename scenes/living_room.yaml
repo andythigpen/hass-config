@@ -3,7 +3,7 @@
 #
 # Occupied
 - name: Living Room Morning Occupied
-  entities:
+  entities: &living_room_morning
     light.Living_room_standing:
       state: 'on'
       brightness: 170
@@ -16,8 +16,11 @@
       state: 'on'
       brightness: 1
       profile: morning
+- name: Living Room Morning Occupied TV
+  entities: *living_room_morning
+
 - name: Living Room Day Occupied
-  entities:
+  entities: &living_room_day
     light.Living_room_standing:
       state: 'on'
       brightness: 255
@@ -30,8 +33,11 @@
       state: 'on'
       brightness: 50
       profile: day
+- name: Living Room Day Occupied TV
+  entities: *living_room_day
+
 - name: Living Room Afternoon Occupied
-  entities:
+  entities: &living_room_afternoon
     light.Living_room_standing:
       state: 'on'
       brightness: 255
@@ -44,34 +50,100 @@
       state: 'on'
       brightness: 80
       profile: afternoon
+- name: Living Room Afternoon Occupied TV
+  entities: *living_room_afternoon
+
 - name: Living Room Evening Occupied
   entities:
     light.Living_room_standing:
       state: 'on'
-      brightness: 200
+      brightness: 250
       profile: evening
+      transition: 3
+    light.tv_left:
+      state: 'on'
+      brightness: 220
+      profile: evening
+      transition: 3
+    light.tv_right:
+      state: 'on'
+      brightness: 220
+      profile: evening
+      transition: 3
+- name: Living Room Evening Occupied TV
+  entities:
+    light.Living_room_standing:
+      state: 'on'
+      brightness: 160
+      profile: evening
+      transition: 10
     light.tv_left:
       state: 'on'
       brightness: 30
       profile: evening
+      transition: 10
     light.tv_right:
       state: 'on'
       brightness: 30
       profile: evening
+      transition: 10
+- name: Living Room Evening Occupied Movie
+  entities:
+    light.Living_room_standing:
+      state: 'off'
+      transition: 10
+    light.tv_left:
+      state: 'off'
+      transition: 10
+    light.tv_right:
+      state: 'off'
+      transition: 10
+
 - name: Living Room Night Occupied
   entities:
     light.Living_room_standing:
       state: 'on'
-      brightness: 150
-      profile: evening
+      brightness: 160
+      profile: night
+      transition: 3
+    light.tv_left:
+      state: 'on'
+      brightness: 80
+      profile: night
+      transition: 3
+    light.tv_right:
+      state: 'on'
+      brightness: 80
+      profile: night
+      transition: 3
+- name: Living Room Night Occupied TV
+  entities:
+    light.Living_room_standing:
+      state: 'on'
+      brightness: 100
+      profile: night
+      transition: 10
     light.tv_left:
       state: 'on'
       brightness: 1
       profile: night
+      transition: 10
     light.tv_right:
       state: 'on'
       brightness: 1
       profile: night
+      transition: 10
+- name: Living Room Night Occupied Movie
+  entities:
+    light.Living_room_standing:
+      state: 'off'
+      transition: 10
+    light.tv_left:
+      state: 'off'
+      transition: 10
+    light.tv_right:
+      state: 'off'
+      transition: 10
 
 # Not occupied
 - name: Living Room Morning Not Occupied
@@ -101,4 +173,3 @@
     light.Living_room_standing: *not_occupied
     light.tv_left: *not_occupied
     light.tv_right: *not_occupied
-

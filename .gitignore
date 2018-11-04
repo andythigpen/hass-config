@@ -1,8 +1,11 @@
 *.pyc
 *.bak
 .*.swp
+*~
 .HA_VERSION
+.storage/
 home-assistant*.db
+home-assistant*.db*
 home-assistant.log*
 home-assistant.pid
 known_devices.csv
@@ -13,5 +16,6 @@ conf/longitude.yaml
 build/
 lib/
 deps/
+android/
 mysensors.json
 secrets.yaml

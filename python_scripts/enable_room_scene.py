@@ -24,6 +24,11 @@ def set_scene(hass, data, logger):
         room_state = room_state.state
 
     scene_name = 'scene.{}_{}_{}'.format(room_name, mode, room_state)
+
+    modifier = data.get('modifier', None)
+    if modifier:
+        scene_name = '{}_{}'.format(scene_name, modifier)
+
     if scene_name not in hass.states.entity_ids('scene'):
         logger.warning('no scene configured with name %s', scene_name)
         return
