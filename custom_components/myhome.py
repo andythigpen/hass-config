@@ -83,7 +83,7 @@ def service_send_message(hass, service):
                 ack=ack,
                 payload=payload,
             )
-            gateway.fill_queue(msg.encode)
+            gateway.add_job(msg.encode)
 
 
 def register_presence_handlers(hass, config):
