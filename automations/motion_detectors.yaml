@@ -17,11 +17,14 @@
       - condition: state
         entity_id: input_boolean.myhome_active
         state: 'on'
+      - condition: template
+        value_template: '{{ not is_state("room.bedroom", "occupied") }}'
   action:
     service: python_script.set_room_state
     data:
       entity_id: room.bedroom
       state: 'occupied'
+
 - alias: Hall motion detected
   hide_entity: True
   trigger:
@@ -29,12 +32,22 @@
     to: 'on'
     entity_id: binary_sensor.motion_sensor_5_1
   condition:
-    <<: *motion_condition
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: group.all_devices
+        state: home
+      - condition: state
+        entity_id: input_boolean.myhome_active
+        state: 'on'
+      - condition: template
+        value_template: '{{ not is_state("room.hall", "occupied") }}'
   action:
     service: python_script.set_room_state
     data:
       entity_id: room.hall
       state: 'occupied'
+
 - alias: Living Room motion detected
   hide_entity: True
   trigger:
@@ -42,12 +55,22 @@
     to: 'on'
     entity_id: binary_sensor.motion_sensor_10_1
   condition:
-    <<: *motion_condition
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: group.all_devices
+        state: home
+      - condition: state
+        entity_id: input_boolean.myhome_active
+        state: 'on'
+      - condition: template
+        value_template: '{{ not is_state("room.living_room", "occupied") }}'
   action:
     service: python_script.set_room_state
     data:
       entity_id: room.living_room
       state: 'occupied'
+
 - alias: Bookcase motion detected
   hide_entity: True
   trigger:
@@ -55,12 +78,22 @@
     to: 'on'
     entity_id: binary_sensor.motion_sensor_4_1
   condition:
-    <<: *motion_condition
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: group.all_devices
+        state: home
+      - condition: state
+        entity_id: input_boolean.myhome_active
+        state: 'on'
+      - condition: template
+        value_template: '{{ not is_state("room.living_room", "occupied") }}'
   action:
     service: python_script.set_room_state
     data:
       entity_id: room.living_room
       state: 'occupied'
+
 - alias: Kitchen motion detected
   hide_entity: True
   trigger:
@@ -68,10 +101,18 @@
     to: 'on'
     entity_id: binary_sensor.motion_sensor_1_1
   condition:
-    <<: *motion_condition
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: group.all_devices
+        state: home
+      - condition: state
+        entity_id: input_boolean.myhome_active
+        state: 'on'
+      - condition: template
+        value_template: '{{ not is_state("room.kitchen", "occupied") }}'
   action:
     service: python_script.set_room_state
     data:
       entity_id: room.kitchen
       state: 'occupied'
-

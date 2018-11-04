@@ -86,7 +86,7 @@
             {% if mode == "Morning" %}
                 {{ lr_sensor <= 14 or bc_sensor <= 7 }}
             {% elif mode in ("Day", "Afternoon") %}
-                {{ lr_sensor <= 26 or bc_sensor <= 3 }}
+                {{ lr_sensor <= 20 or bc_sensor <= 3 }}
             {% elif mode in ("Evening", "Night") %}
                 {{ lr_sensor <= 30 or bc_sensor <= 20 }}
             {% else %}
@@ -187,7 +187,7 @@
             {% set mode = states("input_select.myhome_mode") %}
             {% set sensor = states("sensor.motion_sensor_10_2") | float %}
             {% if mode == "Morning" %}
-                {{ sensor <= 14 }}
+                {{ sensor <= 30 }}
             {% elif mode == "Day" %}
                 {{ sensor <= 25 }}
             {% elif mode == "Afternoon" %}
