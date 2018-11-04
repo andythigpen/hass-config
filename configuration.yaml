@@ -43,6 +43,18 @@ sensor:
       - visibility
       - humidity
       - temperature
+  - platform: systemmonitor
+    scan_interval: 30
+    resources:
+      - type: memory_use
+      - type: memory_free
+      - type: swap_use
+      - type: swap_free
+      - type: load_1m
+      - type: load_5m
+      - type: load_15m
+      - type: processor_use
+      - type: since_last_boot
 
 hue:
   bridges:
@@ -124,8 +136,9 @@ group:
     icon: mdi:wrench
     name: Setup
     entities:
-    - group.theme
     - group.scripts
+    - group.system
+    - group.theme
   living_room: &living_room
     name: Living Room
     entities:
@@ -246,6 +259,18 @@ group:
     entities:
     - device_tracker.pixel
     - device_tracker.rfid_sensor_12_1
+  system:
+    name: System
+    entities:
+    - sensor.memory_use
+    - sensor.memory_free
+    - sensor.swap_use
+    - sensor.swap_free
+    - sensor.load_1m
+    - sensor.load_5m
+    - sensor.load_15m
+    - sensor.processor_use
+    - sensor.since_last_boot
 
 automation: !include_dir_merge_list automations/
 
@@ -258,7 +283,7 @@ logger:
   logs:
     homeassistant.components: info
     homeassistant.components.light: warning
-    homeassistant.components.device_tracker.tomato.Tomato: warning
+    homeassistant.components.device_tracker.tomato: warning
     homeassistant.components.device_tracker.nmap_tracker: warning
     homeassistant.components.http: warning
     #mysensors: debug
