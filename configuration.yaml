@@ -34,17 +34,6 @@ http:
 sun:
 
 sensor:
-  - platform: yweather
-    monitored_conditions:
-      - weather
-      - weather_current
-      - temp_min
-      - temp_max
-      - wind_speed
-      - pressure
-      - visibility
-      - humidity
-      - temperature
   - platform: systemmonitor
     scan_interval: 30
     resources:
@@ -90,7 +79,7 @@ group:
     - group.default_bedroom
     - group.default_kitchen
     - group.default_hall
-    - group.weather
+    - group.myhome
   light_view:
     view: yes
     icon: mdi:lightbulb-outline
@@ -125,15 +114,8 @@ group:
     icon: mdi:account-multiple
     name: Presence
     entities:
-    - group.myhome
     - group.rooms
     - group.presence
-  weather_view:
-    view: yes
-    icon: mdi:weather-sunny
-    name: Weather
-    entities:
-    - group.weather_full
   automations_scripts:
     view: yes
     icon: mdi:wrench
@@ -238,25 +220,6 @@ group:
     - room.kitchen
     - room.hall
     - room.bedroom
-  weather:
-    name: Weather
-    entities:
-    - sensor.yweather_condition
-    - sensor.yweather_current
-    - sensor.yweather_temperature
-  weather_full:
-    name: Weather
-    entities:
-    - sensor.yweather_condition
-    - sensor.yweather_current
-    - sensor.yweather_humidity
-    - sensor.yweather_pressure
-    - sensor.yweather_temperature
-    - sensor.yweather_temperature_max
-    - sensor.yweather_temperature_min
-    - sensor.yweather_visibility
-    - sensor.yweather_wind_speed
-    - sun.sun
   presence:
     name: Presence
     entities:
