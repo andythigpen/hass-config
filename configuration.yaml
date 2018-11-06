@@ -6,10 +6,12 @@ homeassistant:
   time_zone: America/Chicago
   customize: !include conf/customize.yaml
   customize_glob:
-    scene.*_occupied:
+    "scene.*_occupied":
       hidden: true
-    light.kitchen*:
+    "light.kitchen*":
       hidden: true
+    "sensor.motion_sensor_*_2":
+      icon: mdi:white-balance-sunny
 
 myhome: !include conf/myhome.yaml
 
