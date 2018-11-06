@@ -45,7 +45,6 @@ sensor:
       - type: load_5m
       - type: load_15m
       - type: processor_use
-      - type: since_last_boot
 
 hue:
   bridges:
@@ -236,7 +235,6 @@ group:
     - sensor.load_5m
     - sensor.load_15m
     - sensor.processor_use
-    - sensor.since_last_boot
 
 automation: !include_dir_merge_list automations/
 
