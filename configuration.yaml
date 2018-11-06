@@ -46,6 +46,13 @@ sensor:
       - type: load_15m
       - type: processor_use
 
+binary_sensor:
+  - platform: template
+    sensors:
+      dst:
+        entity_id: sensor.date
+        value_template: "{% if now().dst() %}true{% else %}false{% endif %}"
+
 hue:
   bridges:
     - host: 192.168.1.124
