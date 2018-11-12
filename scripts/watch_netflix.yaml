@@ -1,16 +1,9 @@
 watch_netflix:
   alias: Watch Netflix
   sequence:
-    - service: script.firetv_recents
-      alias: "call firetv_recents"
-    - wait_template: "{{ states.script.firetv_recents.state == 'off' }}"
-    - service: hdmi_cec.send_command
-      alias: "hdmi command right"
+    - service: script.select_firetv
+      alias: "call select_firetv"
+    - service: media_player.select_source
       data:
-        raw: "F8:44:04" # right
-    - delay:
-        milliseconds: 1
-    - service: hdmi_cec.send_command
-      alias: "hdmi command select"
-      data:
-        raw: "F8:44:00" # select
+        entity_id: media_player.fire_tv
+        source: com.netflix.ninja
