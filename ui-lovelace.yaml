@@ -1,0 +1,246 @@
+title: My Home
+views:
+  - title: Home
+    icon: mdi:home
+    cards:
+      - type: conditional
+        conditions:
+          - entity: room.living_room
+            state_not: "not_occupied"
+        card:
+          type: horizontal-stack
+          cards: &tv_entities
+            - type: picture-entity
+              entity: script.firetv_home
+              image: /local/images/firetv.png
+              show_name: false
+              show_state: false
+              tap_action: toggle
+              hold_action: more-info
+            - type: picture-entity
+              entity: script.watch_tv
+              image: /local/images/vue.jpg
+              show_name: false
+              show_state: false
+              tap_action: toggle
+              hold_action: more-info
+            - type: picture-entity
+              entity: script.watch_netflix
+              image: /local/images/netflix.png
+              show_name: false
+              show_state: false
+              tap_action: toggle
+              hold_action: more-info
+            - type: picture-entity
+              entity: script.watch_espn
+              image: /local/images/espn.png
+              show_name: false
+              show_state: false
+              tap_action: toggle
+              hold_action: more-info
+            - type: picture-entity
+              entity: script.watch_fsgo
+              image: /local/images/fsgo.png
+              show_name: false
+              show_state: false
+              tap_action: toggle
+              hold_action: more-info
+      - type: conditional
+        conditions:
+          - entity: room.living_room
+            state_not: "not_occupied"
+        card:
+          type: entities
+          title: Living Room
+          show_header_toggle: true
+          entities:
+            - light.living_room_standing
+            - light.tv_left
+            - light.tv_right
+      - type: conditional
+        conditions:
+          - entity: room.bedroom
+            state_not: "not_occupied"
+        card:
+          type: entities
+          title: Bedroom
+          show_header_toggle: true
+          entities:
+            - light.night_stand
+            - light.dresser
+      - type: conditional
+        conditions:
+          - entity: room.kitchen
+            state_not: "not_occupied"
+        card:
+          type: entities
+          title: Kitchen
+          show_header_toggle: true
+          entities:
+            - light.rgbw_15_1
+            - light.rgbw_15_2
+      - type: conditional
+        conditions:
+          - entity: room.hall
+            state_not: "not_occupied"
+        card:
+          type: entities
+          title: Hall
+          show_header_toggle: true
+          entities:
+            - light.hall
+      - type: glance
+        title: My Home
+        columns: 6
+        entities:
+          - entity: input_boolean.myhome_active
+            tap_action: toggle
+            hold_action: more-info
+          - input_select.myhome_mode
+          - entity: input_boolean.room_living_room
+            tap_action: toggle
+            hold_action: more-info
+          - entity: input_boolean.room_bedroom
+            tap_action: toggle
+            hold_action: more-info
+          - entity: input_boolean.room_kitchen
+            tap_action: toggle
+            hold_action: more-info
+          - entity: input_boolean.room_hall
+            tap_action: toggle
+            hold_action: more-info
+      - type: glance
+        title: Presence
+        show_state: false
+        columns: 4
+        entities:
+          - entity: room.living_room
+            name: Living Room
+          - entity: room.bedroom
+            name: Bedroom
+          - entity: room.kitchen
+            name: Kitchen
+          - entity: room.hall
+            name: Hall
+          - entity: device_tracker.pixel
+            name: Phone
+          - entity: device_tracker.rfid_sensor_12_1
+            name: Wallet
+
+  - title: Lights
+    icon: mdi:lightbulb-outline
+    cards:
+      - type: entities
+        title: Lights
+        entities:
+          - type: section
+            label: Living Room
+          - light.living_room_standing
+          - light.tv_left
+          - light.tv_right
+          - type: section
+            label: Bedroom
+          - light.night_stand
+          - light.dresser
+          - type: section
+            label: Kitchen
+          - light.rgbw_15_1
+          - light.rgbw_15_2
+          - type: section
+            label: Hall
+          - light.hall
+
+  - title: Media
+    icon: mdi:television-classic
+    cards:
+      - type: horizontal-stack
+        cards: *tv_entities
+      - type: media-control
+        entity: media_player.fire_tv
+      - type: media-control
+        entity: media_player.samsung_tv
+      - type: entities
+        title: HDMI
+        entities:
+          - switch.hdmi_0
+          - switch.hdmi_8
+
+  - title: Sensors
+    icon: mdi:router-wireless
+    cards:
+      - type: entities
+        title: Motion Sensors
+        entities:
+          - type: section
+            label: Living Room
+          - binary_sensor.motion_sensor_4_1
+          - binary_sensor.motion_sensor_10_1
+          - type: section
+            label: Bedroom
+          - binary_sensor.motion_sensor_2_1
+          - binary_sensor.bed_sensor_16_1
+          - type: section
+            label: Kitchen
+          - binary_sensor.motion_sensor_1_1
+          - type: section
+            label: Hall
+          - binary_sensor.motion_sensor_5_1
+      - type: vertical-stack
+        cards:
+          - type: sensor
+            entity: sensor.motion_sensor_10_2
+            accuracy: 50
+          - type: sensor
+            entity: sensor.motion_sensor_4_2
+            accuracy: 50
+          - type: sensor
+            entity: sensor.motion_sensor_2_2
+            accuracy: 50
+          - type: sensor
+            entity: sensor.motion_sensor_1_2
+            accuracy: 50
+          - type: sensor
+            entity: sensor.motion_sensor_5_2
+            accuracy: 50
+
+  - title: Scripts
+    icon: mdi:wrench
+    cards:
+      - type: entities
+        title: Scripts
+        entities:
+          - script.all_off
+          - script.bedtime
+          - script.bedtime_now
+          - script.reset_bed
+          - script.wakeup
+          - script.snooze
+      - type: gauge
+        title: CPU usage
+        entity: sensor.processor_use
+      - type: gauge
+        title: Load 1m
+        entity: sensor.load_1m
+      - type: gauge
+        title: Load 5m
+        entity: sensor.load_5m
+      - type: gauge
+        title: Load 15m
+        entity: sensor.load_15m
+      - type: sensor
+        title: Memory usage
+        entity: sensor.memory_use
+      - type: sensor
+        title: Memory free
+        entity: sensor.memory_free
+      - type: sensor
+        title: Swap usage
+        entity: sensor.swap_use
+      - type: sensor
+        title: Swap free
+        entity: sensor.swap_free
+      - type: entities
+        title: Theme
+        entities:
+          - input_boolean.autodark_theme
+          - input_select.current_theme
