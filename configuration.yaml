@@ -51,7 +51,13 @@ binary_sensor:
     sensors:
       dst:
         entity_id: sensor.date
+        friendly_name: Daylight Savings
         value_template: "{% if now().dst() %}true{% else %}false{% endif %}"
+      weekday:
+        entity_id: sensor.date
+        friendly_name: Weekday
+        # 0-6 = Monday - Sunday
+        value_template: "{% if now().weekday() < 5 %}true{% else %}false{% endif %}"
 
 hue:
   bridges:
@@ -336,3 +342,8 @@ media_player:
     name: Samsung TV
     host: 192.168.1.134
     port: 8001
+
+calendar:
+  - platform: ical
+    url: !secret ical_url
+    name: vacation

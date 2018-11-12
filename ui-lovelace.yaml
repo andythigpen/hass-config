@@ -169,7 +169,7 @@ views:
     icon: mdi:router-wireless
     cards:
       - type: entities
-        title: Motion Sensors
+        title: Sensors
         entities:
           - type: section
             label: Living Room
@@ -185,6 +185,13 @@ views:
           - type: section
             label: Hall
           - binary_sensor.motion_sensor_5_1
+          - type: section
+            label: Other
+          - entity: calendar.vacation
+            name: Vacation
+          - entity: binary_sensor.dst
+            name: Daylight Savings
+          - sun.sun
       - type: vertical-stack
         cards:
           - type: sensor

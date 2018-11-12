@@ -7,6 +7,6 @@ wakeup:
     - service: light.turn_on
       data:
         entity_id: group.Bedroom
-        transition: 30
+        transition: 240
         brightness: 255
       alias: Bedroom lights on
