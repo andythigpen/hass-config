@@ -13,7 +13,7 @@
         entity_id: calendar.vacation
         state: 'off'
       - condition: state
-        entity_id: binary_sensory.weekday
+        entity_id: binary_sensor.weekday
         state: 'on'
   action:
     service: script.turn_on

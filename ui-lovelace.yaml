@@ -91,12 +91,16 @@ views:
             - light.hall
       - type: glance
         title: My Home
-        columns: 6
+        columns: 4
         entities:
           - entity: input_boolean.myhome_active
             tap_action: toggle
             hold_action: more-info
           - input_select.myhome_mode
+          - entity: device_tracker.pixel
+            name: Phone
+          - entity: device_tracker.rfid_sensor_12_1
+            name: Wallet
           - entity: input_boolean.room_living_room
             tap_action: toggle
             hold_action: more-info
@@ -122,10 +126,6 @@ views:
             name: Kitchen
           - entity: room.hall
             name: Hall
-          - entity: device_tracker.pixel
-            name: Phone
-          - entity: device_tracker.rfid_sensor_12_1
-            name: Wallet
 
   - title: Lights
     icon: mdi:lightbulb-outline
@@ -187,6 +187,8 @@ views:
           - binary_sensor.motion_sensor_5_1
           - type: section
             label: Other
+          - entity: binary_sensor.weekday
+            name: Weekday
           - entity: calendar.vacation
             name: Vacation
           - entity: binary_sensor.dst
