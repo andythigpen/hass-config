@@ -57,6 +57,7 @@ views:
             - light.living_room_standing
             - light.tv_left
             - light.tv_right
+            - light.hyperion
       - type: conditional
         conditions:
           - entity: room.bedroom
@@ -138,6 +139,7 @@ views:
           - light.living_room_standing
           - light.tv_left
           - light.tv_right
+          - light.hyperion
           - type: section
             label: Bedroom
           - light.night_stand

@@ -153,6 +153,7 @@ group:
     - light.living_room_standing
     - light.tv_left
     - light.tv_right
+    - light.hyperion
   default_living_room: *living_room
   living_room_sensors:
     name: Living Room Sensors
@@ -358,3 +359,7 @@ calendar:
   - platform: ical
     url: !secret ical_url
     name: vacation
+
+light:
+  - platform: hyperion
+    host: 127.0.0.1
