@@ -164,8 +164,7 @@ views:
       - type: entities
         title: HDMI
         entities:
-          - switch.hdmi_0
-          - switch.hdmi_8
+          - media_player.hdmi_0
 
   - title: Sensors
     icon: mdi:router-wireless

@@ -120,8 +120,7 @@ group:
     entities:
     - media_player.fire_tv
     - media_player.samsung_tv
-    - switch.hdmi_0
-    - switch.hdmi_8
+    - media_player.hdmi_0
     - group.tv_scripts
   sensors_view:
     view: yes
@@ -338,11 +337,7 @@ input_boolean:
 python_script:
 
 hdmi_cec:
-  devices:
-    TV: 0.0.0.0
-    Xbox One: 2.0.0.0
-    Fire TV: 1.0.0.0
-    Pi: 3.0.0.0
+  platform: media_player
 
 media_player:
   - platform: firetv
@@ -353,6 +348,7 @@ media_player:
     name: Samsung TV
     host: 192.168.1.134
     port: 8001
+    mac: "F8:77:B8:CD:B2:9A"
 
 calendar:
   - platform: ical
