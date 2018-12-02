@@ -57,7 +57,6 @@ views:
             - light.living_room_standing
             - light.tv_left
             - light.tv_right
-            - light.hyperion
       - type: conditional
         conditions:
           - entity: room.bedroom
@@ -114,6 +113,15 @@ views:
           - entity: input_boolean.room_hall
             tap_action: toggle
             hold_action: more-info
+      - type: glance
+        title: My Media
+        columns: 3
+        entities:
+          - input_select.media_mode
+          - entity: media_player.fire_tv
+            name: FireTV
+          - entity: light.hyperion
+            name: Backlight
       - type: glance
         title: Presence
         show_state: false

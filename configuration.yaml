@@ -297,7 +297,16 @@ input_select:
       - Evening
       - Night
       - Asleep
-    initial: Reset
+    icon: mdi:format-list-bulleted
+  media_mode:
+    name: Media Mode
+    options:
+      - TV
+      - Movie
+      - Paused
+      - Menu
+      - Idle
+      - "Off"
     icon: mdi:format-list-bulleted
   current_theme:
     name: Theme
@@ -311,27 +320,21 @@ input_select:
 input_boolean:
   myhome_active:
     name: Active
-    initial: off
     icon: mdi:home-variant
   room_bedroom:
     name: Bedroom
-    initial: on
     icon: mdi:hotel
   room_kitchen:
     name: Kitchen
-    initial: on
     icon: mdi:silverware-spoon
   room_hall:
     name: Hall
-    initial: on
     icon: mdi:glassdoor
   room_living_room:
     name: Living Room
-    initial: on
     icon: mdi:television-classic
   autodark_theme:
     name: Auto-dark theme
-    initial: on
     icon: mdi:theme-light-dark
 
 python_script:
@@ -344,6 +347,7 @@ media_player:
     name: Fire TV
     host: 192.168.1.129
     adbkey: "/home/homeassistant/hass-config/android/adbkey"
+    scan_interval: 4
   - platform: samsungtv
     name: Samsung TV
     host: 192.168.1.134

@@ -27,6 +27,7 @@ def set_scene(hass, data, logger):
 
     modifier = data.get('modifier', None)
     if modifier:
+        modifier = modifier.lower()
         scene_name = '{}_{}'.format(scene_name, modifier)
 
     if scene_name not in hass.states.entity_ids('scene'):
