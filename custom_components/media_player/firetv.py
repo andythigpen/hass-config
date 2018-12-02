@@ -140,13 +140,14 @@ class FireTVDevice(MediaPlayerDevice):
     log_filter = '-d -v time -s Avrcp'
     time_pattern = '(.*) V/Avrcp.*'
     pattern = 'PlaybackState {state=(\d+)'
+    prev_logcat_status = None
     @property
     def logcat_status(self):
         log_filter = self.log_filter
         if self.logcat_time:
             log_filter = "-T '{}' ".format(self.logcat_time) + log_filter
         stream = self._firetv._adb.Logcat(log_filter, 1000)
-        state = None
+        state = self.prev_logcat_status
         for buf in stream:
             for line in buf.splitlines():
                 m = re.match(self.time_pattern, line)
@@ -165,11 +166,14 @@ class FireTVDevice(MediaPlayerDevice):
                     state = STATE_STANDBY
                 else:
                     state = None
+                self.prev_logcat_status = state
+                _LOGGER.debug('logcat (%s|%s): %s', self.logcat_time, state, line)
         return state
 
     @adb_wrapper
     def update(self):
         """Get the latest date and update device state."""
+        prev_state = self._state
         try:
             # Check if device is disconnected.
             if not self._firetv._adb:
@@ -204,14 +208,16 @@ class FireTVDevice(MediaPlayerDevice):
                     self._current_app = current_app
 
                 playback_state = self.logcat_status
-                if playback_state != self._state:
-                    _LOGGER.info('playback_state is now %s', playback_state)
+                if playback_state != self._state and playback_state is not None:
+                    _LOGGER.debug('playback_state is now %s', playback_state)
 
                 # Check if the launcher is active.
                 if self._current_app in [PACKAGE_LAUNCHER, PACKAGE_SETTINGS]:
+                    _LOGGER.debug('current_app is %s', self._current_app)
                     self._state = STATE_STANDBY
 
                 elif playback_state is not None or self._current_app in self.SUPPORTED_APPS:
+                    _LOGGER.debug('current_app is %s, playback_state is %s', self._current_app, playback_state)
                     self._state = playback_state or STATE_STANDBY
 
                 # Check for a wake lock (device is playing).
@@ -226,6 +232,8 @@ class FireTVDevice(MediaPlayerDevice):
             _LOGGER.exception('Update encountered an exception; will attempt to ' +
                           're-establish the ADB connection in the next update')
             self._firetv._adb = None
+        if self._state != prev_state:
+            _LOGGER.debug('firetv state changed: %s -> %s', prev_state, self._state)
 
     @adb_wrapper
     def turn_on(self):

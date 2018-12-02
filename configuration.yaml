@@ -349,7 +349,6 @@ media_player:
     name: Fire TV
     host: 192.168.1.129
     adbkey: "/home/homeassistant/hass-config/android/adbkey"
-    scan_interval: 4
   - platform: samsungtv
     name: Samsung TV
     host: 192.168.1.134
