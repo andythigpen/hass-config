@@ -9,7 +9,6 @@ import time
 
 from functools import partial
 
-import homeassistant.components as core
 import homeassistant.components.mysensors as mysensors
 import homeassistant.helpers.event as helper
 
@@ -23,9 +22,12 @@ from homeassistant.components.mysensors.device import (
     ATTR_NODE_ID, ATTR_CHILD_ID)
 
 from homeassistant.const import (
-    STATE_HOME, STATE_NOT_HOME, STATE_UNAVAILABLE)
+    STATE_HOME, STATE_NOT_HOME, STATE_UNAVAILABLE,
+    SERVICE_TURN_ON, SERVICE_TURN_OFF,
+    ATTR_ENTITY_ID,
+)
 
-from homeassistant.core import split_entity_id
+from homeassistant import core
 from homeassistant.helpers.entity import Entity
 from homeassistant.helpers.service import (
     extract_entity_ids, call_from_config)
@@ -101,7 +103,7 @@ def register_presence_handlers(hass, config):
             location = STATE_HOME
         # _LOGGER.debug('rfid %s state is %s', rfid_sensor, location)
         hass.services.call(DOMAIN_DEVICE_TRACKER, SERVICE_SEE, {
-            ATTR_DEV_ID: split_entity_id(rfid_sensor)[1],
+            ATTR_DEV_ID: core.split_entity_id(rfid_sensor)[1],
             ATTR_LOCATION_NAME: location,
         })
 
@@ -127,10 +129,14 @@ def get_brightness(hass, service):
 def change_brightness(hass, service, bri):
     """ Actually brightens/dims a group. """
     target_ids = extract_entity_ids(hass, service)
+    service_data = {
+        ATTR_ENTITY_ID: target_ids,
+    }
     if bri <= 0:
-        core.turn_off(hass, target_ids)
+        hass.services.call(core.DOMAIN, SERVICE_TURN_OFF, service_data)
     elif bri <= 255:
-        core.turn_on(hass, target_ids, brightness=bri)
+        service_data['brightness'] = bri
+        hass.services.call(core.DOMAIN, SERVICE_TURN_ON, service_data)
 
 
 def service_light_dim(hass, service):
