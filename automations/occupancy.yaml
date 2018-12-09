@@ -17,6 +17,7 @@
     platform: state
     entity_id: room.bedroom
     to: 'occupied'
+    from: 'not_occupied'
   condition:
     condition: and
     conditions:
@@ -64,6 +65,8 @@
     platform: state
     entity_id: room.bedroom
     to: 'not_occupied'
+    for:
+      seconds: 5
   action:
     service: python_script.enable_room_scene
     data:
@@ -75,6 +78,7 @@
     - platform: state
       entity_id: room.living_room
       to: 'occupied'
+      from: 'not_occupied'
     - platform: state
       entity_id: input_select.media_mode
   condition:
@@ -127,6 +131,8 @@
     platform: state
     entity_id: room.living_room
     to: 'not_occupied'
+    for:
+      seconds: 5
   action:
     service: python_script.enable_room_scene
     data:
@@ -138,6 +144,7 @@
     platform: state
     entity_id: room.hall
     to: 'occupied'
+    from: 'not_occupied'
   condition:
     condition: and
     conditions:
@@ -172,6 +179,8 @@
     platform: state
     entity_id: room.hall
     to: 'not_occupied'
+    for:
+      seconds: 5
   action:
     service: python_script.enable_room_scene
     data:
@@ -183,6 +192,7 @@
     platform: state
     entity_id: room.kitchen
     to: 'occupied'
+    from: 'not_occupied'
   condition:
     condition: and
     conditions:
@@ -232,6 +242,8 @@
     platform: state
     entity_id: room.kitchen
     to: 'not_occupied'
+    for:
+      seconds: 5
   action:
     service: python_script.enable_room_scene
     data:
