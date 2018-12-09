@@ -1,0 +1,11 @@
+{
+	"name" : "Menu fade on",
+	"script" : "fade.py",
+	"args" :
+	{
+		"duration": 1.0,
+		"method": "inQuad",
+		"color-start": [0, 0, 0],
+		"color-end": [6, 44, 180]
+	}
+}

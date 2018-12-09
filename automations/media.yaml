@@ -71,7 +71,12 @@
         entity_id: input_boolean.myhome_active
         state: 'on'
   action:
-    - delay: '00:00:10'
+    - delay: '00:00:06'
+    - service: light.turn_on
+      data_template:
+        entity_id: light.hyperion
+        effect: "Menu fade off"
+    - delay: '00:00:03'
     - service: light.turn_on
       data_template:
         entity_id: light.hyperion
@@ -100,9 +105,7 @@
     - service: light.turn_on
       data_template:
         entity_id: light.hyperion
-        # TODO: fade
-        rgb_color: [9, 63, 255]
-        brightness: 180
+        effect: "Menu fade on"
 
 - alias: TV backlight off
   hide_entity: True
@@ -127,9 +130,14 @@
         entity_id: input_boolean.myhome_active
         state: 'on'
   action:
-    service: light.turn_off
-    data:
-      entity_id: light.hyperion
+    - service: light.turn_on
+      data_template:
+        entity_id: light.hyperion
+        effect: "Menu fade off"
+    - delay: '00:00:03'
+    - service: light.turn_off
+      data:
+        entity_id: light.hyperion
 
 - alias: All lights off for movies
   hide_entity: True

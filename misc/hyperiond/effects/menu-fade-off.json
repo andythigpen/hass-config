@@ -1,0 +1,11 @@
+{
+	"name" : "Menu fade off",
+	"script" : "fade.py",
+	"args" :
+	{
+		"duration": 3.0,
+		"method": "inExpo",
+		"color-start": [6, 44, 180],
+		"color-end": [0, 0, 0]
+	}
+}
