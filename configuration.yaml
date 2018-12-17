@@ -30,6 +30,9 @@ recorder:
   exclude:
     entities:
       - sensor.date
+      - binary_sensor.weekday
+      - binary_sensor.dst
+      - calendar.vacation
 
 logbook:
   exclude:
@@ -278,9 +281,6 @@ logger:
     homeassistant.components.sensor.mysensors: debug
     custom_components.myhome: debug
     #homeassistant.helpers.script: info
-
-updater:
-  reporting: no
 
 input_text:
   tv_tiles:
