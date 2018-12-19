@@ -4,13 +4,15 @@ custom_components.myhome
 
 Custom rules/automation for my home
 """
+import datetime
+import itertools
 import logging
 import time
 
+from collections import namedtuple
 from functools import partial
 
 import homeassistant.components.mysensors as mysensors
-import homeassistant.helpers.event as helper
 
 from homeassistant.components.device_tracker import (
     ATTR_DEV_ID, ATTR_LOCATION_NAME, SERVICE_SEE)
@@ -20,21 +22,29 @@ from homeassistant.components.device_tracker import (
 from homeassistant.components.light import ATTR_BRIGHTNESS
 from homeassistant.components.mysensors.device import (
     ATTR_NODE_ID, ATTR_CHILD_ID)
+from homeassistant.components.scene.homeassistant import (
+    _process_config, HomeAssistantScene)
 
 from homeassistant.const import (
     STATE_HOME, STATE_NOT_HOME, STATE_UNAVAILABLE,
     SERVICE_TURN_ON, SERVICE_TURN_OFF,
     ATTR_ENTITY_ID,
+    CONF_NAME, CONF_ENTITIES,
 )
 
 from homeassistant import core
-from homeassistant.helpers.entity import Entity
+from homeassistant.helpers import event
+from homeassistant.helpers import config_validation as cv
 from homeassistant.helpers.service import (
     extract_entity_ids, call_from_config)
+from homeassistant.helpers.state import async_reproduce_state
 
-from homeassistant.util import (slugify, convert)
+from homeassistant.util import convert
+from homeassistant.util import dt as dt_util
+
 
 DOMAIN = 'myhome'
+
 DEPENDENCIES = ['group', 'scene', 'input_select', 'mysensors']
 
 _LOGGER = logging.getLogger(__name__)
@@ -43,6 +53,8 @@ _LOGGER = logging.getLogger(__name__)
 CONF_RFID = 'rfid'
 CONF_TOUCH = 'touch'
 CONF_RESPONSE = 'response'
+CONF_ROOMS = 'rooms'
+CONF_MODES= 'modes'
 
 # services
 SERVICE_DIM = 'dim'
@@ -57,6 +69,13 @@ ATTR_VALUE_TYPE = 'value_type'
 ATTR_SUB_TYPE = 'sub_type'
 ATTR_ACK = 'ack'
 ATTR_PAYLOAD = 'payload'
+
+
+def pairwise(iterable):
+    "s -> (s0,s1), (s1,s2), (s2, s3), ..."
+    a, b = itertools.tee(iterable)
+    next(b, None)
+    return zip(a, b)
 
 
 def service_send_message(hass, service):
@@ -107,13 +126,13 @@ def register_presence_handlers(hass, config):
             ATTR_LOCATION_NAME: location,
         })
 
-    helper.track_utc_time_change(hass, rfid_seen, second=0)
+    event.track_utc_time_change(hass, rfid_seen, second=0)
 
     def rfid_state_change(entity_id, old_state, new_state):
         """ Calls see service immediately with state of RFID sensor. """
         rfid_seen()
 
-    helper.track_state_change(hass, rfid_sensor, rfid_state_change)
+    event.track_state_change(hass, rfid_sensor, rfid_state_change)
 
 
 def get_brightness(hass, service):
@@ -218,7 +237,7 @@ def register_touch_control_handlers(hass, config):
         hass.states.set(entity_id, 0, attr)
 
     for controller in controllers:
-        helper.track_state_change(hass, controller, controller_state_change)
+        event.track_state_change(hass, controller, controller_state_change)
 
 
 def monkeypatch_serial_gateway(hass):
@@ -243,8 +262,185 @@ def monkeypatch_serial_gateway(hass):
         gateway.send = send_delay
 
 
+#RoomMode = namedtuple('RoomMode', ['start', 'end', 'duration'])
+class RoomMode:
+    def __init__(self, name, start, end):
+        self.name = name
+        self.start = start
+        self.end = end
+
+    @property
+    def duration(self):
+        if self.end is None:
+            return 0
+        st = datetime.datetime.combine(dt_util.now(), self.start)
+        en = datetime.datetime.combine(dt_util.now(), self.end)
+        return (en - st).total_seconds()
+
+    def __repr__(self):
+        return "<{} name={} start={} end={}>".format(
+            self.__class__.__name__, self.name, self.start, self.end)
+
+
+class Easing:
+    """
+    Easing functions from https://easings.net/ and http://robertpenner.com/easing/
+    t: current time
+    b: beginning value
+    c: change in value
+    d: duration
+    """
+    @staticmethod
+    def in_out_quad(t, b, c, d):
+        t = t / d * 2
+        if t < 1:
+            return int(round(c / 2 * t * t + b))
+        return int(round(-c / 2 * ((t - 1) * (t - 3) - 1) + b))
+
+    @staticmethod
+    def in_quad(t, b, c, d):
+        t = t / d
+        return int(round(c * (t ** 2) + b))
+
+    @staticmethod
+    def out_quad(t, b, c, d):
+        t = t / d
+        return int(round(-c * t * (t - 2) + b))
+
+
+def get_transition_state(current_state, next_state, easing_method, current_time, duration):
+    easing = getattr(Easing, easing_method)
+    attributes = current_state.attributes.copy()
+    for name, value in current_state.attributes.items():
+        if name not in next_state.attributes:
+            continue
+        next_value = next_state.attributes[name]
+        if name == 'rgb_color':
+            attributes[name] = [
+                easing(current_time, c, next_value[i] - c, duration)
+                for i, c in enumerate(value)
+            ]
+        else:
+            attributes[name] = easing(current_time, value, next_value - value, duration)
+    return core.State(current_state.entity_id, current_state.state, attributes)
+
+
+class RoomScene(HomeAssistantScene):
+    """A scene is a group of entities and the states we want them to be."""
+
+    def __init__(self, hass, room_id, mode_name, scene_config):
+        """Initialize the scene."""
+        super().__init__(hass, scene_config)
+        self.room_id = room_id
+        self.mode_name = mode_name
+        self.easing_method = 'in_out_quad'
+
+    def __repr__(self):
+        return "<{} room={} mode={}>".format(
+            self.__class__.__name__, self.room_id, self.mode_name)
+
+    @property
+    def states(self):
+        return self.scene_config.states
+
+    def get_values(self, now=None):
+        _LOGGER.info('interpolating values for %s', now)
+        if now is None:
+            now = dt_util.now()
+            start = datetime.datetime.combine(now, self.mode.start)
+            now = (now - start).total_seconds()
+            _LOGGER.info('setting now to %s', now)
+        mode, next_mode = get_mode_and_next(self.hass, self.mode_name)
+        states = self.states
+        _LOGGER.info('mode, next_mode = %s, %s', mode, next_mode)
+        _LOGGER.info('duration = %s', mode.duration)
+        if mode is None or next_mode is None:
+            return states.values()
+        domain = self.hass.data[DOMAIN]
+        room = domain[CONF_ROOMS][self.room_id]
+        next_states = room[next_mode.name].states
+        transition_states = []
+        for entity, state in states.items():
+            _LOGGER.info('entity %s, state %s', entity, state)
+            if entity not in next_states:
+                _LOGGER.info('entity %s not in next state', entity)
+                transition_states.append(state)
+                continue
+            next_state = next_states[entity]
+            transition_states.append(
+                get_transition_state(state, next_state, self.easing_method, now, mode.duration)
+            )
+            _LOGGER.info('entity %s transition state %s', entity, transition_states[-1])
+        return transition_states
+
+    async def async_activate(self, now=None):
+        """Activate scene. Try to get entities into requested state."""
+        values = self.get_values(now)
+        _LOGGER.info('scene states %s', values)
+        await async_reproduce_state(self.hass, values, True)
+
+
+def get_mode_and_next(hass, name):
+    """Returns the mode with the given name and the next mode"""
+    domain = hass.data[DOMAIN]
+    modes = domain[CONF_MODES]
+    for mode, next_mode in pairwise(modes):
+        if mode.name == name:
+            return mode, next_mode
+    if modes[-1].name == name:
+        return modes[-1], None
+    return None, None
+
+
+def add_room_modes(hass, config):
+    domain = hass.data[DOMAIN]
+    modes = config[DOMAIN].get(CONF_MODES)
+
+    domain[CONF_MODES] = []
+    for mode, next_mode in pairwise(modes):
+        name = mode['name']
+        start = dt_util.parse_time(mode['start'])
+        end = dt_util.parse_time(next_mode['start'])
+        domain[CONF_MODES].append(RoomMode(name, start, end))
+
+    last_mode = modes[-1]
+    name = last_mode['name']
+    start = dt_util.parse_time(last_mode['start'])
+    domain[CONF_MODES].append(RoomMode(name, start, None))
+
+
+def add_scene_entities(hass, config):
+    """Adds scene entities for each configured room/mode"""
+    component = hass.data['scene']
+    domain = hass.data[DOMAIN]
+    domain[CONF_ROOMS] = {}
+    rooms = domain[CONF_ROOMS]
+    scenes = []
+    for room_id, modes in config[DOMAIN].get(CONF_ROOMS).items():
+        if room_id not in rooms:
+            rooms[room_id] = {}
+        for mode_name, entities in modes.items():
+            scene_config = {
+                CONF_NAME: 'Room {} {}'.format(room_id, mode_name),
+                CONF_ENTITIES: entities,
+            }
+            scene = RoomScene(
+                hass, room_id, mode_name, _process_config(scene_config))
+            rooms[room_id][mode_name] = scene
+            scenes.append(scene)
+    if scenes:
+        component.add_entities(scenes)
+    return True
+
+
+#import tracemalloc
+#tracemalloc.start()
+#prev_snapshot = tracemalloc.take_snapshot()
+
 def setup(hass, config):
-    """ Setup myhome component. """
+    """Setup myhome component."""
+    hass.data[DOMAIN] = {}
+
     register_presence_handlers(hass, config)
     _LOGGER.info('registered presense handlers')
 
@@ -255,5 +451,35 @@ def setup(hass, config):
 
     register_touch_control_handlers(hass, config)
     _LOGGER.info('registered touch control handlers')
+
+    add_room_modes(hass, config)
+    _LOGGER.info('added room modes')
+    add_scene_entities(hass, config)
+    _LOGGER.info('added scene entities')
+
+    async def test_scene_transition(service):
+        _LOGGER.info('scene transition start')
+        now = service.data.get('now', None)
+        mode = service.data.get('mode', None)
+        room = service.data.get('room', None)
+        scene = hass.data[DOMAIN][CONF_ROOMS][room][mode]
+        _LOGGER.info('using %s %s %s %s', now, mode, room, scene)
+        await scene.async_activate(now)
+        _LOGGER.info('scene transition end')
+
+    hass.services.register(DOMAIN, 'test', test_scene_transition)
+
+    # memory leak helper
+    #def collect_stats(service):
+    #    """Service that collects memory stats to track down a leak."""
+    #    global prev_snapshot
+    #    cur_snapshot = tracemalloc.take_snapshot()
+    #    top_stats = cur_snapshot.compare_to(prev_snapshot, 'lineno')
+    #    _LOGGER.info("MEMORY [Top 10]")
+    #    for stat in top_stats[:10]:
+    #        _LOGGER.info(stat)
+    #    #prev_snapshot = cur_snapshot
+    #hass.services.register(DOMAIN, 'collect_stats', collect_stats)
+    # end memory leak helper
 
     return True

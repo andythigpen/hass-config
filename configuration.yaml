@@ -280,6 +280,7 @@ logger:
     #mysensors: debug
     homeassistant.components.sensor.mysensors: debug
     custom_components.myhome: debug
+    #custom_components.media_player.firetv: debug
     #homeassistant.helpers.script: info
 
 input_text:
@@ -362,3 +363,8 @@ calendar:
 light:
   - platform: hyperion
     host: 127.0.0.1
+
+notify:
+  - platform: nfandroidtv
+    name: Fire TV
+    host: 192.168.1.129

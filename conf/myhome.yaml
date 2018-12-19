@@ -42,3 +42,32 @@ touch:
       data:
         entity_id: group.hall
       response: 2
+
+modes:
+  - name: morning
+    start: '06:00:00'
+  - name: day
+    start: '09:00:00'
+  - name: afternoon
+    start: '13:00:00'
+  - name: evening
+    start: '18:00:00'
+  - name: night
+    start: '21:00:00'
+
+rooms:
+  kitchen:
+    morning:
+      light.rgbw_15_1: &kitchen_morning_occupied
+        state: 'on'
+        brightness: 255
+        rgb_color: [255, 75, 0]
+        white_value: 120
+      light.rgbw_15_2: *kitchen_morning_occupied
+    day:
+      light.rgbw_15_1: &kitchen_day_occupied
+        state: 'on'
+        brightness: 255
+        rgb_color: [255, 75, 20]
+        white_value: 255
+      light.rgbw_15_2: *kitchen_day_occupied
