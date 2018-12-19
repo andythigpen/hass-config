@@ -140,14 +140,14 @@ class FireTVDevice(MediaPlayerDevice):
     log_filter = '-d -v time -s Avrcp'
     time_pattern = '(.*) V/Avrcp.*'
     pattern = 'PlaybackState {state=(\d+)'
-    prev_logcat_status = None
-    @property
-    def logcat_status(self):
+    prev_logcat_status = {}
+    def get_logcat_status(self):
+        current_app = self._current_app or ''
         log_filter = self.log_filter
         if self.logcat_time:
             log_filter = "-T '{}' ".format(self.logcat_time) + log_filter
         stream = self._firetv._adb.Logcat(log_filter, 1000)
-        state = self.prev_logcat_status
+        state = self.prev_logcat_status.get(current_app, None)
         for buf in stream:
             for line in buf.splitlines():
                 m = re.match(self.time_pattern, line)
@@ -166,7 +166,7 @@ class FireTVDevice(MediaPlayerDevice):
                     state = STATE_STANDBY
                 else:
                     state = None
-                self.prev_logcat_status = state
+                self.prev_logcat_status[current_app] = state
                 _LOGGER.debug('logcat (%s|%s): %s', self.logcat_time, state, line)
         return state
 
@@ -207,7 +207,7 @@ class FireTVDevice(MediaPlayerDevice):
                 else:
                     self._current_app = current_app
 
-                playback_state = self.logcat_status
+                playback_state = self.get_logcat_status()
                 if playback_state != self._state and playback_state is not None:
                     _LOGGER.debug('playback_state is now %s', playback_state)
 
