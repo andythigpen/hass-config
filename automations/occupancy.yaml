@@ -14,10 +14,13 @@
 - alias: Bedroom occupied
   hide_entity: True
   trigger:
-    platform: state
-    entity_id: room.bedroom
-    to: 'occupied'
-    from: 'not_occupied'
+    - platform: state
+      entity_id: room.bedroom
+      to: 'occupied'
+      from: 'not_occupied'
+    - platform: time
+      minutes: '/5'
+      seconds: 0
   condition:
     condition: and
     conditions:
@@ -30,6 +33,9 @@
       - condition: state
         entity_id: input_boolean.room_bedroom
         state: 'on'
+      - condition: state
+        entity_id: room.bedroom
+        state: 'occupied'
   action:
     service: python_script.enable_room_scene
     data:
@@ -69,6 +75,9 @@
       from: 'not_occupied'
     - platform: state
       entity_id: input_select.media_mode
+    - platform: time
+      minutes: '/5'
+      seconds: 0
   condition:
     condition: and
     conditions:
@@ -81,14 +90,13 @@
       - condition: state
         entity_id: input_boolean.room_living_room
         state: 'on'
+      - condition: state
+        entity_id: room.living_room
+        state: 'occupied'
   action:
     service: python_script.enable_room_scene
-    data_template:
+    data:
       room: living_room
-      modifier: >
-          {% if states('input_select.media_mode') in ('Movie', 'TV') %}
-          {{ states('input_select.media_mode') }}
-          {% endif %}
 - alias: Living room countdown
   hide_entity: True
   trigger:
@@ -118,10 +126,13 @@
 - alias: Hall occupied
   hide_entity: True
   trigger:
-    platform: state
-    entity_id: room.hall
-    to: 'occupied'
-    from: 'not_occupied'
+    - platform: state
+      entity_id: room.hall
+      to: 'occupied'
+      from: 'not_occupied'
+    - platform: time
+      minutes: '/5'
+      seconds: 0
   condition:
     condition: and
     conditions:
@@ -134,6 +145,9 @@
       - condition: state
         entity_id: input_boolean.room_hall
         state: 'on'
+      - condition: state
+        entity_id: room.hall
+        state: 'occupied'
   action:
     service: python_script.enable_room_scene
     data:
@@ -167,10 +181,13 @@
 - alias: Kitchen occupied
   hide_entity: True
   trigger:
-    platform: state
-    entity_id: room.kitchen
-    to: 'occupied'
-    from: 'not_occupied'
+    - platform: state
+      entity_id: room.kitchen
+      to: 'occupied'
+      from: 'not_occupied'
+    - platform: time
+      minutes: '/5'
+      seconds: 0
   condition:
     condition: and
     conditions:
@@ -183,6 +200,9 @@
       - condition: state
         entity_id: input_boolean.room_kitchen
         state: 'on'
+      - condition: state
+        entity_id: room.kitchen
+        state: 'occupied'
   action:
     service: python_script.enable_room_scene
     data:

@@ -5,6 +5,7 @@ custom_components.myhome
 Custom rules/automation for my home
 """
 import logging
+import os
 import time
 
 from functools import partial
@@ -31,8 +32,11 @@ from homeassistant import core
 from homeassistant.helpers.entity import Entity
 from homeassistant.helpers.service import (
     extract_entity_ids, call_from_config)
+from homeassistant.helpers.template import ENV
 
 from homeassistant.util import (slugify, convert)
+from homeassistant.util import dt as dt_util
+from jinja2.loaders import FileSystemLoader
 
 DOMAIN = 'myhome'
 DEPENDENCIES = ['group', 'scene', 'input_select', 'mysensors']
@@ -255,5 +259,14 @@ def setup(hass, config):
 
     register_touch_control_handlers(hass, config)
     _LOGGER.info('registered touch control handlers')
+
+    # add a template dir for loading external macros/templates
+    ENV.loader = FileSystemLoader([
+        os.path.join(hass.config.config_dir, 'templates'),
+        os.path.join(hass.config.config_dir, 'scene_templates'),
+    ])
+    # add global utils for templates
+    ENV.globals['dt_util'] = dt_util
+    _LOGGER.info('registered template helpers')
 
     return True

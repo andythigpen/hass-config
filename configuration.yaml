@@ -259,7 +259,9 @@ group:
 
 automation: !include_dir_merge_list automations/
 
-scene: !include_dir_merge_list scenes/
+scene:
+  - platform: template
+    states: !include_dir_merge_list scene_templates/
 
 script: !include_dir_merge_named scripts/
 
