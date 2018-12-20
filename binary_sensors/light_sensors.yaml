@@ -1,0 +1,56 @@
+# Light level binary sensors
+bedroom_dark:
+  friendly_name: Bedroom Light Sensor
+  value_template: >
+      {% set mode = states("input_select.myhome_mode") %}
+      {% set sensor = states("sensor.motion_sensor_2_2") | float %}
+      {% if mode == "Morning" %}
+          {{ sensor <= 3 }}
+      {% elif mode == "Day" %}
+          {{ sensor <= 0 }}
+      {% elif mode == "Afternoon" %}
+          {{ sensor <= 5 }}
+      {% elif mode in ("Evening", "Night") %}
+          {{ sensor <= 9 }}
+      {% else %}
+          {{ sensor <= 5 }}
+      {% endif %}
+
+living_room_dark:
+  friendly_name: Living Room Light Sensor
+  value_template: >
+      {% set mode = states("input_select.myhome_mode") %}
+      {% set lr_sensor = states("sensor.motion_sensor_10_2") | float %}
+      {% set bc_sensor = states("sensor.motion_sensor_4_2") | float %}
+      {% if mode == "Morning" %}
+          {{ lr_sensor <= 14 or bc_sensor <= 7 }}
+      {% elif mode in ("Day", "Afternoon") %}
+          {{ lr_sensor <= 20 or bc_sensor <= 3 }}
+      {% elif mode in ("Evening", "Night") %}
+          {{ lr_sensor <= 30 or bc_sensor <= 20 }}
+      {% else %}
+          {{ lr_sensor <= 14 or bc_sensor <= 7 }}
+      {% endif %}
+
+hall_dark:
+  friendly_name: Hall Light Sensor
+  value_template: '{{ states("sensor.motion_sensor_5_2") | float <= 20 }}'
+
+kitchen_dark:
+  friendly_name: Kitchen Light Sensor
+  # use the living room sensor since kitchen sensor does not
+  # receive enough light
+  value_template: >
+      {% set mode = states("input_select.myhome_mode") %}
+      {% set sensor = states("sensor.motion_sensor_10_2") | float %}
+      {% if mode == "Morning" %}
+          {{ sensor <= 30 }}
+      {% elif mode == "Day" %}
+          {{ sensor <= 25 }}
+      {% elif mode == "Afternoon" %}
+          {{ sensor <= 27 }}
+      {% elif mode in ("Evening", "Night") %}
+          {{ sensor <= 30 }}
+      {% else %}
+          {{ sensor <= 25 }}
+      {% endif %}
