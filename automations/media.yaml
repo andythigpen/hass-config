@@ -129,6 +129,9 @@
       - condition: state
         entity_id: input_boolean.myhome_active
         state: 'on'
+      - condition: state
+        entity_id: light.hyperion
+        state: 'on'
   action:
     - service: light.turn_on
       data_template:
