@@ -15,36 +15,36 @@ views:
               image: /local/images/firetv.png
               show_name: false
               show_state: false
-              tap_action: toggle
-              hold_action: more-info
+              tap_action:
+                action: toggle
             - type: picture-entity
               entity: script.watch_tv
               image: /local/images/vue.jpg
               show_name: false
               show_state: false
-              tap_action: toggle
-              hold_action: more-info
+              tap_action:
+                action: toggle
             - type: picture-entity
               entity: script.watch_netflix
               image: /local/images/netflix.png
               show_name: false
               show_state: false
-              tap_action: toggle
-              hold_action: more-info
+              tap_action:
+                action: toggle
             - type: picture-entity
               entity: script.watch_espn
               image: /local/images/espn.png
               show_name: false
               show_state: false
-              tap_action: toggle
-              hold_action: more-info
+              tap_action:
+                action: toggle
             - type: picture-entity
               entity: script.watch_fsgo
               image: /local/images/fsgo.png
               show_name: false
               show_state: false
-              tap_action: toggle
-              hold_action: more-info
+              tap_action:
+                action: toggle
       - type: conditional
         conditions:
           - entity: room.living_room
@@ -94,25 +94,25 @@ views:
         columns: 4
         entities:
           - entity: input_boolean.myhome_active
-            tap_action: toggle
-            hold_action: more-info
+            tap_action:
+              action: toggle
           - input_select.myhome_mode
           - entity: device_tracker.pixel
             name: Phone
           - entity: device_tracker.rfid_sensor_12_1
             name: Wallet
           - entity: input_boolean.room_living_room
-            tap_action: toggle
-            hold_action: more-info
+            tap_action:
+              action: toggle
           - entity: input_boolean.room_bedroom
-            tap_action: toggle
-            hold_action: more-info
+            tap_action:
+              action: toggle
           - entity: input_boolean.room_kitchen
-            tap_action: toggle
-            hold_action: more-info
+            tap_action:
+              action: toggle
           - entity: input_boolean.room_hall
-            tap_action: toggle
-            hold_action: more-info
+            tap_action:
+              action: toggle
       - type: glance
         title: My Media
         columns: 3
@@ -208,18 +208,23 @@ views:
           - type: sensor
             entity: sensor.motion_sensor_10_2
             accuracy: 50
+            graph: line
           - type: sensor
             entity: sensor.motion_sensor_4_2
             accuracy: 50
+            graph: line
           - type: sensor
             entity: sensor.motion_sensor_2_2
             accuracy: 50
+            graph: line
           - type: sensor
             entity: sensor.motion_sensor_1_2
             accuracy: 50
+            graph: line
           - type: sensor
             entity: sensor.motion_sensor_5_2
             accuracy: 50
+            graph: line
 
   - title: Scripts
     icon: mdi:wrench
@@ -248,15 +253,19 @@ views:
       - type: sensor
         title: Memory usage
         entity: sensor.memory_use
+        graph: line
       - type: sensor
         title: Memory free
         entity: sensor.memory_free
+        graph: line
       - type: sensor
         title: Swap usage
         entity: sensor.swap_use
+        graph: line
       - type: sensor
         title: Swap free
         entity: sensor.swap_free
+        graph: line
       - type: entities
         title: Theme
         entities:
