@@ -33,7 +33,7 @@
             "brightness": 255,
             "xy_color": [0.3763, 0.3741],
             "media_diff": 100,
-            "easing": "in_quad",
+            "easing": "in_out_quad",
          },
         "tv": {
             "brightness": 80,

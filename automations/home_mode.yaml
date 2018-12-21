@@ -32,71 +32,21 @@
     data:
       mode: afternoon
 
-- alias: Evening home mode DST
-  hide_entity: True
-  trigger:
-    platform: sun
-    event: sunset
-    offset: '-01:30:00'
-  condition:
-    condition: state
-    entity_id: binary_sensor.dst
-    state: 'on'
-  action:
-    service: python_script.set_home_mode
-    data:
-      mode: evening
-
 - alias: Evening home mode
   hide_entity: True
   trigger:
-    platform: sun
-    event: sunset
-  condition:
+    platform: time
+    at: '18:00:00'
   action:
     service: python_script.set_home_mode
     data:
       mode: evening
-
-- alias: Night home mode DST
-  hide_entity: True
-  trigger:
-    - platform: sun
-      event: sunset
-      offset: '01:30:00'
-    - platform: time
-      at: '21:00:00'
-  condition:
-    condition: and
-    conditions:
-      - condition: state
-        entity_id: input_select.myhome_mode
-        state: Evening
-      - condition: state
-        entity_id: binary_sensor.dst
-        state: 'on'
-  action:
-    service: python_script.set_home_mode
-    data:
-      mode: night
 
 - alias: Night home mode
   hide_entity: True
   trigger:
-    - platform: sun
-      event: sunset
-      offset: '02:30:00'
-    - platform: time
-      at: '21:00:00'
-  condition:
-    condition: and
-    conditions:
-      - condition: state
-        entity_id: input_select.myhome_mode
-        state: Evening
-      - condition: state
-        entity_id: binary_sensor.dst
-        state: 'off'
+    platform: time
+    at: '21:00:00'
   action:
     service: python_script.set_home_mode
     data:
