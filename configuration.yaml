@@ -62,6 +62,32 @@ sensor:
   - platform: time_date
     display_options:
       - date
+  - platform: template
+    sensors:
+      living_room_threshold:
+        value_template: "{% include 'living_room_threshold.tpl' %}"
+        entity_id:
+          - sensor.motion_sensor_10_2
+        unit_of_measurement: "%"
+        friendly_name: "Living room threshold"
+      bookcase_threshold:
+        value_template: "{% include 'bookcase_threshold.tpl' %}"
+        entity_id:
+          - sensor.motion_sensor_4_2
+        unit_of_measurement: "%"
+        friendly_name: "Bookcase threshold"
+      kitchen_threshold:
+        value_template: "{% include 'kitchen_threshold.tpl' %}"
+        entity_id:
+          - sensor.motion_sensor_10_2
+        unit_of_measurement: "%"
+        friendly_name: "Kitchen threshold"
+      bedroom_threshold:
+        value_template: "{% include 'bedroom_threshold.tpl' %}"
+        entity_id:
+          - sensor.motion_sensor_2_2
+        unit_of_measurement: "%"
+        friendly_name: "Bedroom threshold"
 
 binary_sensor:
   - platform: template
