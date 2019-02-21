@@ -1,9 +1,0 @@
-watch_tv:
-  alias: Watch TV
-  sequence:
-    - service: script.select_firetv
-      alias: "call select_firetv"
-    - service: media_player.select_source
-      data:
-        entity_id: media_player.fire_tv
-        source: com.snei.vue.firetv

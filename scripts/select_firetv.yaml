@@ -1,8 +1,0 @@
-select_firetv:
-  alias: Select FireTV
-  sequence:
-    - service: hdmi_cec.select_device
-      alias: "hdmi select_device firetv"
-      data:
-        device: "Fire TV"
-    - wait_template: "{{ states.switch.hdmi_0.state == 'on' }}"

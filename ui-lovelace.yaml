@@ -8,48 +8,6 @@ views:
           - entity: room.living_room
             state_not: "not_occupied"
         card:
-          type: horizontal-stack
-          cards: &tv_entities
-            - type: picture-entity
-              entity: script.firetv_home
-              image: /local/images/firetv.png
-              show_name: false
-              show_state: false
-              tap_action:
-                action: toggle
-            - type: picture-entity
-              entity: script.watch_tv
-              image: /local/images/vue.jpg
-              show_name: false
-              show_state: false
-              tap_action:
-                action: toggle
-            - type: picture-entity
-              entity: script.watch_netflix
-              image: /local/images/netflix.png
-              show_name: false
-              show_state: false
-              tap_action:
-                action: toggle
-            - type: picture-entity
-              entity: script.watch_espn
-              image: /local/images/espn.png
-              show_name: false
-              show_state: false
-              tap_action:
-                action: toggle
-            - type: picture-entity
-              entity: script.watch_fsgo
-              image: /local/images/fsgo.png
-              show_name: false
-              show_state: false
-              tap_action:
-                action: toggle
-      - type: conditional
-        conditions:
-          - entity: room.living_room
-            state_not: "not_occupied"
-        card:
           type: entities
           title: Living Room
           show_header_toggle: true
@@ -118,8 +76,6 @@ views:
         columns: 3
         entities:
           - input_select.media_mode
-          - entity: media_player.fire_tv
-            name: FireTV
           - entity: light.hyperion
             name: Backlight
       - type: glance
@@ -163,10 +119,6 @@ views:
   - title: Media
     icon: mdi:television-classic
     cards:
-      - type: horizontal-stack
-        cards: *tv_entities
-      - type: media-control
-        entity: media_player.fire_tv
       - type: media-control
         entity: media_player.samsung_tv
       - type: entities

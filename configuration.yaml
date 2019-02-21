@@ -126,7 +126,6 @@ group:
     icon: mdi:home
     name: Home
     entities:
-    - group.default_tv_scripts
     - group.default_living_room
     - group.default_bedroom
     - group.default_kitchen
@@ -147,10 +146,8 @@ group:
     icon: mdi:television-classic
     name: Media
     entities:
-    - media_player.fire_tv
     - media_player.samsung_tv
     - media_player.hdmi_0
-    - group.tv_scripts
   sensors_view:
     view: yes
     icon: mdi:router-wireless
@@ -232,20 +229,6 @@ group:
     - script.all_off
     - script.bedtime_now
     - script.reset_bed
-  tv_scripts: &tv_scripts
-    name: TV
-    control: hidden
-    entities:
-    - script.firetv_home
-    - script.watch_tv
-    - script.watch_netflix
-    - script.watch_espn
-    - script.watch_fsgo
-  default_tv_scripts:
-    name: TV
-    control: hidden
-    entities:
-    - input_text.tv_tiles
   theme:
     name: Theme
     entities:
@@ -310,10 +293,6 @@ logger:
     custom_components.myhome: debug
     #homeassistant.helpers.script: info
 
-input_text:
-  tv_tiles:
-    name: dummy
-
 input_select:
   myhome_mode:
     name: Mode
@@ -371,11 +350,6 @@ hdmi_cec:
   platform: media_player
 
 media_player:
-  - platform: firetv
-    name: Fire TV
-    host: 192.168.1.129
-    adbkey: "/home/homeassistant/hass-config/android/adbkey"
-    scan_interval: 4
   - platform: samsungtv
     name: Samsung TV
     host: 192.168.1.134

@@ -44,20 +44,3 @@
     data_template:
       entity_id: group.default_hall
       visible: '{{ states("room.hall") in ["occupied", "countdown"] }}'
-
-- alias: TV scripts visible
-  hide_entity: True
-  trigger:
-    - platform: state
-      entity_id: media_player.amazon_fire_tv
-    - platform: state
-      entity_id: room.living_room
-  action:
-    service: group.set_visibility
-    data_template:
-      entity_id: group.default_tv_scripts
-      visible: >
-        {{
-           states("media_player.amazon_fire_tv") in ["standby", "playing"] or
-           states("room.living_room") == "occupied"
-        }}
