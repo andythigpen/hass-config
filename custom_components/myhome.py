@@ -39,7 +39,7 @@ from homeassistant.util import dt as dt_util
 from jinja2.loaders import FileSystemLoader
 
 DOMAIN = 'myhome'
-DEPENDENCIES = ['group', 'scene', 'input_select', 'mysensors']
+DEPENDENCIES = ['group', 'scene', 'input_select', 'mysensors', 'device_tracker']
 
 _LOGGER = logging.getLogger(__name__)
 
