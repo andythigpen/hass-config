@@ -88,6 +88,12 @@ sensor:
           - sensor.motion_sensor_2_2
         unit_of_measurement: "%"
         friendly_name: "Bedroom threshold"
+      hall_threshold:
+        value_template: "{% include 'hall_threshold.tpl' %}"
+        entity_id:
+          - sensor.motion_sensor_5_2
+        unit_of_measurement: "%"
+        friendly_name: "Hall threshold"
 
 binary_sensor:
   - platform: template

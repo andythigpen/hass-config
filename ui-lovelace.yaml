@@ -205,26 +205,41 @@ views:
           - sun.sun
       - type: vertical-stack
         cards:
-          - type: sensor
-            entity: sensor.motion_sensor_10_2
-            accuracy: 50
-            graph: line
-          - type: sensor
-            entity: sensor.motion_sensor_4_2
-            accuracy: 50
-            graph: line
-          - type: sensor
-            entity: sensor.motion_sensor_2_2
-            accuracy: 50
-            graph: line
-          - type: sensor
-            entity: sensor.motion_sensor_1_2
-            accuracy: 50
-            graph: line
-          - type: sensor
-            entity: sensor.motion_sensor_5_2
-            accuracy: 50
-            graph: line
+          - type: history-graph
+            entities:
+              - sensor.motion_sensor_10_2
+              - sensor.living_room_threshold
+            hours_to_show: 18
+            refresh_interval: 60
+            title: "Living Room Light"
+          - type: history-graph
+            entities:
+              - sensor.motion_sensor_4_2
+              - sensor.bookcase_threshold
+            hours_to_show: 18
+            refresh_interval: 60
+            title: "Bookcase Light"
+          - type: history-graph
+            entities:
+              - sensor.motion_sensor_10_2
+              - sensor.motion_sensor_1_2
+              - sensor.kitchen_threshold
+            hours_to_show: 18
+            refresh_interval: 60
+            title: "Kitchen Light"
+          - type: history-graph
+            entities:
+              - sensor.motion_sensor_2_2
+              - sensor.bedroom_threshold
+            hours_to_show: 18
+            refresh_interval: 60
+            title: "Bedroom Light"
+          - type: history-graph
+            entities:
+              - sensor.motion_sensor_5_2
+            hours_to_show: 18
+            refresh_interval: 60
+            title: "Hall Light"
 
   - title: Scripts
     icon: mdi:wrench
