@@ -355,6 +355,12 @@ media_player:
     host: 192.168.1.134
     port: 8001
     mac: "F8:77:B8:CD:B2:9A"
+  - platform: androidtv
+    name: Android TV
+    host: 192.168.1.123
+    adb_server_ip: 127.0.0.1
+    #adbkey: "/home/homeassistant/hass-config/android/adbkey"
+    scan_interval: 4
 
 calendar:
   - platform: ical

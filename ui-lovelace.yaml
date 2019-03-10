@@ -120,6 +120,8 @@ views:
     icon: mdi:television-classic
     cards:
       - type: media-control
+        entity: media_player.android_tv
+      - type: media-control
         entity: media_player.samsung_tv
       - type: entities
         title: HDMI

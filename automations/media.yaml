@@ -1,25 +1,25 @@
 # ------------------------------
 # Media automations
 #
-- alias: Fire TV media mode
+- alias: Android TV media mode
   hide_entity: True
   trigger:
     # listing each state is a workaround so this is not
     # triggered by attribute changes
     - platform: state
-      entity_id: media_player.fire_tv
+      entity_id: media_player.android_tv
       to: 'playing'
     - platform: state
-      entity_id: media_player.fire_tv
+      entity_id: media_player.android_tv
       to: 'paused'
     - platform: state
-      entity_id: media_player.fire_tv
+      entity_id: media_player.android_tv
       to: 'standby'
     - platform: state
-      entity_id: media_player.fire_tv
+      entity_id: media_player.android_tv
       to: 'idle'
     - platform: state
-      entity_id: media_player.fire_tv
+      entity_id: media_player.android_tv
       to: 'off'
   condition:
     condition: and
@@ -36,18 +36,18 @@
     data_template:
       entity_id: input_select.media_mode
       option: >
-          {% if is_state('media_player.fire_tv', 'playing') %}
-          {% set source = state_attr('media_player.fire_tv', 'source') %}
-          {% if source in ('com.amazon.avod', 'com.netflix.ninja') %}
+          {% if is_state('media_player.android_tv', 'playing') %}
+          {% set name = state_attr('media_player.android_tv', 'app_name') %}
+          {% if name in ('Amazon Prime Video', 'Netflix') %}
           Movie
           {% else %}
           TV
           {% endif %}
-          {% elif is_state('media_player.fire_tv', 'paused') %}
+          {% elif is_state('media_player.android_tv', 'paused') %}
           Paused
-          {% elif is_state('media_player.fire_tv', 'standby') %}
+          {% elif is_state('media_player.android_tv', 'standby') %}
           Menu
-          {% elif is_state('media_player.fire_tv', 'idle') or is_state('media_player.fire_tv', 'off') %}
+          {% elif is_state('media_player.android_tv', 'idle') or is_state('media_player.android_tv', 'off') %}
           Idle
           {% endif %}
 
