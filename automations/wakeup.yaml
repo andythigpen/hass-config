@@ -15,6 +15,12 @@
       - condition: state
         entity_id: binary_sensor.weekday
         state: 'on'
+      - condition: state
+        entity_id: room.bedroom
+        state: 'occupied'
+      - condition: state
+        entity_id: input_boolean.myhome_active
+        state: 'on'
   action:
     service: script.turn_on
     entity_id: script.wakeup
