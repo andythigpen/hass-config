@@ -18,7 +18,7 @@
       entity_id: room.bedroom
       to: 'occupied'
       from: 'not_occupied'
-    - platform: time
+    - platform: time_pattern
       minutes: '/5'
       seconds: 0
   condition:
@@ -75,7 +75,7 @@
       from: 'not_occupied'
     - platform: state
       entity_id: input_select.media_mode
-    - platform: time
+    - platform: time_pattern
       minutes: '/5'
       seconds: 0
   condition:
@@ -130,7 +130,7 @@
       entity_id: room.hall
       to: 'occupied'
       from: 'not_occupied'
-    - platform: time
+    - platform: time_pattern
       minutes: '/5'
       seconds: 0
   condition:
@@ -185,7 +185,7 @@
       entity_id: room.kitchen
       to: 'occupied'
       from: 'not_occupied'
-    - platform: time
+    - platform: time_pattern
       minutes: '/5'
       seconds: 0
   condition:

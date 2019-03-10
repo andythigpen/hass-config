@@ -6,6 +6,7 @@ import logging
 import voluptuous as vol
 
 from homeassistant.const import CONF_NAME, CONF_URL
+from homeassistant.helpers import config_validation as cv
 from homeassistant.components.calendar import (
     PLATFORM_SCHEMA, CalendarEventDevice,
 )
@@ -19,6 +20,7 @@ CONF_DEVICE_ID = 'device_id'
 DEFAULT_CALENDAR_NAME = 'calendar'
 
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
+    vol.Optional(CONF_NAME): cv.string,
     vol.Required(CONF_URL): vol.Url(),
 })
 
