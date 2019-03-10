@@ -21,7 +21,8 @@ living_room_dark:
   value_template: >
       {% set mode = states("input_select.myhome_mode") %}
       {% set lr_sensor = states("sensor.motion_sensor_10_2") | float %}
-      {% set bc_sensor = states("sensor.motion_sensor_4_2") | float %}
+      {# set bc_sensor = states("sensor.motion_sensor_4_2") | float #}
+      {% set bc_sensor = 100.0 %}
       {% if mode == "Morning" %}
           {{ lr_sensor <= 14 or bc_sensor <= 7 }}
       {% elif mode in ("Day", "Afternoon") %}
