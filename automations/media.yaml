@@ -1,6 +1,28 @@
 # ------------------------------
 # Media automations
 #
+- alias: Connect ADB
+  hide_entity: True
+  trigger:
+    - platform: state
+      entity_id: media_player.android_tv
+      to: 'unavailable'
+    - platform: time_pattern
+      minutes: '/1'
+      seconds: 0
+    - platform: template
+      value_template: '{{ states("media_player.android_tv") == "unknown" }}'
+  condition:
+    condition: or
+    conditions:
+      - condition: state
+        entity_id: media_player.android_tv
+        state: 'unavailable'
+      - condition: template
+        value_template: '{{ states("media_player.android_tv") == "unknown" }}'
+  action:
+    service: shell_command.adb
+
 - alias: Android TV media mode
   hide_entity: True
   trigger:
@@ -113,11 +135,15 @@
     - platform: state
       entity_id: input_select.media_mode
       to: 'Idle'
+      for: '00:02:00'
     - platform: state
       entity_id: media_player.hdmi_0
       to: 'off'
     - platform: state
       entity_id: media_player.samsung_tv
+      to: 'off'
+    - platform: state
+      entity_id: media_player.android_tv
       to: 'off'
   condition:
     condition: and

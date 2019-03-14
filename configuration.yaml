@@ -370,3 +370,6 @@ calendar:
 light:
   - platform: hyperion
     host: 127.0.0.1
+
+shell_command:
+  adb: "adb connect 192.168.1.123"
