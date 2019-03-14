@@ -60,13 +60,13 @@
         "standing": {
             "brightness": 200,
             "xy_color": [0.5268, 0.4133],
-            "media_diff": 60,
+            "media_diff": 100,
             "easing": "out_quad",
          },
         "tv": {
-            "brightness": 100,
+            "brightness": 140,
             "xy_color": [0.5268, 0.4133],
-            "media_diff": 80,
+            "media_diff": 120,
             "easing": "out_quad",
         },
     },
@@ -97,7 +97,9 @@ light.living_room_standing:
   {%- else -%}
   {{ light_on(start["standing"], end["standing"]) }}
   {%- endif %}
-  {% if state_standing == 'on' -%}
+  {% if media_mode == 'Paused' -%}
+  transition: 5
+  {% elif state_standing == 'on' -%}
   transition: 10
   {%- endif %}
 light.tv_left: &tv
@@ -106,7 +108,9 @@ light.tv_left: &tv
   {%- else -%}
   {{ light_on(start["tv"], end["tv"]) }}
   {%- endif %}
-  {% if state_tv == 'on' -%}
+  {% if media_mode == 'Paused' -%}
+  transition: 5
+  {% elif state_tv == 'on' -%}
   transition: 10
   {%- endif %}
 light.tv_right: *tv
