@@ -138,16 +138,20 @@ views:
             label: Living Room
           - binary_sensor.motion_sensor_4_1
           - binary_sensor.motion_sensor_10_1
+          - binary_sensor.living_room_dark
           - type: section
             label: Bedroom
           - binary_sensor.motion_sensor_2_1
           - binary_sensor.bed_sensor_16_1
+          - binary_sensor.bedroom_dark
           - type: section
             label: Kitchen
           - binary_sensor.motion_sensor_1_1
+          - binary_sensor.kitchen_dark
           - type: section
             label: Hall
           - binary_sensor.motion_sensor_5_1
+          - binary_sensor.hall_dark
           - type: section
             label: Other
           - entity: binary_sensor.weekday
@@ -166,13 +170,20 @@ views:
             hours_to_show: 18
             refresh_interval: 60
             title: "Living Room Light"
+          #- type: history-graph
+          #  entities:
+          #    - sensor.motion_sensor_4_2
+          #    - sensor.bookcase_threshold
+          #  hours_to_show: 18
+          #  refresh_interval: 60
+          #  title: "Bookcase Light"
           - type: history-graph
             entities:
-              - sensor.motion_sensor_4_2
-              - sensor.bookcase_threshold
+              - sensor.motion_sensor_2_2
+              - sensor.bedroom_threshold
             hours_to_show: 18
             refresh_interval: 60
-            title: "Bookcase Light"
+            title: "Bedroom Light"
           - type: history-graph
             entities:
               - sensor.motion_sensor_10_2
@@ -183,14 +194,8 @@ views:
             title: "Kitchen Light"
           - type: history-graph
             entities:
-              - sensor.motion_sensor_2_2
-              - sensor.bedroom_threshold
-            hours_to_show: 18
-            refresh_interval: 60
-            title: "Bedroom Light"
-          - type: history-graph
-            entities:
               - sensor.motion_sensor_5_2
+              - sensor.hall_threshold
             hours_to_show: 18
             refresh_interval: 60
             title: "Hall Light"
