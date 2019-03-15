@@ -11,6 +11,19 @@
   action:
     service: python_script.set_away
 
+- alias: Update occupied room
+  hide_entity: True
+  trigger:
+    - platform: time_pattern
+      minutes: '/5'
+      seconds: 0
+  condition:
+    condition: state
+    entity_id: input_boolean.myhome_active
+    state: 'on'
+  action:
+    service: python_script.update_occupied_room
+
 - alias: Bedroom occupied
   hide_entity: True
   trigger:
@@ -18,9 +31,6 @@
       entity_id: room.bedroom
       to: 'occupied'
       from: 'not_occupied'
-    - platform: time_pattern
-      minutes: '/5'
-      seconds: 0
   condition:
     condition: and
     conditions:
@@ -75,9 +85,6 @@
       from: 'not_occupied'
     - platform: state
       entity_id: input_select.media_mode
-    - platform: time_pattern
-      minutes: '/5'
-      seconds: 0
   condition:
     condition: and
     conditions:
@@ -130,9 +137,6 @@
       entity_id: room.hall
       to: 'occupied'
       from: 'not_occupied'
-    - platform: time_pattern
-      minutes: '/5'
-      seconds: 0
   condition:
     condition: and
     conditions:
@@ -185,9 +189,6 @@
       entity_id: room.kitchen
       to: 'occupied'
       from: 'not_occupied'
-    - platform: time_pattern
-      minutes: '/5'
-      seconds: 0
   condition:
     condition: and
     conditions:

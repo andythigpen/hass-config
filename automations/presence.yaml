@@ -2,29 +2,30 @@
 # Home presence rules
 # Turns lights on/off based on presence
 #
-- alias: Turn on occupied room lights when sun sets
-  hide_entity: True
-  trigger:
-    platform: sun
-    event: sunset
-    offset: "-01:00:00"
-  condition:
-    condition: state
-    entity_id: group.all_devices
-    state: home
-  action:
-    - service: python_script.enable_room_scene
-      data:
-        room: living_room
-    - service: python_script.enable_room_scene
-      data:
-        room: bedroom
-    - service: python_script.enable_room_scene
-      data:
-        room: kitchen
-    - service: python_script.enable_room_scene
-      data:
-        room: hall
+
+#- alias: Turn on occupied room lights when sun sets
+#  hide_entity: True
+#  trigger:
+#    platform: sun
+#    event: sunset
+#    offset: "-01:00:00"
+#  condition:
+#    condition: state
+#    entity_id: group.all_devices
+#    state: home
+#  action:
+#    - service: python_script.enable_room_scene
+#      data:
+#        room: living_room
+#    - service: python_script.enable_room_scene
+#      data:
+#        room: bedroom
+#    - service: python_script.enable_room_scene
+#      data:
+#        room: kitchen
+#    - service: python_script.enable_room_scene
+#      data:
+#        room: hall
 
 - alias: Turn lights off when not home
   hide_entity: True
