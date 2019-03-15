@@ -1,8 +1,8 @@
 {%- import 'modes.tpl' as modes with context -%}
 {%- set levels = {
     "Morning": 2,
-    "Day": 0,
-    "Afternoon": 0,
+    "Day": 1,
+    "Afternoon": 1,
     "Evening": 1,
     "Night": 2,
 } -%}
