@@ -21,6 +21,7 @@
     data:
       entity_id: sensor.touch_controller_13_1
       command: 5
+
 - alias: Bed triggers nighttime
   hide_entity: True
   trigger:
@@ -40,6 +41,7 @@
         state: 'on'
   action:
     service: script.bedtime
+
 - alias: Bed not occupied
   hide_entity: True
   trigger:
@@ -63,3 +65,16 @@
   action:
     service: script.turn_off
     entity_id: script.bedtime
+
+- alias: Reset bed when away
+  hide_entity: True
+  trigger:
+    platform: state
+    entity_id: group.all_devices
+    from: 'home'
+    to: 'not_home'
+    for:
+      minutes: 20
+  action:
+    service: script.turn_on
+    entity_id: script.reset_bed
