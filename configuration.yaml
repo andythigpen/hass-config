@@ -311,7 +311,6 @@ input_select:
       - TV
       - Movie
       - Paused
-      - Menu
       - Idle
       - "Off"
     icon: mdi:format-list-bulleted

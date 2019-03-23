@@ -83,8 +83,6 @@
       entity_id: room.living_room
       to: 'occupied'
       from: 'not_occupied'
-    - platform: state
-      entity_id: input_select.media_mode
   condition:
     condition: and
     conditions:
