@@ -127,6 +127,10 @@ views:
         title: HDMI
         entities:
           - media_player.hdmi_0
+      - type: glance
+        title: My Media
+        entities:
+          - input_select.media_mode
 
   - title: Sensors
     icon: mdi:router-wireless

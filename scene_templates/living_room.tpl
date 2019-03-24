@@ -86,7 +86,8 @@
   # easing: {{ easing }}
   # bri: {{ bri }}
   # media_diff: {{ media_diff }}
-  brightness: {% if states('input_select.media_mode') == 'TV' %}{{ [bri - media_diff, 1]|max }}{% else %}{{ bri }}{% endif %}
+  # media_mode: {{ media_mode }}
+  brightness: {% if media_mode == 'TV' %}{{ [bri - media_diff, 1]|max }}{% else %}{{ bri }}{% endif %}
   xy_color: [{{ easing(start["xy_color"][0], end["xy_color"][0]) }},
              {{ easing(start["xy_color"][1], end["xy_color"][1]) }}]
 {%- endmacro -%}
@@ -97,7 +98,9 @@ light.living_room_standing:
   {%- else -%}
   {{ light_on(start["standing"], end["standing"]) }}
   {%- endif %}
-  {% if media_mode == 'Paused' -%}
+  {% if media_mode == 'Idle' -%}
+  transition: 1
+  {% elif media_mode == 'Paused' -%}
   transition: 5
   {% elif state_standing == 'on' -%}
   transition: 10
@@ -108,7 +111,9 @@ light.tv_left: &tv
   {%- else -%}
   {{ light_on(start["tv"], end["tv"]) }}
   {%- endif %}
-  {% if media_mode == 'Paused' -%}
+  {% if media_mode == 'Idle' -%}
+  transition: 1
+  {% elif media_mode == 'Paused' -%}
   transition: 5
   {% elif state_tv == 'on' -%}
   transition: 10

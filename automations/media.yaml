@@ -34,12 +34,11 @@
     - platform: state
       entity_id: media_player.android_tv
       to: 'paused'
-    - platform: state
-      entity_id: media_player.android_tv
-      to: 'standby'
+      for: '00:00:05'
     - platform: state
       entity_id: media_player.android_tv
       to: 'idle'
+      for: '00:00:05'
     - platform: state
       entity_id: media_player.android_tv
       to: 'off'
@@ -71,6 +70,31 @@
           Idle
           {% endif %}
 
+- alias: Android TV idle on homescreen
+  hide_entity: True
+  trigger:
+    - platform: state
+      entity_id: media_player.android_tv
+      to: 'idle'
+  condition:
+    condition: and
+    conditions:
+      - condition: template
+        value_template: >
+            {% set mode = states("input_select.media_mode") %}
+            {% if mode != "Off" %}true{% endif %}
+      - condition: state
+        entity_id: input_boolean.myhome_active
+        state: 'on'
+      - condition: template
+        value_template: >
+            {{ is_state_attr("media_player.android_tv", "app_name", "Homescreen") }}
+  action:
+    service: input_select.select_option
+    data:
+      entity_id: input_select.media_mode
+      option: 'Idle'
+
 - alias: TV backlight on HDMI
   hide_entity: True
   trigger:
@@ -93,12 +117,12 @@
       - condition: template
         value_template: "{{ state_attr('light.hyperion', 'effect') != 'HDMI' }}"
   action:
+    - service: python_script.update_occupied_room
     - delay: '00:00:06'
     - service: light.turn_on
       data_template:
         entity_id: light.hyperion
         effect: "Cinema dim lights"
-    - service: python_script.update_occupied_room
     - delay: '00:00:03'
     - service: light.turn_on
       data_template:
@@ -111,7 +135,6 @@
     - platform: state
       entity_id: input_select.media_mode
       to: 'Paused'
-      for: '00:00:05'
     - platform: state
       entity_id: input_select.media_mode
       to: 'Idle'
@@ -157,10 +180,6 @@
       data_template:
         entity_id: light.hyperion
         effect: "Cinema brighten lights"
-    - service: input_select.select_option
-      data:
-        entity_id: input_select.media_mode
-        option: Idle
     - service: python_script.update_occupied_room
 
 - alias: TV backlight off
