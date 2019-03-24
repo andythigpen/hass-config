@@ -147,7 +147,6 @@ group:
     name: Media
     entities:
     - media_player.samsung_tv
-    - media_player.hdmi_0
   sensors_view:
     view: yes
     icon: mdi:router-wireless
@@ -344,9 +343,6 @@ input_boolean:
     icon: mdi:theme-light-dark
 
 python_script:
-
-hdmi_cec:
-  platform: media_player
 
 media_player:
   - platform: samsungtv

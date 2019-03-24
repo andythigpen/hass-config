@@ -190,9 +190,6 @@
       to: 'Idle'
       for: '00:05:00'
     - platform: state
-      entity_id: media_player.hdmi_0
-      to: 'off'
-    - platform: state
       entity_id: media_player.samsung_tv
       to: 'off'
     - platform: state
