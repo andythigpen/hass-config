@@ -35,7 +35,7 @@
     condition: and
     conditions:
       - condition: state
-        entity_id: binary_sensor.bedroom_dark
+        entity_id: binary_sensor.dark_bedroom
         state: 'on'
       - condition: state
         entity_id: input_boolean.myhome_active
@@ -87,7 +87,7 @@
     condition: and
     conditions:
       - condition: state
-        entity_id: binary_sensor.living_room_dark
+        entity_id: binary_sensor.dark_living_room
         state: 'on'
       - condition: state
         entity_id: input_boolean.myhome_active
@@ -139,7 +139,7 @@
     condition: and
     conditions:
       - condition: state
-        entity_id: binary_sensor.hall_dark
+        entity_id: binary_sensor.dark_hall
         state: 'on'
       - condition: state
         entity_id: input_boolean.myhome_active
@@ -191,7 +191,7 @@
     condition: and
     conditions:
       - condition: state
-        entity_id: binary_sensor.kitchen_dark
+        entity_id: binary_sensor.dark_kitchen
         state: 'on'
       - condition: state
         entity_id: input_boolean.myhome_active

@@ -20,13 +20,13 @@ def set_scene(hass, data, logger):
             logger.debug('room off %s', room)
             continue
 
-        sensor_name = 'binary_sensor.{}_dark'.format(room_name)
+        # use input_boolean dark sensors because they lag behind 15 mins
+        sensor_name = 'input_boolean.dark_{}'.format(room_name)
         dark_sensor = hass.states.get(sensor_name)
         if dark_sensor.state == 'off':
             diff = dt_util.now() - dark_sensor.last_changed
             maxtime = datetime.timedelta(minutes=30)
-            mintime = datetime.timedelta(minutes=10)
-            if diff >= mintime and diff <= maxtime:
+            if diff <= maxtime:
                 scene_name = 'scene.{}_not_occupied'.format(room_name)
                 logger.info('turning on scene %s for room %s '
                             'due to dark sensor', scene_name, room_name)

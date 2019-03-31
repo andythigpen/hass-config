@@ -1,26 +1,26 @@
 # Light level binary sensors
-bedroom_dark:
+dark_bedroom:
   friendly_name: Bedroom Light Sensor
   value_template: >
       {% set thresh = states("sensor.bedroom_threshold") | float %}
       {% set sensor = states("sensor.motion_sensor_2_2") | float %}
       {{ sensor < thresh }}
 
-living_room_dark:
+dark_living_room:
   friendly_name: Living Room Light Sensor
   value_template: >
       {% set lr_thresh = states("sensor.living_room_threshold") | float %}
       {% set lr_sensor = states("sensor.motion_sensor_10_2") | float %}
       {{ lr_sensor < lr_thresh }}
 
-hall_dark:
+dark_hall:
   friendly_name: Hall Light Sensor
   value_template: >
       {% set thresh = states("sensor.hall_threshold") | float %}
       {% set sensor = states("sensor.motion_sensor_5_2") | float %}
       {{ sensor < thresh }}
 
-kitchen_dark:
+dark_kitchen:
   friendly_name: Kitchen Light Sensor
   # use the living room sensor since kitchen sensor does not
   # receive enough light

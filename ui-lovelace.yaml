@@ -138,20 +138,24 @@ views:
             label: Living Room
           - binary_sensor.motion_sensor_4_1
           - binary_sensor.motion_sensor_10_1
-          - binary_sensor.living_room_dark
+          - binary_sensor.dark_living_room
+          - input_boolean.dark_living_room
           - type: section
             label: Bedroom
           - binary_sensor.motion_sensor_2_1
           - binary_sensor.bed_sensor_16_1
-          - binary_sensor.bedroom_dark
+          - binary_sensor.dark_bedroom
+          - input_boolean.dark_bedroom
           - type: section
             label: Kitchen
           - binary_sensor.motion_sensor_1_1
-          - binary_sensor.kitchen_dark
+          - binary_sensor.dark_kitchen
+          - input_boolean.dark_kitchen
           - type: section
             label: Hall
           - binary_sensor.motion_sensor_5_1
-          - binary_sensor.hall_dark
+          - binary_sensor.dark_hall
+          - input_boolean.dark_hall
           - type: section
             label: Other
           - entity: binary_sensor.weekday

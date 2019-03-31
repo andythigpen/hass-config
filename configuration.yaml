@@ -341,6 +341,14 @@ input_boolean:
   autodark_theme:
     name: Auto-dark theme
     icon: mdi:theme-light-dark
+  dark_bedroom:
+    name: Bedroom is dark
+  dark_living_room:
+    name: Living room is dark
+  dark_kitchen:
+    name: Kitchen is dark
+  dark_hall:
+    name: Hall is dark
 
 python_script:
 
