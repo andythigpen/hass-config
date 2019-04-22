@@ -5,7 +5,7 @@
 	{
 		"duration": 3.0,
 		"method": "inExpo",
-		"color-start": [6, 44, 180],
+		"color-start": [171, 101, 17],
 		"color-end": [0, 0, 0]
 	}
 }
