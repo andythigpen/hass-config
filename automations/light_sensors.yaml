@@ -1,0 +1,99 @@
+- alias: Bedroom is dark
+  hide_entity: True
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.dark_bedroom
+      to: 'on'
+      for:
+        minutes: 20
+  action:
+    service: input_boolean.turn_on
+    data:
+      entity_id: input_boolean.dark_bedroom
+- alias: Bedroom is not dark
+  hide_entity: True
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.dark_bedroom
+      to: 'off'
+      for:
+        minutes: 20
+  action:
+    service: input_boolean.turn_off
+    data:
+      entity_id: input_boolean.dark_bedroom
+
+- alias: Living room is dark
+  hide_entity: True
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.dark_living_room
+      to: 'on'
+      for:
+        minutes: 20
+  action:
+    service: input_boolean.turn_on
+    data:
+      entity_id: input_boolean.dark_living_room
+- alias: Living room is not dark
+  hide_entity: True
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.dark_living_room
+      to: 'off'
+      for:
+        minutes: 20
+  action:
+    service: input_boolean.turn_off
+    data:
+      entity_id: input_boolean.dark_living_room
+
+- alias: Kitchen is dark
+  hide_entity: True
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.dark_kitchen
+      to: 'on'
+      for:
+        minutes: 20
+  action:
+    service: input_boolean.turn_on
+    data:
+      entity_id: input_boolean.dark_kitchen
+- alias: Kitchen is not dark
+  hide_entity: True
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.dark_kitchen
+      to: 'off'
+      for:
+        minutes: 20
+  action:
+    service: input_boolean.turn_off
+    data:
+      entity_id: input_boolean.dark_kitchen
+
+- alias: Hall is dark
+  hide_entity: True
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.dark_hall
+      to: 'on'
+      for:
+        minutes: 20
+  action:
+    service: input_boolean.turn_on
+    data:
+      entity_id: input_boolean.dark_hall
+- alias: Hall is not dark
+  hide_entity: True
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.dark_hall
+      to: 'off'
+      for:
+        minutes: 20
+  action:
+    service: input_boolean.turn_off
+    data:
+      entity_id: input_boolean.dark_hall
