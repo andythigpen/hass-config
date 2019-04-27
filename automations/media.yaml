@@ -53,10 +53,10 @@
         entity_id: input_boolean.myhome_active
         state: 'on'
   action:
-    service: input_select.select_option
-    data_template:
-      entity_id: input_select.media_mode
-      option: >
+    - service: input_select.select_option
+      data_template:
+        entity_id: input_select.media_mode
+        option: >
           {% set name = state_attr('media_player.android_tv', 'app_name') %}
           {% if is_state('media_player.android_tv', 'playing') %}
           {% if name in ('Amazon Prime Video', 'Netflix') %}
@@ -69,6 +69,7 @@
           {% elif is_state('media_player.android_tv', 'idle') or is_state('media_player.android_tv', 'off') %}
           Idle
           {% endif %}
+    - service: python_script.update_occupied_room
 
 - alias: Android TV idle on homescreen
   hide_entity: True
