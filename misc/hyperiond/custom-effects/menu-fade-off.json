@@ -1,0 +1,16 @@
+{
+	"name" : "Menu fade off",
+	"script" : "fade_ng.py",
+	"args" :
+	{
+		"duration": 3.0,
+		"method": "inExpo",
+		"color-start": [195, 149, 78],
+		"color-end": [0, 0, 0],
+		"smoothing-custom-settings" : true,
+		"smoothing-time_ms" : 500,
+		"smoothing-updateDelay" : 0,
+		"smoothing-updateFrequency" : 20.0,
+		"smoothing-pause" : false
+	}
+}

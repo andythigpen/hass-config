@@ -1,0 +1,17 @@
+{
+	"name" : "Menu fade on",
+	"script" : "fade_ng.py",
+	"args" :
+	{
+		"duration": 1.5,
+		"interval": 0.000001,
+		"method": "outQuad",
+		"color-start": [0, 0, 0],
+		"color-end": [195, 149, 78],
+		"smoothing-custom-settings" : true,
+		"smoothing-time_ms" : 500,
+		"smoothing-updateDelay" : 0,
+		"smoothing-updateFrequency" : 20.0,
+		"smoothing-pause" : false
+	}
+}
