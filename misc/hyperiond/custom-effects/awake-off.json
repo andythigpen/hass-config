@@ -1,0 +1,16 @@
+{
+	"name" : "awake-off",
+	"script" : "fade_ng.py",
+	"args" :
+	{
+		"duration": 1.0,
+		"method": "inExpo",
+		"color-start": [103, 74, 39],
+		"color-end": [0, 0, 0],
+		"smoothing-custom-settings" : true,
+		"smoothing-time_ms" : 500,
+		"smoothing-updateDelay" : 0,
+		"smoothing-updateFrequency" : 20.0,
+		"smoothing-pause" : false
+	}
+}

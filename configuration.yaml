@@ -310,8 +310,10 @@ input_select:
       - TV
       - Movie
       - Paused
+      - Awake
       - Idle
       - "Off"
+      - Disabled
     icon: mdi:format-list-bulleted
   current_theme:
     name: Theme

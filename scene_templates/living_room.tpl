@@ -80,16 +80,23 @@
 
 {%- macro light_on(start, end) -%}
   {%- set easing = modes|attr(start["easing"]) -%}
-  {%- set bri = easing(start["brightness"], end["brightness"])|round|int %}
-  {%- set media_diff = easing(start["media_diff"], end["media_diff"])|round|int %}
+  {%- set bri = easing(start["brightness"], end["brightness"])|round|int -%}
   state: 'on'
   # easing: {{ easing }}
   # bri: {{ bri }}
+  {% if media_mode == 'TV' -%}
+  {%- set media_diff = easing(start["media_diff"], end["media_diff"])|round|int %}
+  {%- set bri = [bri - media_diff, 1]|max -%}
   # media_diff: {{ media_diff }}
+  {%- elif media_mode == 'Awake' -%}
+  {%- set awake_diff = easing(start["media_diff"] - 80, end["media_diff"] - 80)|round|int %}
+  {%- set bri = [bri - awake_diff, 1]|max -%}
+  # awake_diff: {{ awake_diff }}
+  {%- endif %}
   # media_mode: {{ media_mode }}
-  brightness: {% if media_mode == 'TV' %}{{ [bri - media_diff, 1]|max }}{% else %}{{ bri }}{% endif %}
+  brightness: {{ bri }}
   xy_color: [{{ easing(start["xy_color"][0], end["xy_color"][0]) }},
-             {{ easing(start["xy_color"][1], end["xy_color"][1]) }}]
+             {{- easing(start["xy_color"][1], end["xy_color"][1]) }}]
 {%- endmacro -%}
 
 light.living_room_standing:
@@ -98,10 +105,10 @@ light.living_room_standing:
   {%- else -%}
   {{ light_on(start["standing"], end["standing"]) }}
   {%- endif %}
-  {% if media_mode == 'Idle' -%}
-  transition: 1
-  {% elif media_mode == 'Paused' -%}
-  transition: 5
+  {% if media_mode in ('Awake',) -%}
+  transition: 2
+  {% elif media_mode in ('Idle', 'Paused') -%}
+  transition: 3
   {% elif state_standing == 'on' -%}
   transition: 10
   {%- endif %}
@@ -111,10 +118,10 @@ light.tv_left: &tv
   {%- else -%}
   {{ light_on(start["tv"], end["tv"]) }}
   {%- endif %}
-  {% if media_mode == 'Idle' -%}
-  transition: 1
-  {% elif media_mode == 'Paused' -%}
-  transition: 5
+  {% if media_mode in ('Awake',) -%}
+  transition: 2
+  {% elif media_mode in ('Idle', 'Paused') -%}
+  transition: 3
   {% elif state_tv == 'on' -%}
   transition: 10
   {%- endif %}

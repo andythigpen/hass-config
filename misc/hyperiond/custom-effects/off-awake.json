@@ -1,13 +1,13 @@
 {
-	"name" : "Menu fade on",
+	"name" : "off-awake",
 	"script" : "fade_ng.py",
 	"args" :
 	{
-		"duration": 1.5,
+		"duration": 1.0,
 		"interval": 0.000001,
 		"method": "outQuad",
 		"color-start": [0, 0, 0],
-		"color-end": [195, 149, 78],
+		"color-end": [103, 74, 39],
 		"smoothing-custom-settings" : true,
 		"smoothing-time_ms" : 500,
 		"smoothing-updateDelay" : 0,

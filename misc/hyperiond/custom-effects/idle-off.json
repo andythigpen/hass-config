@@ -1,5 +1,5 @@
 {
-	"name" : "Menu fade off",
+	"name" : "idle-off",
 	"script" : "fade_ng.py",
 	"args" :
 	{
