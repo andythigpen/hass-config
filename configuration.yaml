@@ -287,8 +287,8 @@ logger:
     homeassistant.components.device_tracker.tomato: warning
     homeassistant.components.device_tracker.nmap_tracker: warning
     homeassistant.components.http: warning
-    #mysensors: debug
-    homeassistant.components.sensor.mysensors: debug
+    mysensors: info
+    homeassistant.components.mysensors: info
     custom_components.myhome: debug
     #homeassistant.helpers.script: info
 
