@@ -378,3 +378,5 @@ light:
 
 shell_command:
   adb: "adb connect 192.168.1.123"
+
+custom_updater:

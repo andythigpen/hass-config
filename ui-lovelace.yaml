@@ -1,4 +1,7 @@
 title: My Home
+resources:
+  - url: /customcards/github/custom-cards/tracker-card.js?track=true
+    type: module
 views:
   - title: Home
     icon: mdi:home
@@ -207,6 +210,7 @@ views:
   - title: Scripts
     icon: mdi:wrench
     cards:
+      - type: custom:tracker-card
       - type: entities
         title: Scripts
         entities:
