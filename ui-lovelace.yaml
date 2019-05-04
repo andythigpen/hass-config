@@ -1,8 +1,23 @@
 title: My Home
+background: >-
+  center / cover no-repeat
+  url("/local/background.jpg")
+  fixed
+resources:
+  - url: /local/plugins/card-tools.js?v=1
+    type: js
+  - url: /local/plugins/theme-maker.js?v=1
+    type: js
+  - url: /local/plugins/compact-custom-header.js?v=0.0.2
+    type: module
 views:
   - title: Home
     icon: mdi:home
     cards:
+      - type: custom:compact-custom-header
+        background: 'rgba(150, 150, 150, 0.3)'
+        main_config: true
+      #- type: custom:theme-maker
       - type: conditional
         conditions:
           - entity: room.living_room
@@ -95,6 +110,7 @@ views:
   - title: Lights
     icon: mdi:lightbulb-outline
     cards:
+      - type: custom:compact-custom-header
       - type: entities
         title: Lights
         entities:
@@ -119,6 +135,7 @@ views:
   - title: Media
     icon: mdi:television-classic
     cards:
+      - type: custom:compact-custom-header
       - type: media-control
         entity: media_player.android_tv
       - type: media-control
@@ -131,6 +148,7 @@ views:
   - title: Sensors
     icon: mdi:router-wireless
     cards:
+      - type: custom:compact-custom-header
       - type: entities
         title: Sensors
         entities:
@@ -207,6 +225,7 @@ views:
   - title: Scripts
     icon: mdi:wrench
     cards:
+      - type: custom:compact-custom-header
       - type: entities
         title: Scripts
         entities:

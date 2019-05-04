@@ -18,8 +18,8 @@ myhome: !include conf/myhome.yaml
 
 frontend:
   javascript_version: latest
-  extra_html_url:
-    - /local/custom_ui/state-card-tiles.html
+  #extra_html_url:
+  #- /local/custom_ui/state-card-tiles.html
   themes: !include_dir_merge_named themes/
 
 lovelace:
@@ -320,7 +320,8 @@ input_select:
     options:
      - default
      - midnight
-    initial: default
+     - transparent
+    initial: transparent
     icon: mdi:theme-light-dark
 
 
