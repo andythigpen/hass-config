@@ -380,3 +380,5 @@ shell_command:
   adb: "adb connect 192.168.1.123"
 
 custom_updater:
+  card_urls:
+    - https://raw.githubusercontent.com/kalkih/mini-graph-card/master/tracker.json

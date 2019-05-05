@@ -2,6 +2,12 @@ title: My Home
 resources:
   - url: /customcards/github/custom-cards/tracker-card.js?track=true
     type: module
+  - url: /customcards/github/thomasloven/card-tools.js?track=true
+    type: js
+  - url: /customcards/github/thomasloven/layout-card.js?track=true
+    type: js
+  - url: /local/mini-graph-card-bundle.js?v=0.3.3
+    type: module
 views:
   - title: Home
     icon: mdi:home
@@ -207,49 +213,50 @@ views:
             refresh_interval: 60
             title: "Hall Light"
 
-  - title: Scripts
+  - title: System
     icon: mdi:wrench
+    panel: true
     cards:
-      - type: custom:tracker-card
-      - type: entities
-        title: Scripts
-        entities:
-          - script.all_off
-          - script.bedtime
-          - script.bedtime_now
-          - script.reset_bed
-          - script.wakeup
-          - script.snooze
-      - type: gauge
-        title: CPU usage
-        entity: sensor.processor_use
-      - type: gauge
-        title: Load 1m
-        entity: sensor.load_1m
-      - type: gauge
-        title: Load 5m
-        entity: sensor.load_5m
-      - type: gauge
-        title: Load 15m
-        entity: sensor.load_15m
-      - type: sensor
-        title: Memory usage
-        entity: sensor.memory_use
-        graph: line
-      - type: sensor
-        title: Memory free
-        entity: sensor.memory_free
-        graph: line
-      - type: sensor
-        title: Swap usage
-        entity: sensor.swap_use
-        graph: line
-      - type: sensor
-        title: Swap free
-        entity: sensor.swap_free
-        graph: line
-      - type: entities
-        title: Theme
-        entities:
-          - input_boolean.autodark_theme
-          - input_select.current_theme
+      - type: custom:layout-card
+        max_columns: 2
+        max_width: [47%, 47%]
+        cards:
+          - type: horizontal-stack
+            cards:
+              - type: gauge
+                title: CPU usage
+                entity: sensor.processor_use
+              - type: gauge
+                title: Load 1m
+                entity: sensor.load_1m
+          - type: horizontal-stack
+            cards:
+              - type: gauge
+                title: Load 5m
+                entity: sensor.load_5m
+              - type: gauge
+                title: Load 15m
+                entity: sensor.load_15m
+          - type: horizontal-stack
+            cards:
+              - type: custom:mini-graph-card
+                entities:
+                  - sensor.memory_use
+              - type: custom:mini-graph-card
+                entities:
+                  - sensor.swap_use
+          - type: entities
+            title: Scripts
+            entities:
+              - script.all_off
+              - script.bedtime
+              - script.bedtime_now
+              - script.reset_bed
+              - script.wakeup
+              - script.snooze
+          - type: entities
+            title: Theme
+            entities:
+              - input_boolean.autodark_theme
+              - input_select.current_theme
+          - type: custom:tracker-card
