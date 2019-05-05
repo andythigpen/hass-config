@@ -10,6 +10,8 @@ resources:
     type: module
   - url: /local/theme-maker.js?v=0.1
     type: js
+  - url: /customcards/github/maykar/compact-custom-header.js?track=true
+    type: module
 views:
   - title: Home
     icon: mdi:home
@@ -112,6 +114,8 @@ views:
                     name: Kitchen
                   - entity: room.hall
                     name: Hall
+          - type: custom:compact-custom-header
+            main_config: true
 
   - title: Lights
     icon: mdi:lightbulb-outline
@@ -121,27 +125,28 @@ views:
         max_columns: 2
         max_width: [42%, 42%]
         cards:
-           - type: entities
-             title: Living Room
-             entities:
-               - light.living_room_standing
-               - light.tv_left
-               - light.tv_right
-               - light.hyperion
-           - type: entities
-             title: Bedroom
-             entities:
-               - light.night_stand
-               - light.dresser
-           - type: entities
-             title: Kitchen
-             entities:
-               - light.rgbw_15_1
-               - light.rgbw_15_2
-           - type: entities
-             title: Hall
-             entities:
-               - light.hall
+          - type: entities
+            title: Living Room
+            entities:
+              - light.living_room_standing
+              - light.tv_left
+              - light.tv_right
+              - light.hyperion
+          - type: entities
+            title: Bedroom
+            entities:
+              - light.night_stand
+              - light.dresser
+          - type: entities
+            title: Kitchen
+            entities:
+              - light.rgbw_15_1
+              - light.rgbw_15_2
+          - type: entities
+            title: Hall
+            entities:
+              - light.hall
+          - type: custom:compact-custom-header
 
   - title: Media
     icon: mdi:television-classic
@@ -159,6 +164,7 @@ views:
             title: My Media
             entities:
               - input_select.media_mode
+          - type: custom:compact-custom-header
 
   - title: Sensors
     icon: mdi:router-wireless
@@ -264,6 +270,7 @@ views:
                     name: THRESHOLD
                   - entity: sensor.motion_sensor_5_2
                     name: SENSOR
+          - type: custom:compact-custom-header
 
   - title: System
     icon: mdi:wrench
@@ -312,3 +319,4 @@ views:
               - input_boolean.autodark_theme
               - input_select.current_theme
           - type: custom:tracker-card
+          - type: custom:compact-custom-header
