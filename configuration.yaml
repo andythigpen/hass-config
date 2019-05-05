@@ -18,8 +18,6 @@ myhome: !include conf/myhome.yaml
 
 frontend:
   javascript_version: latest
-  extra_html_url:
-    - /local/custom_ui/state-card-tiles.html
   themes: !include_dir_merge_named themes/
 
 lovelace:
@@ -192,7 +190,7 @@ input_select:
      - default
      - midnight
      - light
-    initial: default
+    initial: light
     icon: mdi:theme-light-dark
 
 
@@ -254,3 +252,4 @@ shell_command:
 custom_updater:
   card_urls:
     - https://raw.githubusercontent.com/kalkih/mini-graph-card/master/tracker.json
+    - https://raw.githubusercontent.com/matisaul/vertical-style-card/master/tracker.json

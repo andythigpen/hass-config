@@ -12,6 +12,10 @@ resources:
     type: js
   - url: /customcards/github/maykar/compact-custom-header.js?track=true
     type: module
+  - url: /customcards/github/custom-cards/button-card.js?track=true
+    type: module
+  - url: /local/vertical-style-card.js?v=0.1
+    type: js
 views:
   - title: Home
     icon: mdi:home
@@ -70,52 +74,301 @@ views:
                     - light.hall
           - type: vertical-stack
             cards:
-              - type: glance
-                title: My Home
-                columns: 4
-                entities:
-                  - entity: input_boolean.myhome_active
-                    tap_action:
-                      action: toggle
-                  - input_select.myhome_mode
-                  - entity: device_tracker.pixel
-                    name: Phone
-                  - entity: device_tracker.rfid_sensor_12_1
-                    name: Wallet
-                  - entity: input_boolean.room_living_room
-                    tap_action:
-                      action: toggle
-                  - entity: input_boolean.room_bedroom
-                    tap_action:
-                      action: toggle
-                  - entity: input_boolean.room_kitchen
-                    tap_action:
-                      action: toggle
-                  - entity: input_boolean.room_hall
-                    tap_action:
-                      action: toggle
-              - type: glance
-                title: My Media
-                columns: 3
-                entities:
-                  - input_select.media_mode
-                  - entity: light.hyperion
-                    name: Backlight
-              - type: glance
-                title: Presence
-                show_state: false
-                columns: 4
-                entities:
-                  - entity: room.living_room
-                    name: Living Room
-                  - entity: room.bedroom
-                    name: Bedroom
-                  - entity: room.kitchen
-                    name: Kitchen
-                  - entity: room.hall
-                    name: Hall
-          - type: custom:compact-custom-header
-            main_config: true
+            - type: custom:vertical-style-card
+              title: Media
+              style:
+                font_size: 22px
+              cards:
+                - type: horizontal-stack
+                  cards:
+                    - type: "custom:button-card"
+                      entity: input_select.media_mode
+                      color: var(--secondary-text-color)
+                      show_state: true
+                      show_name: false
+                      show_label: true
+                      label: "Mode"
+                      state:
+                        - value: "Disabled"
+                          icon: mdi:filmstrip-off
+                        - value: "Off"
+                          icon: mdi:power-off
+                        - value: "Idle"
+                          icon: mdi:sleep
+                        - value: "Awake"
+                          icon: mdi:apps
+                          color: var(--light-primary-color)
+                        - value: "Paused"
+                          icon: mdi:pause
+                          color: var(--light-primary-color)
+                        - value: "TV"
+                          icon: mdi:youtube-tv
+                          color: var(--light-primary-color)
+                        - value: "Movie"
+                          icon: mdi:filmstrip
+                          color: var(--light-primary-color)
+                      styles:
+                        label:
+                          - font-size: 0.95rem
+                          - color: var(--secondary-text-color)
+                        state:
+                          - text-transform: capitalize
+                      tap_action:
+                        action: more-info
+                    - type: "custom:button-card"
+                      entity: light.hyperion
+                      color: var(--secondary-text-color)
+                      show_state: true
+                      show_name: false
+                      show_label: true
+                      label: "Backlight"
+                      state:
+                        - value: "on"
+                          color: var(--light-primary-color)
+                      styles:
+                        label:
+                          - font-size: 0.95rem
+                          - color: var(--secondary-text-color)
+                        state:
+                          - text-transform: capitalize
+                      tap_action:
+                        action: more-info
+            - type: vertical-stack
+              cards:
+                - type: horizontal-stack
+                  cards:
+                    - type: "custom:button-card"
+                      entity: input_boolean.myhome_active
+                      color: var(--secondary-text-color)
+                      show_state: true
+                      show_name: false
+                      show_label: true
+                      label: "Home Active"
+                      styles:
+                        label:
+                          - font-size: 0.95rem
+                          - color: var(--secondary-text-color)
+                        state:
+                          - text-transform: capitalize
+                      tap_action:
+                        action: toggle
+                      hold_action:
+                        action: more-info
+                      state:
+                        - value: "on"
+                          color: var(--light-primary-color)
+                    - type: "custom:button-card"
+                      entity: input_select.myhome_mode
+                      color: var(--secondary-text-color)
+                      show_state: true
+                      show_name: false
+                      show_label: true
+                      label: "Home Mode"
+                      styles:
+                        label:
+                          - font-size: 0.95rem
+                          - color: var(--secondary-text-color)
+                        state:
+                          - text-transform: capitalize
+                      tap_action:
+                        action: more-info
+            - type: custom:vertical-style-card
+              title: Rooms
+              style:
+                font_size: 22px
+              cards:
+                - type: horizontal-stack
+                  cards:
+                    - type: "custom:button-card"
+                      entity: input_boolean.room_living_room
+                      color: var(--secondary-text-color)
+                      show_state: true
+                      show_name: false
+                      show_label: true
+                      label: "Living Room"
+                      state:
+                        - value: "on"
+                          color: var(--light-primary-color)
+                      styles:
+                        label:
+                          - font-size: 0.95rem
+                          - color: var(--secondary-text-color)
+                        state:
+                          - text-transform: capitalize
+                      tap_action:
+                        action: toggle
+                      hold_action:
+                        action: more-info
+                    - type: "custom:button-card"
+                      entity: input_boolean.room_bedroom
+                      color: var(--secondary-text-color)
+                      show_state: true
+                      show_name: false
+                      show_label: true
+                      label: "Bedroom"
+                      state:
+                        - value: "on"
+                          color: var(--light-primary-color)
+                      styles:
+                        label:
+                          - font-size: 0.95rem
+                          - color: var(--secondary-text-color)
+                        state:
+                          - text-transform: capitalize
+                      tap_action:
+                        action: toggle
+                      hold_action:
+                        action: more-info
+                    - type: "custom:button-card"
+                      entity: input_boolean.room_kitchen
+                      color: var(--secondary-text-color)
+                      show_state: true
+                      show_name: false
+                      show_label: true
+                      label: "Kitchen"
+                      state:
+                        - value: "on"
+                          color: var(--light-primary-color)
+                      styles:
+                        label:
+                          - font-size: 0.95rem
+                          - color: var(--secondary-text-color)
+                        state:
+                          - text-transform: capitalize
+                      tap_action:
+                        action: toggle
+                      hold_action:
+                        action: more-info
+                    - type: "custom:button-card"
+                      entity: input_boolean.room_hall
+                      color: var(--secondary-text-color)
+                      show_state: true
+                      show_name: false
+                      show_label: true
+                      label: "Hall"
+                      state:
+                        - value: "on"
+                          color: var(--light-primary-color)
+                      styles:
+                        label:
+                          - font-size: 0.95rem
+                          - color: var(--secondary-text-color)
+                        state:
+                          - text-transform: capitalize
+                      tap_action:
+                        action: toggle
+                      hold_action:
+                        action: more-info
+                - type: horizontal-stack
+                  cards:
+                    - type: "custom:button-card"
+                      entity: room.living_room
+                      color: var(--secondary-text-color)
+                      show_state: false
+                      show_name: false
+                      show_label: true
+                      label: "Living Room"
+                      state:
+                        - value: "occupied"
+                          color: var(--light-primary-color)
+                      styles:
+                        label:
+                          - font-size: 0.95rem
+                          - color: var(--secondary-text-color)
+                      tap_action:
+                        action: more-info
+                    - type: "custom:button-card"
+                      entity: room.bedroom
+                      color: var(--secondary-text-color)
+                      show_state: false
+                      show_name: false
+                      show_label: true
+                      label: "Bedroom"
+                      state:
+                        - value: "occupied"
+                          color: var(--light-primary-color)
+                      styles:
+                        label:
+                          - font-size: 0.95rem
+                          - color: var(--secondary-text-color)
+                      tap_action:
+                        action: more-info
+                    - type: "custom:button-card"
+                      entity: room.kitchen
+                      color: var(--secondary-text-color)
+                      show_state: false
+                      show_name: false
+                      show_label: true
+                      label: "Kitchen"
+                      state:
+                        - value: "occupied"
+                          color: var(--light-primary-color)
+                      styles:
+                        label:
+                          - font-size: 0.95rem
+                          - color: var(--secondary-text-color)
+                      tap_action:
+                        action: more-info
+                    - type: "custom:button-card"
+                      entity: room.hall
+                      color: var(--secondary-text-color)
+                      show_state: false
+                      show_name: false
+                      show_label: true
+                      label: "Hall"
+                      state:
+                        - value: "occupied"
+                          color: var(--light-primary-color)
+                      styles:
+                        label:
+                          - font-size: 0.95rem
+                          - color: var(--secondary-text-color)
+                      tap_action:
+                        action: more-info
+            - type: custom:vertical-style-card
+              title: Devices
+              style:
+                font_size: 22px
+              cards:
+                - type: horizontal-stack
+                  cards:
+                    - type: "custom:button-card"
+                      entity: device_tracker.pixel
+                      color: var(--secondary-text-color)
+                      show_state: true
+                      show_name: false
+                      show_label: true
+                      show_entity_picture: true
+                      label: "Phone"
+                      styles:
+                        label:
+                          - font-size: 0.95rem
+                          - color: var(--secondary-text-color)
+                        entity_picture:
+                          - border-radius: 50%
+                          - margin-bottom: "-4px"
+                        state:
+                          - text-transform: capitalize
+                      tap_action:
+                        action: more-info
+                    - type: "custom:button-card"
+                      entity: device_tracker.rfid_sensor_12_1
+                      color: var(--secondary-text-color)
+                      show_state: true
+                      show_name: false
+                      show_label: true
+                      show_entity_picture: true
+                      label: "Wallet"
+                      styles:
+                        label:
+                          - font-size: 0.95rem
+                          - color: var(--secondary-text-color)
+                        state:
+                          - text-transform: capitalize
+                      tap_action:
+                        action: more-info
+            - type: custom:compact-custom-header
+              main_config: true
 
   - title: Lights
     icon: mdi:lightbulb-outline
