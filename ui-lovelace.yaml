@@ -217,6 +217,7 @@ views:
                 show:
                   points: false
                 height: 175
+                line_width: 1
                 entities:
                   - entity: sensor.living_room_threshold
                     name: THRESHOLD
@@ -229,6 +230,7 @@ views:
                 show:
                   points: false
                 height: 175
+                line_width: 1
                 entities:
                   - entity: sensor.bookcase_threshold
                     name: THRESHOLD
@@ -241,6 +243,7 @@ views:
                 show:
                   points: false
                 height: 175
+                line_width: 1
                 entities:
                   - entity: sensor.bedroom_threshold
                     name: THRESHOLD
@@ -253,6 +256,7 @@ views:
                 show:
                   points: false
                 height: 175
+                line_width: 1
                 entities:
                   - entity: sensor.kitchen_threshold
                     name: THRESHOLD
@@ -265,6 +269,7 @@ views:
                 show:
                   points: false
                 height: 175
+                line_width: 1
                 entities:
                   - entity: sensor.hall_threshold
                     name: THRESHOLD
@@ -299,9 +304,11 @@ views:
           - type: horizontal-stack
             cards:
               - type: custom:mini-graph-card
+                line_width: 1
                 entities:
                   - sensor.memory_use
               - type: custom:mini-graph-card
+                line_width: 1
                 entities:
                   - sensor.swap_use
           - type: entities
