@@ -284,13 +284,12 @@ logger:
   logs:
     homeassistant.components: info
     homeassistant.components.light: warning
-    homeassistant.components.device_tracker.tomato: warning
-    homeassistant.components.device_tracker.nmap_tracker: warning
+    homeassistant.components.tomato.device_tracker: warning
     homeassistant.components.http: warning
+    homeassistant.components.template.scene: info
     mysensors: info
     homeassistant.components.mysensors: info
     custom_components.myhome: debug
-    #homeassistant.helpers.script: info
 
 input_select:
   myhome_mode:
