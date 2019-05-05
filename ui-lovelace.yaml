@@ -11,207 +11,256 @@ resources:
 views:
   - title: Home
     icon: mdi:home
+    panel: true
     cards:
-      - type: conditional
-        conditions:
-          - entity: room.living_room
-            state_not: "not_occupied"
-        card:
-          type: entities
-          title: Living Room
-          show_header_toggle: true
-          entities:
-            - light.living_room_standing
-            - light.tv_left
-            - light.tv_right
-      - type: conditional
-        conditions:
-          - entity: room.bedroom
-            state_not: "not_occupied"
-        card:
-          type: entities
-          title: Bedroom
-          show_header_toggle: true
-          entities:
-            - light.night_stand
-            - light.dresser
-      - type: conditional
-        conditions:
-          - entity: room.kitchen
-            state_not: "not_occupied"
-        card:
-          type: entities
-          title: Kitchen
-          show_header_toggle: true
-          entities:
-            - light.rgbw_15_1
-            - light.rgbw_15_2
-      - type: conditional
-        conditions:
-          - entity: room.hall
-            state_not: "not_occupied"
-        card:
-          type: entities
-          title: Hall
-          show_header_toggle: true
-          entities:
-            - light.hall
-      - type: glance
-        title: My Home
-        columns: 4
-        entities:
-          - entity: input_boolean.myhome_active
-            tap_action:
-              action: toggle
-          - input_select.myhome_mode
-          - entity: device_tracker.pixel
-            name: Phone
-          - entity: device_tracker.rfid_sensor_12_1
-            name: Wallet
-          - entity: input_boolean.room_living_room
-            tap_action:
-              action: toggle
-          - entity: input_boolean.room_bedroom
-            tap_action:
-              action: toggle
-          - entity: input_boolean.room_kitchen
-            tap_action:
-              action: toggle
-          - entity: input_boolean.room_hall
-            tap_action:
-              action: toggle
-      - type: glance
-        title: My Media
-        columns: 3
-        entities:
-          - input_select.media_mode
-          - entity: light.hyperion
-            name: Backlight
-      - type: glance
-        title: Presence
-        show_state: false
-        columns: 4
-        entities:
-          - entity: room.living_room
-            name: Living Room
-          - entity: room.bedroom
-            name: Bedroom
-          - entity: room.kitchen
-            name: Kitchen
-          - entity: room.hall
-            name: Hall
+      - type: custom:layout-card
+        max_columns: 2
+        max_width: [42%, 42%]
+        cards:
+          - type: vertical-stack
+            cards:
+              - type: conditional
+                conditions:
+                  - entity: room.living_room
+                    state_not: "not_occupied"
+                card:
+                  type: entities
+                  title: Living Room
+                  show_header_toggle: true
+                  entities:
+                    - light.living_room_standing
+                    - light.tv_left
+                    - light.tv_right
+              - type: conditional
+                conditions:
+                  - entity: room.bedroom
+                    state_not: "not_occupied"
+                card:
+                  type: entities
+                  title: Bedroom
+                  show_header_toggle: true
+                  entities:
+                    - light.night_stand
+                    - light.dresser
+              - type: conditional
+                conditions:
+                  - entity: room.kitchen
+                    state_not: "not_occupied"
+                card:
+                  type: entities
+                  title: Kitchen
+                  show_header_toggle: true
+                  entities:
+                    - light.rgbw_15_1
+                    - light.rgbw_15_2
+              - type: conditional
+                conditions:
+                  - entity: room.hall
+                    state_not: "not_occupied"
+                card:
+                  type: entities
+                  title: Hall
+                  show_header_toggle: true
+                  entities:
+                    - light.hall
+          - type: vertical-stack
+            cards:
+              - type: glance
+                title: My Home
+                columns: 4
+                entities:
+                  - entity: input_boolean.myhome_active
+                    tap_action:
+                      action: toggle
+                  - input_select.myhome_mode
+                  - entity: device_tracker.pixel
+                    name: Phone
+                  - entity: device_tracker.rfid_sensor_12_1
+                    name: Wallet
+                  - entity: input_boolean.room_living_room
+                    tap_action:
+                      action: toggle
+                  - entity: input_boolean.room_bedroom
+                    tap_action:
+                      action: toggle
+                  - entity: input_boolean.room_kitchen
+                    tap_action:
+                      action: toggle
+                  - entity: input_boolean.room_hall
+                    tap_action:
+                      action: toggle
+              - type: glance
+                title: My Media
+                columns: 3
+                entities:
+                  - input_select.media_mode
+                  - entity: light.hyperion
+                    name: Backlight
+              - type: glance
+                title: Presence
+                show_state: false
+                columns: 4
+                entities:
+                  - entity: room.living_room
+                    name: Living Room
+                  - entity: room.bedroom
+                    name: Bedroom
+                  - entity: room.kitchen
+                    name: Kitchen
+                  - entity: room.hall
+                    name: Hall
 
   - title: Lights
     icon: mdi:lightbulb-outline
+    panel: true
     cards:
-      - type: entities
-        title: Lights
-        entities:
-          - type: section
-            label: Living Room
-          - light.living_room_standing
-          - light.tv_left
-          - light.tv_right
-          - light.hyperion
-          - type: section
-            label: Bedroom
-          - light.night_stand
-          - light.dresser
-          - type: section
-            label: Kitchen
-          - light.rgbw_15_1
-          - light.rgbw_15_2
-          - type: section
-            label: Hall
-          - light.hall
+      - type: custom:layout-card
+        max_columns: 2
+        max_width: [42%, 42%]
+        cards:
+           - type: entities
+             title: Living Room
+             entities:
+               - light.living_room_standing
+               - light.tv_left
+               - light.tv_right
+               - light.hyperion
+           - type: entities
+             title: Bedroom
+             entities:
+               - light.night_stand
+               - light.dresser
+           - type: entities
+             title: Kitchen
+             entities:
+               - light.rgbw_15_1
+               - light.rgbw_15_2
+           - type: entities
+             title: Hall
+             entities:
+               - light.hall
 
   - title: Media
     icon: mdi:television-classic
+    panel: true
     cards:
-      - type: media-control
-        entity: media_player.android_tv
-      - type: media-control
-        entity: media_player.samsung_tv
-      - type: glance
-        title: My Media
-        entities:
-          - input_select.media_mode
+      - type: custom:layout-card
+        max_columns: 2
+        max_width: [42%, 42%]
+        cards:
+          - type: media-control
+            entity: media_player.android_tv
+          - type: media-control
+            entity: media_player.samsung_tv
+          - type: glance
+            title: My Media
+            entities:
+              - input_select.media_mode
 
   - title: Sensors
     icon: mdi:router-wireless
+    panel: true
     cards:
-      - type: entities
-        title: Sensors
-        entities:
-          - type: section
-            label: Living Room
-          - binary_sensor.motion_sensor_4_1
-          - binary_sensor.motion_sensor_10_1
-          - binary_sensor.dark_living_room
-          - input_boolean.dark_living_room
-          - type: section
-            label: Bedroom
-          - binary_sensor.motion_sensor_2_1
-          - binary_sensor.bed_sensor_16_1
-          - binary_sensor.dark_bedroom
-          - input_boolean.dark_bedroom
-          - type: section
-            label: Kitchen
-          - binary_sensor.motion_sensor_1_1
-          - binary_sensor.dark_kitchen
-          - input_boolean.dark_kitchen
-          - type: section
-            label: Hall
-          - binary_sensor.motion_sensor_5_1
-          - binary_sensor.dark_hall
-          - input_boolean.dark_hall
-          - type: section
-            label: Other
-          - entity: binary_sensor.weekday
-            name: Weekday
-          - entity: calendar.vacation
-            name: Vacation
-          - entity: binary_sensor.dst
-            name: Daylight Savings
-          - sun.sun
-      - type: vertical-stack
+      - type: custom:layout-card
+        max_columns: 2
+        max_width: [42%, 42%]
         cards:
-          - type: history-graph
+          - type: entities
+            title: Sensors
             entities:
-              - sensor.motion_sensor_10_2
-              - sensor.living_room_threshold
-            hours_to_show: 18
-            refresh_interval: 60
-            title: "Living Room Light"
-          #- type: history-graph
-          #  entities:
-          #    - sensor.motion_sensor_4_2
-          #    - sensor.bookcase_threshold
-          #  hours_to_show: 18
-          #  refresh_interval: 60
-          #  title: "Bookcase Light"
-          - type: history-graph
-            entities:
-              - sensor.motion_sensor_2_2
-              - sensor.bedroom_threshold
-            hours_to_show: 18
-            refresh_interval: 60
-            title: "Bedroom Light"
-          - type: history-graph
-            entities:
-              - sensor.motion_sensor_10_2
-              - sensor.motion_sensor_1_2
-              - sensor.kitchen_threshold
-            hours_to_show: 18
-            refresh_interval: 60
-            title: "Kitchen Light"
-          - type: history-graph
-            entities:
-              - sensor.motion_sensor_5_2
-              - sensor.hall_threshold
-            hours_to_show: 18
-            refresh_interval: 60
-            title: "Hall Light"
+              - type: section
+                label: Living Room
+              - binary_sensor.motion_sensor_4_1
+              - binary_sensor.motion_sensor_10_1
+              - binary_sensor.dark_living_room
+              - input_boolean.dark_living_room
+              - type: section
+                label: Bedroom
+              - binary_sensor.motion_sensor_2_1
+              - binary_sensor.bed_sensor_16_1
+              - binary_sensor.dark_bedroom
+              - input_boolean.dark_bedroom
+              - type: section
+                label: Kitchen
+              - binary_sensor.motion_sensor_1_1
+              - binary_sensor.dark_kitchen
+              - input_boolean.dark_kitchen
+              - type: section
+                label: Hall
+              - binary_sensor.motion_sensor_5_1
+              - binary_sensor.dark_hall
+              - input_boolean.dark_hall
+              - type: section
+                label: Other
+              - entity: binary_sensor.weekday
+                name: Weekday
+              - entity: calendar.vacation
+                name: Vacation
+              - entity: binary_sensor.dst
+                name: Daylight Savings
+              - sun.sun
+          - type: vertical-stack
+            cards:
+              - type: custom:mini-graph-card
+                name: Living Room
+                points_per_hour: 6
+                hours_to_show: 16
+                show:
+                  points: false
+                height: 175
+                entities:
+                  - entity: sensor.living_room_threshold
+                    name: THRESHOLD
+                  - entity: sensor.motion_sensor_10_2
+                    name: SENSOR
+              - type: custom:mini-graph-card
+                name: Bookcase
+                points_per_hour: 6
+                hours_to_show: 16
+                show:
+                  points: false
+                height: 175
+                entities:
+                  - entity: sensor.bookcase_threshold
+                    name: THRESHOLD
+                  - entity: sensor.motion_sensor_4_2
+                    name: SENSOR
+              - type: custom:mini-graph-card
+                name: Bedroom
+                points_per_hour: 6
+                hours_to_show: 16
+                show:
+                  points: false
+                height: 175
+                entities:
+                  - entity: sensor.bedroom_threshold
+                    name: THRESHOLD
+                  - entity: sensor.motion_sensor_2_2
+                    name: SENSOR
+              - type: custom:mini-graph-card
+                name: Kitchen
+                points_per_hour: 6
+                hours_to_show: 16
+                show:
+                  points: false
+                height: 175
+                entities:
+                  - entity: sensor.kitchen_threshold
+                    name: THRESHOLD
+                  - entity: sensor.motion_sensor_10_2
+                    name: SENSOR
+              - type: custom:mini-graph-card
+                name: Hall
+                points_per_hour: 6
+                hours_to_show: 16
+                show:
+                  points: false
+                height: 175
+                entities:
+                  - entity: sensor.hall_threshold
+                    name: THRESHOLD
+                  - entity: sensor.motion_sensor_5_2
+                    name: SENSOR
 
   - title: System
     icon: mdi:wrench
@@ -219,7 +268,7 @@ views:
     cards:
       - type: custom:layout-card
         max_columns: 2
-        max_width: [47%, 47%]
+        max_width: [42%, 42%]
         cards:
           - type: horizontal-stack
             cards:
