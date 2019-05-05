@@ -38,17 +38,14 @@
     - platform: state
       entity_id: media_player.android_tv
       to: 'idle'
-      for: '00:00:05'
     - platform: state
       entity_id: media_player.android_tv
       to: 'off'
     # trigger immediately when returning to the homescreen
     - platform: template
-      value_template: "{{ is_state_attr('media_player.android_tv', 'app_name', 'Homescreen') }}"
+      value_template: "{{ state_attr('media_player.android_tv', 'app_name') == 'com.google.android.tvlauncher' }}"
     - platform: template
-      value_template: "{{ state_attr('media_player.android_tv', 'app_id') == None }}"
-    - platform: template
-      value_template: "{{ state_attr('media_player.android_tv', 'app_id') != None }}"
+      value_template: "{{ state_attr('media_player.android_tv', 'app_name') != 'com.google.android.tvlauncher' }}"
   condition:
     condition: and
     conditions:
@@ -60,6 +57,12 @@
         entity_id: input_boolean.myhome_active
         state: 'on'
   action:
+    - service: system_log.write
+      data_template:
+        level: info
+        message: >
+          Current app {{ state_attr('media_player.android_tv', 'app_name') }}
+          {{ state_attr('media_player.android_tv', 'app_id') }}
     - service: input_select.select_option
       data_template:
         entity_id: input_select.media_mode
@@ -72,13 +75,13 @@
           TV
           {% endif %}
           {% elif is_state('media_player.android_tv', 'paused') %}
-          Paused
-          {% elif is_state('media_player.android_tv', 'idle') %}
-          {% if state_attr("media_player.android_tv", "app_id") == None %}
-          Idle
-          {% else %}
+          {% if name in ('com.google.android.tvlauncher', 'com.android.tv.settings') %}
           Awake
+          {% else %}
+          Paused
           {% endif %}
+          {% elif is_state('media_player.android_tv', 'idle') %}
+          Idle
           {% elif is_state('media_player.android_tv', 'off') %}
           Off
           {% endif %}
