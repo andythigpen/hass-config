@@ -1,14 +1,14 @@
-light:
+dark:
   ### Main Interface Colors ###
-  primary-color: "#fefefe"
+  primary-color: "#34353f"
   light-primary-color: "#00a1ff"
   accent-color: "#ff9800"
-  primary-background-color: "#f8f8f8"
+  primary-background-color: "#282830"
   secondary-background-color: var(--primary-background-color)
-  divider-color: var(--primary-color)
+  divider-color: "#3c3c44"
   ### Text ###
-  primary-text-color: "#2e2d2f"
-  secondary-text-color: "#a8aeb5"
+  primary-text-color: "#f0f0f0"
+  secondary-text-color: "#878b91"
   text-primary-color: var(--primary-text-color)
   disabled-text-color: "#88a1c4"
   ### Sidebar Menu ###
@@ -16,6 +16,8 @@ light:
   sidebar-text-color: var(--sidebar-icon-color)
   sidebar-selected-icon-color: var(--light-primary-color)
   sidebar-selected-text-color: var(--light-primary-color)
+  sidebar-background-color: var(--primary-color)
+  paper-listbox-background-color: var(--primary-color)
   ### States and Badges ###
   state-icon-color: "#d0d5da"
   state-icon-active-color: var(--light-primary-color)
@@ -33,13 +35,13 @@ light:
   ### Cards ###
   paper-card-background-color: var(--primary-color)
   ### Toggles ###
-  paper-toggle-button-checked-button-color: var(--primary-color)
+  paper-toggle-button-checked-button-color: "#d0d0d0"
   paper-toggle-button-checked-bar-color: var(--light-primary-color)
   paper-toggle-button-unchecked-button-color: var(--paper-toggle-button-checked-button-color)
   paper-toggle-button-unchecked-bar-color: var(--state-icon-color)
   ### Table row ###
-  table-row-background-color: "#dddddd"
-  table-row-alternative-background-color: "#dddddd"
+  table-row-background-color: "#50555a"
+  table-row-alternative-background-color: var(--table-row-background-color)
 
   ### Other ###
   mdc-theme-primary: var(--light-primary-color)
@@ -47,4 +49,4 @@ light:
   paper-input-container-focus-color: var(--light-primary-color)
   paper-tabs-selection-bar-color: var(--light-primary-color)
   ha-card-border-radius: 3px
-  ha-card-box-shadow: "0px 1px 4px #3333332a"
+  ha-card-box-shadow: "0px 1px 4px #0a0a0a2a"

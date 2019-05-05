@@ -190,9 +190,9 @@ input_select:
      - default
      - midnight
      - light
+     - dark
     initial: light
     icon: mdi:theme-light-dark
-
 
 input_boolean:
   myhome_active:

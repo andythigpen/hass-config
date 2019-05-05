@@ -25,9 +25,9 @@ views:
         max_columns: 2
         max_width: [42%, 42%]
         cards:
-          #- type: custom:theme-maker
           - type: vertical-stack
             cards:
+              #- type: custom:theme-maker
               - type: conditional
                 conditions:
                   - entity: room.living_room
