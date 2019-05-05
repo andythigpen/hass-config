@@ -121,155 +121,27 @@ mysensors:
   version: '1.5'
 
 group:
-  default_view:
-    view: yes
-    icon: mdi:home
-    name: Home
-    entities:
-    - group.default_living_room
-    - group.default_bedroom
-    - group.default_kitchen
-    - group.default_hall
-    - group.myhome
-  light_view:
-    view: yes
-    icon: mdi:lightbulb-outline
-    name: Lights
-    entities:
-    - group.living_room
-    - group.bedroom
-    - group.kitchen
-    - group.hall
-    - group.hue_lights
-  media_view:
-    view: yes
-    icon: mdi:television-classic
-    name: Media
-    entities:
-    - media_player.samsung_tv
-  sensors_view:
-    view: yes
-    icon: mdi:router-wireless
-    name: Sensors
-    entities:
-    - group.living_room_sensors
-    - group.bedroom_sensors
-    - group.kitchen_sensors
-    - group.hall_sensors
-  presence_view:
-    view: yes
-    icon: mdi:account-multiple
-    name: Presence
-    entities:
-    - group.rooms
-    - group.presence
-  automations_scripts:
-    view: yes
-    icon: mdi:wrench
-    name: Setup
-    entities:
-    - group.scripts
-    - group.system
-    - group.theme
-  living_room: &living_room
+  living_room:
     name: Living Room
     entities:
     - light.living_room_standing
     - light.tv_left
     - light.tv_right
     - light.hyperion
-  default_living_room: *living_room
-  living_room_sensors:
-    name: Living Room Sensors
-    entities:
-    - binary_sensor.motion_sensor_4_1
-    - sensor.motion_sensor_4_2
-    - binary_sensor.motion_sensor_10_1
-    - sensor.motion_sensor_10_2
-  bedroom: &bedroom
+  bedroom:
     name: Bedroom
     entities:
     - light.night_stand
     - light.dresser
-  default_bedroom: *bedroom
-  bedroom_sensors:
-    name: Bedroom Sensors
-    entities:
-    - binary_sensor.motion_sensor_2_1
-    - sensor.motion_sensor_2_2
-    - binary_sensor.bed_sensor_16_1
-  kitchen: &kitchen
+  kitchen:
     name: Kitchen
     entities:
     - light.rgbw_15_1
     - light.rgbw_15_2
-  default_kitchen: *kitchen
-  kitchen_sensors:
-    name: Kitchen Sensors
-    entities:
-    - binary_sensor.motion_sensor_1_1
-    - sensor.motion_sensor_1_2
-  hall: &hall
+  hall:
     name: Hall
     entities:
     - light.hall
-  default_hall: *hall
-  hall_sensors:
-    name: Hall Sensors
-    entities:
-    - binary_sensor.motion_sensor_5_1
-    - sensor.motion_sensor_5_2
-  scripts:
-    name: Scripts
-    entities:
-    - script.wakeup
-    - script.snooze
-    - script.bedtime
-    - script.all_off
-    - script.bedtime_now
-    - script.reset_bed
-  theme:
-    name: Theme
-    entities:
-    - input_boolean.autodark_theme
-    - input_select.current_theme
-  myhome:
-    name: My Home
-    entities:
-    - input_boolean.myhome_active
-    - input_select.myhome_mode
-    - input_boolean.room_living_room
-    - input_boolean.room_kitchen
-    - input_boolean.room_hall
-    - input_boolean.room_bedroom
-  hue_lights:
-    name: Hue Groups
-    entities:
-    - light.living_room
-    - light.bedroom
-  rooms:
-    name: Rooms
-    entities:
-    - room.living_room
-    - room.kitchen
-    - room.hall
-    - room.bedroom
-  presence:
-    name: Presence
-    entities:
-    - device_tracker.pixel
-    - device_tracker.rfid_sensor_12_1
-  system:
-    name: System
-    entities:
-    - sensor.memory_use
-    - sensor.memory_free
-    - sensor.swap_use
-    - sensor.swap_free
-    - sensor.load_1m
-    - sensor.load_5m
-    - sensor.load_15m
-    - sensor.processor_use
 
 automation: !include_dir_merge_list automations/
 
