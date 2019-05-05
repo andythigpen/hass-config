@@ -13,6 +13,7 @@
       data:
         entity_id: 'input_select.current_theme'
         option: 'midnight'
+
 - alias: 'Set light theme for morning'
   hide_entity: True
   trigger:
@@ -28,11 +29,14 @@
       data:
         entity_id: 'input_select.current_theme'
         option: 'default'
+
 - alias: 'Update theme from select'
   hide_entity: True
   trigger:
     - platform: state
       entity_id: input_select.current_theme
+    - platform: homeassistant
+      event: start
   action:
     - service: frontend.set_theme
       data_template:
