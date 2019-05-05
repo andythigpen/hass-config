@@ -8,6 +8,8 @@ resources:
     type: js
   - url: /local/mini-graph-card-bundle.js?v=0.3.3
     type: module
+  - url: /local/theme-maker.js?v=0.1
+    type: js
 views:
   - title: Home
     icon: mdi:home
@@ -17,6 +19,7 @@ views:
         max_columns: 2
         max_width: [42%, 42%]
         cards:
+          #- type: custom:theme-maker
           - type: vertical-stack
             cards:
               - type: conditional
