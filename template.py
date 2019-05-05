@@ -11,7 +11,7 @@ import voluptuous as vol
 
 import homeassistant.helpers.config_validation as cv
 from homeassistant.components.scene import Scene, STATES
-from homeassistant.components.scene.homeassistant import _process_config
+from homeassistant.components.homeassistant.scene import _process_config
 from homeassistant.const import (
     ATTR_ENTITY_ID, CONF_ENTITIES, CONF_NAME, CONF_PLATFORM,
     CONF_STATE_TEMPLATE)
