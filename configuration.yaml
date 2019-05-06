@@ -92,6 +92,29 @@ sensor:
           - sensor.motion_sensor_5_2
         unit_of_measurement: "%"
         friendly_name: "Hall threshold"
+  - platform: openweathermap
+    api_key: !secret weather_key
+    name: owm_current
+    monitored_conditions:
+      - weather
+      - temperature
+      - humidity
+      - pressure
+      - clouds
+      - rain
+      - weather_code
+  - platform: openweathermap
+    api_key: !secret weather_key
+    name: owm_forecast
+    forecast: true
+    monitored_conditions:
+      - weather
+      - temperature
+      - humidity
+      - pressure
+      - clouds
+      - rain
+      - weather_code
 
 binary_sensor:
   - platform: template
@@ -254,3 +277,7 @@ custom_updater:
   card_urls:
     - https://raw.githubusercontent.com/kalkih/mini-graph-card/master/tracker.json
     - https://raw.githubusercontent.com/matisaul/vertical-style-card/master/tracker.json
+
+weather:
+  - platform: openweathermap
+    api_key: !secret weather_key

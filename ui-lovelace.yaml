@@ -16,6 +16,8 @@ resources:
     type: module
   - url: /local/vertical-style-card.js?v=0.1
     type: js
+  - url: https://cdn.jsdelivr.net/gh/bramkragten/custom-ui@master/weather-card/weather-card.min.js
+    type: module
 views:
   - title: Home
     icon: mdi:home
@@ -178,6 +180,8 @@ views:
                           - text-transform: capitalize
                       tap_action:
                         action: more-info
+            - type: custom:weather-card
+              entity: weather.openweathermap
             - type: custom:vertical-style-card
               title: Presence
               style:
