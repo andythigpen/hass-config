@@ -475,6 +475,10 @@ views:
                         action: more-info
             - type: custom:compact-custom-header
               main_config: true
+              background: var(--secondary-background-color)
+              active_tab_color: var(--primary-color)
+              all_tabs_color: var(--secondary-text-color)
+              all_buttons_color: var(--secondary-text-color)
 
   - title: Lights
     icon: mdi:lightbulb-outline

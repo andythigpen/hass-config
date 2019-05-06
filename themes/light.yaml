@@ -1,11 +1,11 @@
 light:
   ### Main Interface Colors ###
-  primary-color: "#fefefe"
+  primary-color: "#00a1ff"
   light-primary-color: "#00a1ff"
   accent-color: "#ff9800"
   primary-background-color: "#f8f8f8"
-  secondary-background-color: var(--primary-background-color)
-  divider-color: var(--primary-color)
+  secondary-background-color: "#fefefe"
+  divider-color: var(--secondary-background-color)
   ### Text ###
   primary-text-color: "#2e2d2f"
   secondary-text-color: "#a8aeb5"
@@ -31,15 +31,15 @@ light:
   label-badge-text-color: "#395274"
   label-badge-red: "#FF8888"
   ### Cards ###
-  paper-card-background-color: var(--primary-color)
+  paper-card-background-color: var(--secondary-background-color)
   ### Toggles ###
-  paper-toggle-button-checked-button-color: var(--primary-color)
+  paper-toggle-button-checked-button-color: var(--secondary-background-color)
   paper-toggle-button-checked-bar-color: var(--light-primary-color)
   paper-toggle-button-unchecked-button-color: var(--paper-toggle-button-checked-button-color)
   paper-toggle-button-unchecked-bar-color: var(--state-icon-color)
   ### Table row ###
-  table-row-background-color: "#dddddd"
-  table-row-alternative-background-color: "#dddddd"
+  table-row-background-color: "#f0f0f0"
+  table-row-alternative-background-color: "#e8e8e8"
 
   ### Other ###
   mdc-theme-primary: var(--light-primary-color)

@@ -1,10 +1,10 @@
 dark:
   ### Main Interface Colors ###
-  primary-color: "#34353f"
+  primary-color: "#00a1ff"
   light-primary-color: "#00a1ff"
   accent-color: "#ff9800"
   primary-background-color: "#282830"
-  secondary-background-color: var(--primary-background-color)
+  secondary-background-color: "#34353f"
   divider-color: "#3c3c44"
   ### Text ###
   primary-text-color: "#f0f0f0"
@@ -16,8 +16,8 @@ dark:
   sidebar-text-color: var(--sidebar-icon-color)
   sidebar-selected-icon-color: var(--light-primary-color)
   sidebar-selected-text-color: var(--light-primary-color)
-  sidebar-background-color: var(--primary-color)
-  paper-listbox-background-color: var(--primary-color)
+  sidebar-background-color: var(--secondary-background-color)
+  paper-listbox-background-color: var(--secondary-background-color)
   ### States and Badges ###
   state-icon-color: "#d0d5da"
   state-icon-active-color: var(--light-primary-color)
@@ -33,15 +33,16 @@ dark:
   label-badge-text-color: "#395274"
   label-badge-red: "#FF8888"
   ### Cards ###
-  paper-card-background-color: var(--primary-color)
+  paper-card-background-color: var(--secondary-background-color)
+  paper-card-header-color: var(--primary-text-color)
   ### Toggles ###
   paper-toggle-button-checked-button-color: "#d0d0d0"
   paper-toggle-button-checked-bar-color: var(--light-primary-color)
   paper-toggle-button-unchecked-button-color: var(--paper-toggle-button-checked-button-color)
   paper-toggle-button-unchecked-bar-color: var(--state-icon-color)
   ### Table row ###
-  table-row-background-color: "#50555a"
-  table-row-alternative-background-color: var(--table-row-background-color)
+  table-row-background-color: "#30323a"
+  table-row-alternative-background-color: "#383a42"
 
   ### Other ###
   mdc-theme-primary: var(--light-primary-color)
