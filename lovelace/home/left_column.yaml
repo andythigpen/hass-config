@@ -1,0 +1,51 @@
+type: vertical-stack
+cards:
+  #- type: custom:theme-maker
+
+  - type: conditional
+    conditions:
+      - entity: room.living_room
+        state_not: "not_occupied"
+    card:
+      type: entities
+      title: Living Room
+      show_header_toggle: true
+      entities:
+        - light.living_room_standing
+        - light.tv_left
+        - light.tv_right
+
+  - type: conditional
+    conditions:
+      - entity: room.bedroom
+        state_not: "not_occupied"
+    card:
+      type: entities
+      title: Bedroom
+      show_header_toggle: true
+      entities:
+        - light.night_stand
+        - light.dresser
+
+  - type: conditional
+    conditions:
+      - entity: room.kitchen
+        state_not: "not_occupied"
+    card:
+      type: entities
+      title: Kitchen
+      show_header_toggle: true
+      entities:
+        - light.rgbw_15_1
+        - light.rgbw_15_2
+
+  - type: conditional
+    conditions:
+      - entity: room.hall
+        state_not: "not_occupied"
+    card:
+      type: entities
+      title: Hall
+      show_header_toggle: true
+      entities:
+        - light.hall

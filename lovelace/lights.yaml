@@ -1,0 +1,30 @@
+title: Lights
+icon: mdi:lightbulb-outline
+panel: true
+cards:
+  - type: custom:layout-card
+    max_columns: 2
+    max_width: [42%, 42%]
+    cards:
+      - type: entities
+        title: Living Room
+        entities:
+          - light.living_room_standing
+          - light.tv_left
+          - light.tv_right
+          - light.hyperion
+      - type: entities
+        title: Bedroom
+        entities:
+          - light.night_stand
+          - light.dresser
+      - type: entities
+        title: Kitchen
+        entities:
+          - light.rgbw_15_1
+          - light.rgbw_15_2
+      - type: entities
+        title: Hall
+        entities:
+          - light.hall
+      - type: custom:compact-custom-header

@@ -1,0 +1,110 @@
+title: Sensors
+icon: mdi:router-wireless
+panel: true
+cards:
+  - type: custom:layout-card
+    max_columns: 2
+    max_width: [42%, 42%]
+    cards:
+      - type: entities
+        title: Sensors
+        entities:
+          - type: section
+            label: Living Room
+          - binary_sensor.motion_sensor_4_1
+          - binary_sensor.motion_sensor_10_1
+          - binary_sensor.dark_living_room
+          - input_boolean.dark_living_room
+          - type: section
+            label: Bedroom
+          - binary_sensor.motion_sensor_2_1
+          - binary_sensor.bed_sensor_16_1
+          - binary_sensor.dark_bedroom
+          - input_boolean.dark_bedroom
+          - type: section
+            label: Kitchen
+          - binary_sensor.motion_sensor_1_1
+          - binary_sensor.dark_kitchen
+          - input_boolean.dark_kitchen
+          - type: section
+            label: Hall
+          - binary_sensor.motion_sensor_5_1
+          - binary_sensor.dark_hall
+          - input_boolean.dark_hall
+          - type: section
+            label: Other
+          - entity: binary_sensor.weekday
+            name: Weekday
+          - entity: calendar.vacation
+            name: Vacation
+          - entity: binary_sensor.dst
+            name: Daylight Savings
+          - sun.sun
+      - type: vertical-stack
+        cards:
+          - type: custom:mini-graph-card
+            name: Living Room
+            points_per_hour: 6
+            hours_to_show: 16
+            show:
+              points: false
+            height: 175
+            line_width: 1
+            entities:
+              - entity: sensor.living_room_threshold
+                name: THRESHOLD
+              - entity: sensor.motion_sensor_10_2
+                name: SENSOR
+          - type: custom:mini-graph-card
+            name: Bookcase
+            points_per_hour: 6
+            hours_to_show: 16
+            show:
+              points: false
+            height: 175
+            line_width: 1
+            entities:
+              - entity: sensor.bookcase_threshold
+                name: THRESHOLD
+              - entity: sensor.motion_sensor_4_2
+                name: SENSOR
+          - type: custom:mini-graph-card
+            name: Bedroom
+            points_per_hour: 6
+            hours_to_show: 16
+            show:
+              points: false
+            height: 175
+            line_width: 1
+            entities:
+              - entity: sensor.bedroom_threshold
+                name: THRESHOLD
+              - entity: sensor.motion_sensor_2_2
+                name: SENSOR
+          - type: custom:mini-graph-card
+            name: Kitchen
+            points_per_hour: 6
+            hours_to_show: 16
+            show:
+              points: false
+            height: 175
+            line_width: 1
+            entities:
+              - entity: sensor.kitchen_threshold
+                name: THRESHOLD
+              - entity: sensor.motion_sensor_10_2
+                name: SENSOR
+          - type: custom:mini-graph-card
+            name: Hall
+            points_per_hour: 6
+            hours_to_show: 16
+            show:
+              points: false
+            height: 175
+            line_width: 1
+            entities:
+              - entity: sensor.hall_threshold
+                name: THRESHOLD
+              - entity: sensor.motion_sensor_5_2
+                name: SENSOR
+      - type: custom:compact-custom-header

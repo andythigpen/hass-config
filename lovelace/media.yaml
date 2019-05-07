@@ -1,0 +1,17 @@
+title: Media
+icon: mdi:television-classic
+panel: true
+cards:
+  - type: custom:layout-card
+    max_columns: 2
+    max_width: [42%, 42%]
+    cards:
+      - type: media-control
+        entity: media_player.android_tv
+      - type: media-control
+        entity: media_player.samsung_tv
+      - type: glance
+        title: My Media
+        entities:
+          - input_select.media_mode
+      - type: custom:compact-custom-header

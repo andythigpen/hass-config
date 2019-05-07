@@ -1,0 +1,401 @@
+type: vertical-stack
+cards:
+  - type: custom:vertical-style-card
+    title: Media
+    style:
+      font_size: 22px
+    cards:
+      - type: horizontal-stack
+        cards:
+          - type: "custom:button-card"
+            entity: input_select.media_mode
+            color: var(--secondary-text-color)
+            show_state: true
+            show_name: false
+            show_label: true
+            label: "AIFSJODIF Mode"
+            state:
+              - value: "Disabled"
+                icon: mdi:filmstrip-off
+              - value: "Off"
+                icon: mdi:power-off
+              - value: "Idle"
+                icon: mdi:sleep
+              - value: "Awake"
+                icon: mdi:apps
+                color: var(--light-primary-color)
+              - value: "Paused"
+                icon: mdi:pause
+                color: var(--light-primary-color)
+              - value: "TV"
+                icon: mdi:youtube-tv
+                color: var(--light-primary-color)
+              - value: "Movie"
+                icon: mdi:filmstrip
+                color: var(--light-primary-color)
+            styles:
+              label:
+                - font-size: 0.95rem
+                - color: var(--secondary-text-color)
+              state:
+                - text-transform: capitalize
+            tap_action:
+              action: more-info
+          - type: "custom:button-card"
+            entity: light.hyperion
+            color: var(--secondary-text-color)
+            show_state: true
+            show_name: false
+            show_label: true
+            label: "Backlight"
+            state:
+              - value: "on"
+                color: var(--light-primary-color)
+            styles:
+              label:
+                - font-size: 0.95rem
+                - color: var(--secondary-text-color)
+              state:
+                - text-transform: capitalize
+            tap_action:
+              action: call-service
+              service: light.toggle
+              service_data:
+                entity_id: light.hyperion
+                effect: HDMI
+            hold_action:
+              action: more-info
+  - type: vertical-stack
+    cards:
+      - type: horizontal-stack
+        cards:
+          - type: "custom:button-card"
+            entity: input_boolean.myhome_active
+            color: var(--secondary-text-color)
+            show_state: true
+            show_name: false
+            show_label: true
+            label: "Home Active"
+            styles:
+              label:
+                - font-size: 0.95rem
+                - color: var(--secondary-text-color)
+              state:
+                - text-transform: capitalize
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+            state:
+              - value: "on"
+                color: var(--light-primary-color)
+          - type: "custom:button-card"
+            entity: input_select.myhome_mode
+            color: var(--secondary-text-color)
+            show_state: true
+            show_name: false
+            show_label: true
+            label: "Home Mode"
+            styles:
+              label:
+                - font-size: 0.95rem
+                - color: var(--secondary-text-color)
+              state:
+                - text-transform: capitalize
+            tap_action:
+              action: more-info
+  - type: custom:weather-card
+    entity: weather.openweathermap
+  - type: custom:vertical-style-card
+    title: Presence
+    style:
+      font_size: 18px
+    cards:
+      - type: horizontal-stack
+        cards:
+          - type: "custom:button-card"
+            entity: room.living_room
+            color: var(--secondary-text-color)
+            show_state: false
+            show_name: false
+            show_label: true
+            label: "Living Room"
+            state:
+              - value: "occupied"
+                color: var(--light-primary-color)
+            styles:
+              label:
+                - font-size: 0.95rem
+                - color: var(--secondary-text-color)
+            tap_action:
+              action: more-info
+          - type: "custom:button-card"
+            entity: room.bedroom
+            color: var(--secondary-text-color)
+            show_state: false
+            show_name: false
+            show_label: true
+            label: "Bedroom"
+            state:
+              - value: "occupied"
+                color: var(--light-primary-color)
+            styles:
+              label:
+                - font-size: 0.95rem
+                - color: var(--secondary-text-color)
+            tap_action:
+              action: more-info
+          - type: "custom:button-card"
+            entity: room.kitchen
+            color: var(--secondary-text-color)
+            show_state: false
+            show_name: false
+            show_label: true
+            label: "Kitchen"
+            state:
+              - value: "occupied"
+                color: var(--light-primary-color)
+            styles:
+              label:
+                - font-size: 0.95rem
+                - color: var(--secondary-text-color)
+            tap_action:
+              action: more-info
+          - type: "custom:button-card"
+            entity: room.hall
+            color: var(--secondary-text-color)
+            show_state: false
+            show_name: false
+            show_label: true
+            label: "Hall"
+            state:
+              - value: "occupied"
+                color: var(--light-primary-color)
+            styles:
+              label:
+                - font-size: 0.95rem
+                - color: var(--secondary-text-color)
+            tap_action:
+              action: more-info
+  - type: custom:vertical-style-card
+    title: Dark sensors
+    style:
+      font_size: 18px
+    cards:
+      - type: horizontal-stack
+        cards:
+          - type: "custom:button-card"
+            entity: input_boolean.dark_living_room
+            color: var(--secondary-text-color)
+            show_state: false
+            show_name: false
+            show_label: true
+            label: "Living Room"
+            state:
+              - value: "on"
+                color: var(--light-primary-color)
+                icon: mdi:checkbox-marked-circle
+              - value: "off"
+                icon: mdi:checkbox-blank-circle-outline
+            styles:
+              label:
+                - font-size: 0.95rem
+                - color: var(--secondary-text-color)
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+          - type: "custom:button-card"
+            entity: input_boolean.dark_bedroom
+            color: var(--secondary-text-color)
+            show_state: false
+            show_name: false
+            show_label: true
+            label: "Bedroom"
+            state:
+              - value: "on"
+                color: var(--light-primary-color)
+                icon: mdi:checkbox-marked-circle
+              - value: "off"
+                icon: mdi:checkbox-blank-circle-outline
+            styles:
+              label:
+                - font-size: 0.95rem
+                - color: var(--secondary-text-color)
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+          - type: "custom:button-card"
+            entity: input_boolean.dark_kitchen
+            color: var(--secondary-text-color)
+            show_state: false
+            show_name: false
+            show_label: true
+            label: "Kitchen"
+            state:
+              - value: "on"
+                color: var(--light-primary-color)
+                icon: mdi:checkbox-marked-circle
+              - value: "off"
+                icon: mdi:checkbox-blank-circle-outline
+            styles:
+              label:
+                - font-size: 0.95rem
+                - color: var(--secondary-text-color)
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+          - type: "custom:button-card"
+            entity: input_boolean.dark_hall
+            color: var(--secondary-text-color)
+            show_state: false
+            show_name: false
+            show_label: true
+            label: "Hall"
+            state:
+              - value: "on"
+                color: var(--light-primary-color)
+                icon: mdi:checkbox-marked-circle
+              - value: "off"
+                icon: mdi:checkbox-blank-circle-outline
+            styles:
+              label:
+                - font-size: 0.95rem
+                - color: var(--secondary-text-color)
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+  - type: custom:vertical-style-card
+    title: Rooms
+    style:
+      font_size: 18px
+    cards:
+      - type: horizontal-stack
+        cards:
+          - type: "custom:button-card"
+            entity: input_boolean.room_living_room
+            color: var(--secondary-text-color)
+            show_state: false
+            show_name: false
+            show_label: true
+            label: "Living Room"
+            state:
+              - value: "on"
+                color: var(--light-primary-color)
+            styles:
+              label:
+                - font-size: 0.95rem
+                - color: var(--secondary-text-color)
+              state:
+                - text-transform: capitalize
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+          - type: "custom:button-card"
+            entity: input_boolean.room_bedroom
+            color: var(--secondary-text-color)
+            show_state: false
+            show_name: false
+            show_label: true
+            label: "Bedroom"
+            state:
+              - value: "on"
+                color: var(--light-primary-color)
+            styles:
+              label:
+                - font-size: 0.95rem
+                - color: var(--secondary-text-color)
+              state:
+                - text-transform: capitalize
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+          - type: "custom:button-card"
+            entity: input_boolean.room_kitchen
+            color: var(--secondary-text-color)
+            show_state: false
+            show_name: false
+            show_label: true
+            label: "Kitchen"
+            state:
+              - value: "on"
+                color: var(--light-primary-color)
+            styles:
+              label:
+                - font-size: 0.95rem
+                - color: var(--secondary-text-color)
+              state:
+                - text-transform: capitalize
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+          - type: "custom:button-card"
+            entity: input_boolean.room_hall
+            color: var(--secondary-text-color)
+            show_state: false
+            show_name: false
+            show_label: true
+            label: "Hall"
+            state:
+              - value: "on"
+                color: var(--light-primary-color)
+            styles:
+              label:
+                - font-size: 0.95rem
+                - color: var(--secondary-text-color)
+              state:
+                - text-transform: capitalize
+            tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+  - type: custom:vertical-style-card
+    title: Devices
+    style:
+      font_size: 22px
+    cards:
+      - type: horizontal-stack
+        cards:
+          - type: "custom:button-card"
+            entity: device_tracker.pixel
+            color: var(--secondary-text-color)
+            show_state: true
+            show_name: false
+            show_label: true
+            show_entity_picture: true
+            label: "Phone"
+            styles:
+              label:
+                - font-size: 0.95rem
+                - color: var(--secondary-text-color)
+              entity_picture:
+                - border-radius: 50%
+                - margin-bottom: "-4px"
+              state:
+                - text-transform: capitalize
+            tap_action:
+              action: more-info
+          - type: "custom:button-card"
+            entity: device_tracker.rfid_sensor_12_1
+            color: var(--secondary-text-color)
+            show_state: true
+            show_name: false
+            show_label: true
+            show_entity_picture: true
+            label: "Wallet"
+            styles:
+              label:
+                - font-size: 0.95rem
+                - color: var(--secondary-text-color)
+              state:
+                - text-transform: capitalize
+            tap_action:
+              action: more-info
+  - type: custom:compact-custom-header
+    main_config: true
