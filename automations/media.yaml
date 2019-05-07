@@ -37,6 +37,9 @@
       for: '00:00:05'
     - platform: state
       entity_id: media_player.android_tv
+      to: 'standby'
+    - platform: state
+      entity_id: media_player.android_tv
       to: 'idle'
     - platform: state
       entity_id: media_player.android_tv
@@ -80,6 +83,8 @@
           {% else %}
           Paused
           {% endif %}
+          {% elif is_state('media_player.android_tv', 'standby') %}
+          Awake
           {% elif is_state('media_player.android_tv', 'idle') %}
           Idle
           {% elif is_state('media_player.android_tv', 'off') %}
