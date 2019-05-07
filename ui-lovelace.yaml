@@ -507,6 +507,138 @@ views:
               - light.hall
           - type: custom:compact-custom-header
 
+  - title: Lights 2
+    icon: mdi:lightbulb-outline
+    panel: true
+    cards:
+      - type: custom:layout-card
+        max_columns: 2
+        max_width: [84%, 0%]
+        cards:
+          - type: vertical-stack
+            cards:
+              - type: custom:button-card
+                color_type: label-card
+                name: Living Room
+                styles:
+                  card:
+                    - background: var(--primary-background-color)
+                    - color: var(--primary-text-color)
+                    - box-shadow: none
+                    - padding: 1% 0px
+                  name:
+                    - justify-self: left
+                    - margin-left: 10px
+                    - font-size: 22px
+              - type: horizontal-stack
+                cards:
+                  - type: "custom:button-card"
+                    entity: light.living_room_standing
+                    color: var(--secondary-text-color)
+                    show_state: false
+                    show_name: false
+                    show_label: true
+                    label: "Living room standing"
+                    state:
+                      - value: "on"
+                        color: var(--light-primary-color)
+                    styles:
+                      label:
+                        - font-size: 0.95rem
+                        - color: var(--secondary-text-color)
+                      state:
+                        - text-transform: capitalize
+                    hold_action:
+                      action: more-info
+                  - type: "custom:button-card"
+                    entity: light.tv_left
+                    color: var(--secondary-text-color)
+                    show_state: false
+                    show_name: false
+                    show_label: true
+                    label: "TV left"
+                    state:
+                      - value: "on"
+                        color: var(--light-primary-color)
+                    styles:
+                      label:
+                        - font-size: 0.95rem
+                        - color: var(--secondary-text-color)
+                      state:
+                        - text-transform: capitalize
+                    hold_action:
+                      action: more-info
+                  - type: "custom:button-card"
+                    entity: light.tv_right
+                    color: var(--secondary-text-color)
+                    show_state: false
+                    show_name: false
+                    show_label: true
+                    label: "TV right"
+                    state:
+                      - value: "on"
+                        color: var(--light-primary-color)
+                    styles:
+                      label:
+                        - font-size: 0.95rem
+                        - color: var(--secondary-text-color)
+                      state:
+                        - text-transform: capitalize
+                    hold_action:
+                      action: more-info
+              - type: custom:button-card
+                color_type: label-card
+                name: Bedroom
+                styles:
+                  card:
+                    - background: var(--primary-background-color)
+                    - color: var(--primary-text-color)
+                    - box-shadow: none
+                    - padding: 1% 0px
+                  name:
+                    - justify-self: left
+                    - margin-left: 10px
+                    - font-size: 22px
+              - type: horizontal-stack
+                cards:
+                  - type: "custom:button-card"
+                    entity: light.night_stand
+                    color: var(--secondary-text-color)
+                    show_state: false
+                    show_name: false
+                    show_label: true
+                    label: "Night stand"
+                    state:
+                      - value: "on"
+                        color: var(--light-primary-color)
+                    styles:
+                      label:
+                        - font-size: 0.95rem
+                        - color: var(--secondary-text-color)
+                      state:
+                        - text-transform: capitalize
+                    hold_action:
+                      action: more-info
+                  - type: "custom:button-card"
+                    entity: light.dresser
+                    color: var(--secondary-text-color)
+                    show_state: false
+                    show_name: false
+                    show_label: true
+                    label: "Dresser"
+                    state:
+                      - value: "on"
+                        color: var(--light-primary-color)
+                    styles:
+                      label:
+                        - font-size: 0.95rem
+                        - color: var(--secondary-text-color)
+                      state:
+                        - text-transform: capitalize
+                    hold_action:
+                      action: more-info
+          - type: custom:compact-custom-header
+
   - title: Media
     icon: mdi:television-classic
     panel: true
