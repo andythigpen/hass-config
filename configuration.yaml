@@ -62,6 +62,11 @@ sensor:
       - date
   - platform: template
     sensors:
+      next_mode:
+        value_template: "{% include 'next_mode.tpl' %}"
+        entity_id:
+          - input_select.myhome_mode
+        friendly_name: "Next mode"
       living_room_threshold:
         value_template: "{% include 'living_room_threshold.tpl' %}"
         entity_id:

@@ -247,6 +247,11 @@ def monkeypatch_serial_gateway(hass):
         gateway.send = send_delay
 
 
+def in_quad(t, b, c, d):
+    t = t / d
+    return (c * (t ** 2) + b)
+
+
 def setup(hass, config):
     """ Setup myhome component. """
     register_presence_handlers(hass, config)
@@ -267,6 +272,7 @@ def setup(hass, config):
     ])
     # add global utils for templates
     ENV.globals['dt_util'] = dt_util
+    ENV.globals['easing_in_quad'] = in_quad
     _LOGGER.info('registered template helpers')
 
     return True
