@@ -64,9 +64,16 @@ sensor:
     sensors:
       next_mode:
         value_template: "{% include 'next_mode.tpl' %}"
-        entity_id:
-          - input_select.myhome_mode
+        entity_id: input_select.myhome_mode
         friendly_name: "Next mode"
+      mode_start:
+        value_template: "{% include 'mode_start.tpl' %}"
+        entity_id: sensor.time
+        friendly_name: "Mode start"
+      mode_end:
+        value_template: "{% include 'mode_end.tpl' %}"
+        entity_id: sensor.time
+        friendly_name: "Mode end"
       living_room_threshold:
         value_template: "{% include 'living_room_threshold.tpl' %}"
         entity_id:
@@ -75,26 +82,22 @@ sensor:
         friendly_name: "Living room threshold"
       bookcase_threshold:
         value_template: "{% include 'bookcase_threshold.tpl' %}"
-        entity_id:
-          - sensor.motion_sensor_4_2
+        entity_id: sensor.motion_sensor_4_2
         unit_of_measurement: "%"
         friendly_name: "Bookcase threshold"
       kitchen_threshold:
         value_template: "{% include 'kitchen_threshold.tpl' %}"
-        entity_id:
-          - sensor.motion_sensor_10_2
+        entity_id: sensor.motion_sensor_10_2
         unit_of_measurement: "%"
         friendly_name: "Kitchen threshold"
       bedroom_threshold:
         value_template: "{% include 'bedroom_threshold.tpl' %}"
-        entity_id:
-          - sensor.motion_sensor_2_2
+        entity_id: sensor.motion_sensor_2_2
         unit_of_measurement: "%"
         friendly_name: "Bedroom threshold"
       hall_threshold:
         value_template: "{% include 'hall_threshold.tpl' %}"
-        entity_id:
-          - sensor.motion_sensor_5_2
+        entity_id: sensor.motion_sensor_5_2
         unit_of_measurement: "%"
         friendly_name: "Hall threshold"
   - platform: openweathermap
@@ -120,6 +123,34 @@ sensor:
       - clouds
       - rain
       - weather_code
+  - platform: myhome
+    entities:
+      mode: input_select.myhome_mode
+      next_mode: sensor.next_mode
+      mode_start: sensor.mode_start
+      mode_end: sensor.mode_end
+    sensors:
+      living_room_standing:
+        - mode: Morning
+          brightness: 170
+          xy_color: [0.4449, 0.4066]
+          easing: in_quad
+        - mode: Day
+          brightness: 255
+          xy_color: [0.4244, 0.3993]
+          easing: in_quad
+        - mode: Afternoon
+          brightness: 255
+          xy_color: [0.3763, 0.3741]
+          easing: in_out_quad
+        - mode: Evening
+          brightness: 250
+          xy_color: [0.4883, 0.4149]
+          easing: in_quad
+        - mode: Night
+          brightness: 200
+          xy_color: [0.5268, 0.4133]
+          easing: out_quad
 
 binary_sensor:
   - platform: template
