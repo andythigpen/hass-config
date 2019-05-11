@@ -47,9 +47,7 @@
         entity_id: room.bedroom
         state: 'occupied'
   action:
-    service: python_script.enable_room_scene
-    data:
-      room: bedroom
+    service: python_script.update_occupied_room
 - alias: Bedroom countdown
   hide_entity: True
   trigger:
@@ -99,9 +97,7 @@
         entity_id: room.living_room
         state: 'occupied'
   action:
-    service: python_script.enable_room_scene
-    data:
-      room: living_room
+    service: python_script.update_occupied_room
 - alias: Living room countdown
   hide_entity: True
   trigger:
@@ -151,9 +147,7 @@
         entity_id: room.hall
         state: 'occupied'
   action:
-    service: python_script.enable_room_scene
-    data:
-      room: hall
+    service: python_script.update_occupied_room
 - alias: Hall countdown
   hide_entity: True
   trigger:
@@ -203,9 +197,7 @@
         entity_id: room.kitchen
         state: 'occupied'
   action:
-    service: python_script.enable_room_scene
-    data:
-      room: kitchen
+    service: python_script.update_occupied_room
 - alias: Kitchen countdown
   hide_entity: True
   trigger:
