@@ -29,7 +29,11 @@ recorder:
   purge_interval: 1
   purge_keep_days: 7
   exclude:
+    domains:
+      - automation
+      - group
     entities:
+      - sun.sun
       - sensor.date
       - binary_sensor.weekday
       - binary_sensor.dst
