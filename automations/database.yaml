@@ -1,0 +1,53 @@
+# ------------------------------
+# Database automations
+#
+- alias: Purge entities hourly
+  hide_entity: True
+  trigger:
+    - platform: time_pattern
+      minutes: 0
+      seconds: 0
+  action:
+    service: myhome.purge
+    data:
+      entities:
+        - sensor.load_1m
+        - sensor.load_5m
+        - sensor.load_15m
+        - sensor.processor_use
+        - sensor.memory_use
+        - sensor.memory_free
+        - sensor.swap_use
+        - sensor.swap_free
+      keep:
+        hours: 12
+
+- alias: Purge entities daily
+  hide_entity: True
+  trigger:
+    - platform: time
+      at: '03:02:00'
+  action:
+    service: myhome.purge
+    data:
+      entities:
+        - sensor.living_room_threshold
+        - sensor.kitchen_threshold
+        - sensor.bedroom_threshold
+        - sensor.hall_threshold
+        - sensor.motion_sensor_1_1
+        - sensor.motion_sensor_2_1
+        - sensor.motion_sensor_4_1
+        - sensor.motion_sensor_5_1
+        - sensor.motion_sensor_10_1
+        - sensor.motion_sensor_1_2
+        - sensor.motion_sensor_2_2
+        - sensor.motion_sensor_4_2
+        - sensor.motion_sensor_5_2
+        - sensor.motion_sensor_10_2
+        - input_boolean.dark_bedroom
+        - input_boolean.dark_living_room
+        - input_boolean.dark_kitchen
+        - input_boolean.dark_hall
+      keep:
+        days: 1

@@ -8,10 +8,13 @@ import logging
 import os
 import time
 
+from datetime import timedelta
 from functools import partial
 
 import homeassistant.components.mysensors as mysensors
 import homeassistant.helpers.event as helper
+import homeassistant.helpers.config_validation as cv
+import voluptuous as vol
 
 from homeassistant.components.device_tracker import (
     ATTR_DEV_ID, ATTR_LOCATION_NAME, SERVICE_SEE)
@@ -25,6 +28,7 @@ from homeassistant.components.mysensors.device import (
 from homeassistant.const import (
     STATE_HOME, STATE_NOT_HOME, STATE_UNAVAILABLE,
     SERVICE_TURN_ON, SERVICE_TURN_OFF,
+    CONF_ENTITIES,
     ATTR_ENTITY_ID,
 )
 
@@ -61,6 +65,20 @@ ATTR_VALUE_TYPE = 'value_type'
 ATTR_SUB_TYPE = 'sub_type'
 ATTR_ACK = 'ack'
 ATTR_PAYLOAD = 'payload'
+
+ATTR_KEEP = 'keep'
+ATTR_DAYS = 'days'
+ATTR_HOURS = 'hours'
+ATTR_MINUTES = 'minutes'
+
+SERVICE_PURGE_SCHEMA = vol.Schema({
+    vol.Required(CONF_ENTITIES): cv.entity_ids,
+    vol.Optional(ATTR_KEEP, default={}): vol.Schema({
+        vol.Optional(ATTR_DAYS, default=0): vol.All(vol.Coerce(int), vol.Range(min=0)),
+        vol.Optional(ATTR_HOURS, default=0): vol.All(vol.Coerce(int), vol.Range(min=0)),
+        vol.Optional(ATTR_MINUTES, default=0): vol.All(vol.Coerce(int), vol.Range(min=0)),
+    }),
+})
 
 
 def service_send_message(hass, service):
@@ -268,5 +286,36 @@ def setup(hass, config):
     # add global utils for templates
     ENV.globals['dt_util'] = dt_util
     _LOGGER.info('registered template helpers')
+
+    def purge_entries(service):
+        """Removes entries from the database"""
+        from homeassistant.components.recorder.util import session_scope
+        from sqlalchemy import text
+        data = service.data
+        purge_before = dt_util.utcnow() - timedelta(**data[ATTR_KEEP])
+        entities = tuple(data[CONF_ENTITIES])
+        cols = {str(idx): entity_id for idx, entity_id in enumerate(entities)}
+        keys = [':%s' % key for key in cols.keys()]
+        data = {
+            "before": str(purge_before),
+        }
+        data.update(cols)
+        _LOGGER.info("Purging data for %s before %s", entities, purge_before)
+        with session_scope(hass=hass) as session:
+            result = session.execute("""
+DELETE FROM events WHERE
+    json_extract(event_data, '$.entity_id') IN (%s) AND
+    time_fired < :before
+""" % ",".join(keys), data)
+            _LOGGER.info('Deleted %s events', result.rowcount)
+            result = session.execute("""
+DELETE FROM states WHERE
+    entity_id IN (%s) AND
+    last_updated < :before
+""" % ",".join(keys), data)
+            _LOGGER.info('Deleted %s states', result.rowcount)
+        _LOGGER.info("Purge completed")
+
+    hass.services.register(DOMAIN, 'purge', purge_entries, schema=SERVICE_PURGE_SCHEMA)
 
     return True
