@@ -143,7 +143,9 @@ def get_brightness(hass, service):
     # there's no brightness attribute for a group so just pick the first one
     # in the group and return that
     target_ids = extract_entity_ids(hass, service)
-    target_id = target_ids[0]
+    target_id = next(iter(target_ids), None)
+    if target_id is None:
+        return 0
     state = hass.states.get(target_id)
     return state.attributes.get(ATTR_BRIGHTNESS, 0)
 
