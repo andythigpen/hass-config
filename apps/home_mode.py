@@ -20,6 +20,8 @@ class HomeMode(hass.Hass):
     def next_mode(self):
         """Returns the next scheduled home mode"""
         names = list(self.modes.keys())
+        if self.mode not in names:
+            return None
         index = names.index(self.mode)
         nextmode = names[(index + 1) % len(names)]
         return nextmode
@@ -31,7 +33,7 @@ class HomeMode(hass.Hass):
     @property
     def start(self):
         """Returns the start datetime of the current mode"""
-        if self.mode not in self.modes:
+        if self.mode not in self.modes or "start" not in self.modes[self.mode]:
             return 0
         return datetime.datetime.combine(
             datetime.datetime.now(),
@@ -41,7 +43,7 @@ class HomeMode(hass.Hass):
     @property
     def end(self):
         """Returns the end datetime of the current mode"""
-        if self.mode not in self.modes:
+        if self.mode not in self.modes or "end" not in self.modes[self.mode]:
             return 0
         return datetime.datetime.combine(
             datetime.datetime.now(),
@@ -51,13 +53,13 @@ class HomeMode(hass.Hass):
     @property
     def duration(self):
         """Returns the duration of the current mode"""
-        if self.mode not in self.modes:
+        if self.start == 0 or self.end == 0:
             return 1
         return (self.end - self.start).total_seconds()
 
     @property
     def current(self):
         """Returns the current offset of the current mode"""
-        if self.mode not in self.modes:
+        if self.start == 0 or self.end == 0:
             return 1
         return (datetime.datetime.now().replace(tzinfo=None) - self.start).total_seconds()

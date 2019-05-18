@@ -4,29 +4,73 @@ living_room_tv:
   entities:
     - light.tv_left
     - light.tv_right
+  sensors:
+    switch: input_boolean.room_living_room
+    presence: room.living_room
+    light: sensor.motion_sensor_10_2
+    threshold: sensor.living_room_threshold
+  media:
+    mode: input_select.media_mode
+    Movie: 0
+    TV: 20
+    Paused: 20
+    Awake: 60
   modes:
     Morning:
       brightness: 1
       xy_color: [0.4449, 0.4066]
-      media_diff: 190
       easing: "in_quad"
     Day:
       brightness: 50
       xy_color: [0.4244, 0.3993]
-      media_diff: 200
       easing: "in_out_quad"
     Afternoon:
       brightness: 80
       xy_color: [0.3763, 0.3741]
-      media_diff: 200
       easing: "in_out_quad"
     Evening:
       brightness: 220
       xy_color: [0.4883, 0.4149]
-      media_diff: 190
       easing: "out_quad"
     Night:
       brightness: 140
       xy_color: [0.5268, 0.4133]
-      media_diff: 120
+      easing: "out_quad"
+
+living_room_standing:
+  module: autolight
+  class: AutoLight
+  entities:
+    - light.living_room_standing
+  sensors:
+    switch: input_boolean.room_living_room
+    presence: room.living_room
+    light: sensor.motion_sensor_10_2
+    threshold: sensor.living_room_threshold
+  media:
+    mode: input_select.media_mode
+    Movie: 0
+    TV: 20
+    Paused: 20
+    Awake: 100
+  modes:
+    Morning:
+      brightness: 170
+      xy_color: [0.4449, 0.4066]
+      easing: "in_quad"
+    Day:
+      brightness: 255
+      xy_color: [0.4244, 0.3993]
+      easing: "in_quad"
+    Afternoon:
+      brightness: 255
+      xy_color: [0.3763, 0.3741]
+      easing: "in_out_quad"
+    Evening:
+      brightness: 250
+      xy_color: [0.4883, 0.4149]
+      easing: "out_quad"
+    Night:
+      brightness: 200
+      xy_color: [0.5268, 0.4133]
       easing: "out_quad"

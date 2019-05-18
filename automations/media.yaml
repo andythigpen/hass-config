@@ -90,7 +90,7 @@
           {% elif is_state('media_player.android_tv', 'off') %}
           Off
           {% endif %}
-    - service: python_script.update_occupied_room
+    #- service: python_script.update_occupied_room
 
 - alias: TV backlight on HDMI
   hide_entity: True
@@ -114,7 +114,7 @@
       - condition: template
         value_template: "{{ state_attr('light.hyperion', 'effect') != 'HDMI' }}"
   action:
-    - service: python_script.update_occupied_room
+    #- service: python_script.update_occupied_room
     - delay: '00:00:06'
     - service: light.turn_on
       data_template:
@@ -164,7 +164,7 @@
             {%- set curr = 'idle' -%}
             {%- endif -%}
             {{ prev }}-{{ curr }}
-    - service: python_script.update_occupied_room
+    #- service: python_script.update_occupied_room
 
 - alias: TV backlight off
   hide_entity: True
@@ -197,7 +197,7 @@
     - service: light.turn_off
       data:
         entity_id: light.hyperion
-    - service: python_script.update_occupied_room
+    #- service: python_script.update_occupied_room
 
 - alias: All lights off for movies
   hide_entity: True
