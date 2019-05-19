@@ -2,6 +2,7 @@ import datetime
 import appdaemon.plugins.hass.hassapi as hass
 
 STATE_OCCUPIED = 'occupied'
+STATE_COUNTDOWN = 'countdown'
 STATE_ON = 'on'
 STATE_OFF = 'off'
 STATE_MOVIE = 'Movie'
@@ -22,9 +23,12 @@ class AutoLight(hass.Hass):
         self.entities = self.args['entities']
         self.home = self.get_app('homemode')
         self.sensors = self.args.get('sensors', {})
-        self.media = self.args.get('media', {})
+        self.media = self.args.get('media', None)
         if self.media:
-            self.listen_state(self.on_media_change, self.media['mode'])
+            self.listen_state(self.on_media_change, self.media)
+        self.brightness = self.args.get('brightness', {})
+        if self.brightness.get('entity_id'):
+            self.listen_state(self.on_state_change, self.brightness['entity_id'])
         self.run_minutely(self.on_schedule, time)
         self.listen_state(self.on_occupancy_change, self.sensors['presence'])
         self.log('initialized')
@@ -49,14 +53,19 @@ class AutoLight(hass.Hass):
         bri = int(bri)
         threshold = self.current_threshold
         light_pct = self.current_light_level
-        adj = int(bri / threshold * (threshold - light_pct))
-        if self.media:
-            current = self.current_media_mode
-            if current in self.media:
-                self.log('media mode:{} adj:{} limit:{}'.format(current, adj, self.media[current]))
-                adj = min(adj, self.media[current])
+        minimum = self.brightness.get('min', 0)
+        adj = int(bri / threshold * threshold - max(light_pct - minimum, 0))
+        if self.brightness.get('entity_id'):
+            current = self.get_state(self.brightness['entity_id'])
+            self.log('current:{} brightness:{}'.format(current, self.brightness), level="DEBUG")
+            states = self.brightness['states']
+            if current in states:
+                self.log('current:{} adj:{} limit:{}'.format(
+                    current, adj, states[current]))
+                adj = min(adj, states[current])
         adj = max(adj, 1)
-        self.log('bri:{} adj:{} threshold:{} light:{}'.format(bri, adj, threshold, light_pct))
+        self.log('bri:{} adj:{} threshold:{} light:{} min:{}'.format(
+            bri, adj, threshold, light_pct, minimum))
         return adj
 
     def get_transition(self, state, new_state, trigger=None):
@@ -72,6 +81,17 @@ class AutoLight(hass.Hass):
             return 1
         return 10
 
+    def get_switch_state(self, entity_id):
+        """
+        Returns True if the entity state is 'on'.
+        If the entity_id starts with '!', then the inverse is returned.
+        """
+        state = STATE_ON
+        if entity_id.startswith('!'):
+            state = STATE_OFF
+            entity_id = entity_id[1:]
+        return self.get_state(entity_id) == state
+
     @property
     def current_threshold(self):
         return int(self.get_state(self.sensors['threshold']))
@@ -82,7 +102,9 @@ class AutoLight(hass.Hass):
 
     @property
     def current_media_mode(self):
-        return self.get_state(self.media['mode'])
+        if self.media:
+            return self.get_state(self.media)
+        return None
 
     @property
     def should_auto_update(self):
@@ -90,16 +112,17 @@ class AutoLight(hass.Hass):
         Returns True if this light should currently be updated.
         Update conditions:
         - there is no manual override (switch)
-        - the room is occupied (presence)
         - the current mode is configured for this light
         """
         enabled = True
         if 'switch' in self.sensors:
-            enabled = self.get_state(self.sensors['switch']) == STATE_ON
-        occupied = self.get_state(self.sensors['presence']) == STATE_OCCUPIED
+            if isinstance(self.sensors['switch'], (list, tuple)):
+                enabled = all([self.get_switch_state(n) for n in self.sensors['switch']])
+            else:
+                enabled = self.get_switch_state(self.sensors['switch'])
         configured = self.home.mode in self.modes
-        self.log('enabled:{} occupied:{} configured:{}'.format(enabled, occupied, configured))
-        return enabled and occupied and configured
+        self.log('enabled:{} configured:{}'.format(enabled, configured))
+        return enabled and configured
 
     @property
     def desired_state(self):
@@ -108,15 +131,18 @@ class AutoLight(hass.Hass):
         - the light threshold is below the configured threshold
         - the light is already on but the light threshold has not exceeded the hysterisis threshold
         - the media mode is not "Movie" (media)
+        - the room is occupied (presence)
 
         The light should be off if:
         - the light threshold is above the configured threshold
         - the media mode is "Movie" (media)
+        - the room is not occupied (presence)
         """
         dark = self.current_light_level < self.current_threshold
         movie = self.current_media_mode == STATE_MOVIE
-        self.log('dark:{} movie:{}'.format(dark, movie))
-        if dark and not movie:
+        occupied = self.get_state(self.sensors['presence']) in (STATE_OCCUPIED, STATE_COUNTDOWN)
+        self.log('dark:{} occupied:{} movie:{}'.format(dark, occupied, movie))
+        if dark and occupied and not movie:
             return STATE_ON
         return STATE_OFF
 
@@ -182,6 +208,10 @@ class AutoLight(hass.Hass):
     def on_occupancy_change(self, entity, attribute, old, new, kwargs):
         self.log('update occupancy entity:{} attribute:{} old:{} new:{} kwargs:{}'.format(entity, attribute, old, new, kwargs))
         self.update_lights(trigger='occupancy')
+
+    def on_state_change(self, entity, attribute, old, new, kwargs):
+        self.log('update state entity:{} attribute:{} old:{} new:{} kwargs:{}'.format(entity, attribute, old, new, kwargs))
+        self.update_lights(trigger='state')
 
     """
     Easing functions from https://easings.net/ and http://robertpenner.com/easing/

@@ -9,12 +9,15 @@ living_room_tv:
     presence: room.living_room
     light: sensor.motion_sensor_10_2
     threshold: sensor.living_room_threshold
-  media:
-    mode: input_select.media_mode
-    Movie: 0
-    TV: 20
-    Paused: 20
-    Awake: 60
+  media: input_select.media_mode
+  brightness:
+    entity_id: input_select.media_mode
+    min: 3
+    states:
+      Movie: 0
+      TV: 20
+      Paused: 20
+      Awake: 70
   modes:
     Morning:
       brightness: 1
@@ -29,11 +32,11 @@ living_room_tv:
       xy_color: [0.3763, 0.3741]
       easing: "in_out_quad"
     Evening:
-      brightness: 220
+      brightness: 230
       xy_color: [0.4883, 0.4149]
       easing: "out_quad"
     Night:
-      brightness: 140
+      brightness: 190
       xy_color: [0.5268, 0.4133]
       easing: "out_quad"
 
@@ -47,12 +50,15 @@ living_room_standing:
     presence: room.living_room
     light: sensor.motion_sensor_10_2
     threshold: sensor.living_room_threshold
-  media:
-    mode: input_select.media_mode
-    Movie: 0
-    TV: 20
-    Paused: 20
-    Awake: 100
+  media: input_select.media_mode
+  brightness:
+    entity_id: input_select.media_mode
+    min: 3
+    states:
+      Movie: 0
+      TV: 80
+      Paused: 180
+      Awake: 180
   modes:
     Morning:
       brightness: 170
@@ -67,10 +73,99 @@ living_room_standing:
       xy_color: [0.3763, 0.3741]
       easing: "in_out_quad"
     Evening:
-      brightness: 250
+      brightness: 255
       xy_color: [0.4883, 0.4149]
       easing: "out_quad"
     Night:
-      brightness: 200
+      brightness: 255
       xy_color: [0.5268, 0.4133]
       easing: "out_quad"
+
+kitchen:
+  module: autolight
+  class: AutoLight
+  entities:
+    - light.rgbw_15_1
+    - light.rgbw_15_2
+  sensors:
+    switch: input_boolean.room_kitchen
+    presence: room.kitchen
+    light: sensor.motion_sensor_10_2
+    threshold: sensor.kitchen_threshold
+  brightness:
+    min: 3
+  modes:
+    Morning:
+      brightness: 255
+      rgb_color: [255, 75, 0]
+      white_value: 120
+    Day:
+      brightness: 255
+      rgb_color: [255, 75, 20]
+      white_value: 255
+    Afternoon:
+      brightness: 255
+      rgb_color: [255, 75, 100]
+      white_value: 255
+    Evening:
+      brightness: 255
+      rgb_color: [255, 75, 0]
+      white_value: 75
+    Night:
+      brightness: 200
+      rgb_color: [255, 75, 0]
+      white_value: 50
+
+bedroom:
+  module: autolight
+  class: AutoLight
+  entities:
+    - light.night_stand
+    - light.dresser
+  sensors:
+    switch:
+      - input_boolean.room_bedroom
+      - "!script.bedtime"
+      - "!script.bedtime_now"
+    presence: room.bedroom
+    light: sensor.motion_sensor_2_2
+    threshold: sensor.bedroom_threshold
+  brightness:
+    entity_id: binary_sensor.bed_sensor_16_1
+    states:
+      "on": 100
+  modes:
+    Day:
+      brightness: 255
+      easing: "in_quad"
+    Afternoon:
+      brightness: 255
+      easing: "in_quad"
+    Evening:
+      brightness: 200
+      easing: "in_quad"
+    Night:
+      brightness: 150
+      easing: "out_quad"
+
+hall:
+  module: autolight
+  class: AutoLight
+  entities:
+    - light.hall
+  sensors:
+    switch: input_boolean.room_hall
+    presence: room.hall
+    light: sensor.motion_sensor_5_2
+    threshold: sensor.hall_threshold
+  modes:
+    Morning:
+      brightness: 120
+    Day:
+      brightness: 175
+    Afternoon:
+      brightness: 175
+    Evening:
+      brightness: 100
+    Night:
+      brightness: 50
