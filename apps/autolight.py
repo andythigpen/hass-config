@@ -113,6 +113,7 @@ class AutoLight(hass.Hass):
         Update conditions:
         - there is no manual override (switch)
         - the current mode is configured for this light
+        - the presence sensor is not in countdown mode
         """
         enabled = True
         if 'switch' in self.sensors:
@@ -121,8 +122,9 @@ class AutoLight(hass.Hass):
             else:
                 enabled = self.get_switch_state(self.sensors['switch'])
         configured = self.home.mode in self.modes
-        self.log('enabled:{} configured:{}'.format(enabled, configured))
-        return enabled and configured
+        countdown = self.get_state(self.sensors['presence']) == STATE_COUNTDOWN
+        self.log('enabled:{} configured:{} countdown:{}'.format(enabled, configured, countdown))
+        return enabled and configured and not countdown
 
     @property
     def desired_state(self):
@@ -140,7 +142,7 @@ class AutoLight(hass.Hass):
         """
         dark = self.current_light_level < self.current_threshold
         movie = self.current_media_mode == STATE_MOVIE
-        occupied = self.get_state(self.sensors['presence']) in (STATE_OCCUPIED, STATE_COUNTDOWN)
+        occupied = self.get_state(self.sensors['presence']) == STATE_OCCUPIED
         self.log('dark:{} occupied:{} movie:{}'.format(dark, occupied, movie))
         if dark and occupied and not movie:
             return STATE_ON
@@ -184,10 +186,10 @@ class AutoLight(hass.Hass):
         if not self.should_auto_update:
             self.log('not updating')
             return
+        new_state = self.desired_state
+        attrs = self.desired_state_attrs
         for entity_id in self.entities:
             state = self.get_state(entity_id)
-            new_state = self.desired_state
-            attrs = self.desired_state_attrs
             attrs['transition'] = self.get_transition(state, new_state, trigger)
             self.log('entity_id:{} state:{} desired:{} attrs:{}'.format(
                 entity_id, state, new_state, attrs))
