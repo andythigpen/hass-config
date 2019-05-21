@@ -5,6 +5,7 @@ living_room_tv:
     - light.tv_left
     - light.tv_right
   sensors:
+    auto_update: input_boolean.auto_living_room_tv
     switch: input_boolean.room_living_room
     presence: room.living_room
     light: sensor.motion_sensor_10_2
@@ -46,6 +47,7 @@ living_room_standing:
   entities:
     - light.living_room_standing
   sensors:
+    auto_update: input_boolean.auto_living_room_standing
     switch: input_boolean.room_living_room
     presence: room.living_room
     light: sensor.motion_sensor_10_2
@@ -88,6 +90,7 @@ kitchen:
     - light.rgbw_15_1
     - light.rgbw_15_2
   sensors:
+    auto_update: input_boolean.auto_kitchen
     switch: input_boolean.room_kitchen
     presence: room.kitchen
     light: sensor.motion_sensor_10_2
@@ -123,6 +126,7 @@ bedroom:
     - light.night_stand
     - light.dresser
   sensors:
+    auto_update: input_boolean.auto_bedroom
     switch:
       - input_boolean.room_bedroom
       - "!script.bedtime"
@@ -154,6 +158,7 @@ hall:
   entities:
     - light.hall
   sensors:
+    auto_update: input_boolean.auto_hall
     switch: input_boolean.room_hall
     presence: room.hall
     light: sensor.motion_sensor_5_2

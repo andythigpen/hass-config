@@ -1,5 +1,6 @@
 appdaemon:
   threads: 10
+  user_id: 2c1fa5b5ee2e4c35b71b5947b349941f
   plugins:
     HASS:
       type: hass

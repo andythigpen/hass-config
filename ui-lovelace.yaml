@@ -345,6 +345,118 @@ views:
                       hold_action:
                         action: more-info
             - type: custom:vertical-style-card
+              title: Auto update
+              style:
+                font_size: 18px
+              cards:
+                - type: horizontal-stack
+                  cards:
+                    - type: "custom:button-card"
+                      entity: input_boolean.auto_living_room_tv
+                      color: var(--secondary-text-color)
+                      show_state: false
+                      show_name: false
+                      show_label: true
+                      label: "TV"
+                      state:
+                        - value: "on"
+                          color: var(--light-primary-color)
+                          icon: mdi:checkbox-marked-circle
+                        - value: "off"
+                          icon: mdi:checkbox-blank-circle-outline
+                      styles:
+                        label:
+                          - font-size: 0.95rem
+                          - color: var(--secondary-text-color)
+                      tap_action:
+                        action: toggle
+                      hold_action:
+                        action: more-info
+                    - type: "custom:button-card"
+                      entity: input_boolean.auto_living_room_standing
+                      color: var(--secondary-text-color)
+                      show_state: false
+                      show_name: false
+                      show_label: true
+                      label: "Living Room"
+                      state:
+                        - value: "on"
+                          color: var(--light-primary-color)
+                          icon: mdi:checkbox-marked-circle
+                        - value: "off"
+                          icon: mdi:checkbox-blank-circle-outline
+                      styles:
+                        label:
+                          - font-size: 0.95rem
+                          - color: var(--secondary-text-color)
+                      tap_action:
+                        action: toggle
+                      hold_action:
+                        action: more-info
+                    - type: "custom:button-card"
+                      entity: input_boolean.auto_bedroom
+                      color: var(--secondary-text-color)
+                      show_state: false
+                      show_name: false
+                      show_label: true
+                      label: "Bedroom"
+                      state:
+                        - value: "on"
+                          color: var(--light-primary-color)
+                          icon: mdi:checkbox-marked-circle
+                        - value: "off"
+                          icon: mdi:checkbox-blank-circle-outline
+                      styles:
+                        label:
+                          - font-size: 0.95rem
+                          - color: var(--secondary-text-color)
+                      tap_action:
+                        action: toggle
+                      hold_action:
+                        action: more-info
+                    - type: "custom:button-card"
+                      entity: input_boolean.auto_kitchen
+                      color: var(--secondary-text-color)
+                      show_state: false
+                      show_name: false
+                      show_label: true
+                      label: "Kitchen"
+                      state:
+                        - value: "on"
+                          color: var(--light-primary-color)
+                          icon: mdi:checkbox-marked-circle
+                        - value: "off"
+                          icon: mdi:checkbox-blank-circle-outline
+                      styles:
+                        label:
+                          - font-size: 0.95rem
+                          - color: var(--secondary-text-color)
+                      tap_action:
+                        action: toggle
+                      hold_action:
+                        action: more-info
+                    - type: "custom:button-card"
+                      entity: input_boolean.auto_hall
+                      color: var(--secondary-text-color)
+                      show_state: false
+                      show_name: false
+                      show_label: true
+                      label: "Hall"
+                      state:
+                        - value: "on"
+                          color: var(--light-primary-color)
+                          icon: mdi:checkbox-marked-circle
+                        - value: "off"
+                          icon: mdi:checkbox-blank-circle-outline
+                      styles:
+                        label:
+                          - font-size: 0.95rem
+                          - color: var(--secondary-text-color)
+                      tap_action:
+                        action: toggle
+                      hold_action:
+                        action: more-info
+            - type: custom:vertical-style-card
               title: Rooms
               style:
                 font_size: 18px

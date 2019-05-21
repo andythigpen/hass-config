@@ -14,6 +14,8 @@ homeassistant:
     "sensor.motion_sensor_*_2":
       icon: mdi:white-balance-sunny
 
+config:
+
 myhome: !include conf/myhome.yaml
 
 frontend:
@@ -248,6 +250,16 @@ input_boolean:
     name: Kitchen is dark
   dark_hall:
     name: Hall is dark
+  auto_living_room_standing:
+    name: Auto update living room standing
+  auto_living_room_tv:
+    name: Auto update living room tv
+  auto_kitchen:
+    name: Auto update kitchen
+  auto_bedroom:
+    name: Auto update bedroom
+  auto_hall:
+    name: Auto update hall
 
 python_script:
 
