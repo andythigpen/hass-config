@@ -11,6 +11,15 @@ class HomeMode(hass.Hass):
             (mode['name'], mode) for mode in self.args['modes']
         ])
 
+    def get_start_end(self, modes):
+        """
+        Given a dict mapping modes to values, return the current and next
+        values based on the home mode.
+        """
+        start = modes.get(self.mode, None)
+        end = modes.get(self.next_mode, None)
+        return start, end
+
     @property
     def mode(self):
         """Returns the next scheduled home mode"""

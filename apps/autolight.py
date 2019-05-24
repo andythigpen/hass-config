@@ -54,8 +54,7 @@ class AutoLight(hass.Hass):
         and easing function
         """
         if isinstance(begin, (int, float)):
-            change = end - begin
-            attr = easing(self.home.current, begin, change, self.home.duration)
+            attr = easing(begin, end)
             if isinstance(begin, int):
                 return round(int(attr))
             return float('{0:.4f}'.format(attr))
@@ -197,16 +196,14 @@ class AutoLight(hass.Hass):
         Returns a dict of desired state attributes based on the current and
         next home modes.
         """
-        mode = self.home.mode
-        next_mode = self.home.next_mode
-        if mode not in self.modes:
+        start, end = self.home.get_start_end(self.modes)
+        if start is None:
             return {}
-        start = self.modes[mode]
-        end = self.modes.get(next_mode, start)
-        app = self.get_app('easing')
+        if end is None:
+            end = start
+        app = self.get_app('modeeasing')
         easing = getattr(app, start.get('easing', 'in_out_quad'))
         attrs = {}
-        self.log('mode:{} next:{}'.format(mode, next_mode), level="DEBUG")
         for attr in start:
             if attr == 'easing':
                 continue
@@ -219,7 +216,7 @@ class AutoLight(hass.Hass):
             'current:{} duration:{} easing:{}'.format(
                 self.home.current,
                 self.home.duration,
-                easing.__name__,
+                easing,
             ),
             level="DEBUG",
         )

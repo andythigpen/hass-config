@@ -1,3 +1,7 @@
 easing:
   module: easing
   class: Easing
+
+modeeasing:
+  module: easing
+  class: ModeEasing
