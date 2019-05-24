@@ -190,6 +190,32 @@ logger:
     homeassistant.components.mysensors: info
     custom_components.myhome: debug
 
+input_number:
+  living_room_threshold:
+    name: Living room threshold
+    min: 0
+    max: 255
+    mode: box
+    unit_of_measurement: step
+  kitchen_threshold:
+    name: Kitchen threshold
+    min: 0
+    max: 255
+    mode: box
+    unit_of_measurement: step
+  bedroom_threshold:
+    name: Bedroom threshold
+    min: 0
+    max: 255
+    mode: box
+    unit_of_measurement: step
+  hall_threshold:
+    name: Hall threshold
+    min: 0
+    max: 255
+    mode: box
+    unit_of_measurement: step
+
 input_select:
   myhome_mode:
     name: Mode
