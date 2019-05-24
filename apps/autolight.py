@@ -22,7 +22,6 @@ class AutoLight(hass.Hass):
         time = datetime.time(0, 0, 0)
         self.modes = self.args['modes']
         self.entities = self.args['entities']
-        self.home = self.get_app('homemode')
         self.sensors = self.args.get('sensors', {})
         self.media = self.args.get('media', None)
         if self.media:
@@ -113,6 +112,10 @@ class AutoLight(hass.Hass):
             state = STATE_OFF
             entity_id = entity_id[1:]
         return self.get_state(entity_id) == state
+
+    @property
+    def home(self):
+        return self.get_app('homemode')
 
     @property
     def auto_update(self):
