@@ -1,0 +1,3 @@
+easing:
+  module: easing
+  class: Easing

@@ -203,7 +203,8 @@ class AutoLight(hass.Hass):
             return {}
         start = self.modes[mode]
         end = self.modes.get(next_mode, start)
-        easing = getattr(self, start.get('easing', 'in_out_quad'))
+        app = self.get_app('easing')
+        easing = getattr(app, start.get('easing', 'in_out_quad'))
         attrs = {}
         self.log('mode:{} next:{}'.format(mode, next_mode), level="DEBUG")
         for attr in start:
@@ -281,25 +282,3 @@ class AutoLight(hass.Hass):
         """Callback for auto update disabled timeout"""
         self.log('reenabling auto update after timeout')
         self.auto_update = True
-
-    """
-    Easing functions from https://easings.net/ and
-    http://robertpenner.com/easing/
-    t: current time
-    b: beginning value
-    c: change in value
-    d: duration
-    """
-    def in_quad(self, t, b, c, d):
-        t = t / d
-        return c * (t ** 2) + b
-
-    def in_out_quad(self, t, b, c, d):
-        t = t / d * 2
-        if t < 1:
-            return c / 2 * t * t + b
-        return -c / 2 * ((t - 1) * (t - 3) - 1) + b
-
-    def out_quad(self, t, b, c, d):
-        t = t / d
-        return -c * t * (t - 2) + b
