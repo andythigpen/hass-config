@@ -36,7 +36,7 @@ class AutoLight(hass.Hass):
                           self.sensors['auto_update'])
         self.listen_state(self.reenable_auto_update,
                           self.sensors['auto_update'],
-                          new=STATE_ON,
+                          new=STATE_OFF,
                           duration=60 * 60 * 5)
 
         for entity_id in self.entities:
