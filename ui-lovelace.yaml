@@ -225,29 +225,6 @@ views:
                       entity: room.hall
                       label: "Hall"
             - type: custom:vertical-style-card
-              title: Dark sensors
-              style:
-                font_size: 18px
-              cards:
-                - type: horizontal-stack
-                  cards:
-                    - type: "custom:button-card"
-                      template: small_toggle_icon
-                      entity: input_boolean.dark_living_room
-                      label: "Living Room"
-                    - type: "custom:button-card"
-                      template: small_toggle_icon
-                      entity: input_boolean.dark_bedroom
-                      label: "Bedroom"
-                    - type: "custom:button-card"
-                      template: small_toggle_icon
-                      entity: input_boolean.dark_kitchen
-                      label: "Kitchen"
-                    - type: "custom:button-card"
-                      template: small_toggle_icon
-                      entity: input_boolean.dark_hall
-                      label: "Hall"
-            - type: custom:vertical-style-card
               title: Auto update
               style:
                 font_size: 18px
@@ -379,20 +356,16 @@ views:
                 label: Living Room
               - binary_sensor.motion_sensor_4_1
               - binary_sensor.motion_sensor_10_1
-              - binary_sensor.dark_living_room
               - type: section
                 label: Bedroom
               - binary_sensor.motion_sensor_2_1
               - binary_sensor.bed_sensor_16_1
-              - binary_sensor.dark_bedroom
               - type: section
                 label: Kitchen
               - binary_sensor.motion_sensor_1_1
-              - binary_sensor.dark_kitchen
               - type: section
                 label: Hall
               - binary_sensor.motion_sensor_5_1
-              - binary_sensor.dark_hall
               - type: section
                 label: Other
               - entity: binary_sensor.weekday

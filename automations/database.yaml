@@ -45,9 +45,5 @@
         - sensor.motion_sensor_4_2
         - sensor.motion_sensor_5_2
         - sensor.motion_sensor_10_2
-        - input_boolean.dark_bedroom
-        - input_boolean.dark_living_room
-        - input_boolean.dark_kitchen
-        - input_boolean.dark_hall
       keep:
         days: 1
