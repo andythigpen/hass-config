@@ -18,10 +18,13 @@ class LightThreshold(hass.Hass):
         """Callback for scheduled updates"""
         home = self.get_app('homemode')
         start, end = home.get_start_end(self.modes)
+        self.log('start:{} end:{} mode:{}'.format(start, end, home.mode),
+                 level='DEBUG')
         if start is None:
             start = self.default
         if end is None:
             end = start
         app = self.get_app('modeeasing')
-        value = int(app.in_out_quad(start, end))
+        value = int(round(app.in_out_quad(start, end)))
+        self.log('value:{}'.format(value), level='DEBUG')
         self.set_value(self.entity_id, value)

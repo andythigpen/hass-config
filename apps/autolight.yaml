@@ -11,6 +11,7 @@ living_room_tv:
     light: sensor.motion_sensor_10_2
     threshold: sensor.living_room_threshold
   media: input_select.media_mode
+  hysteresis: 5
   brightness:
     entity_id: input_select.media_mode
     min: 3
@@ -53,6 +54,7 @@ living_room_standing:
     light: sensor.motion_sensor_10_2
     threshold: sensor.living_room_threshold
   media: input_select.media_mode
+  hysteresis: 5
   brightness:
     entity_id: input_select.media_mode
     min: 3
@@ -97,6 +99,7 @@ kitchen:
     threshold: sensor.kitchen_threshold
   brightness:
     min: 3
+  hysteresis: 3
   modes:
     Morning:
       brightness: 255
@@ -134,6 +137,7 @@ bedroom:
     presence: room.bedroom
     light: sensor.motion_sensor_2_2
     threshold: sensor.bedroom_threshold
+  hysteresis: 5
   brightness:
     entity_id: binary_sensor.bed_sensor_16_1
     states:

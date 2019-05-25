@@ -30,8 +30,10 @@ class AutoLight(hass.Hass):
         if self.brightness.get('entity_id'):
             self.listen_state(self.on_brightness_change,
                               self.brightness['entity_id'])
+        self.hysteresis = self.args.get('hysteresis', 0)
         self.run_minutely(self.on_schedule, time)
         self.listen_state(self.on_occupancy_change, self.sensors['presence'])
+        self.listen_state(self.on_light_level_change, self.sensors['light'])
         self.listen_state(self.on_auto_update_change,
                           self.sensors['auto_update'])
         self.listen_state(self.reenable_auto_update,
@@ -70,10 +72,10 @@ class AutoLight(hass.Hass):
         based on the entity's state.
         """
         bri = int(bri)
-        threshold = self.current_threshold
+        threshold = self.max_threshold
         light_pct = self.current_light_level
         minimum = self.brightness.get('min', 0)
-        adj = int(bri / threshold * threshold - max(light_pct - minimum, 0))
+        adj = int(bri / threshold * (threshold - max(light_pct - minimum, 0)))
         if self.brightness.get('entity_id'):
             current = self.get_state(self.brightness['entity_id'])
             self.log('current:{} brightness:{}'.format(
@@ -134,6 +136,10 @@ class AutoLight(hass.Hass):
         return int(self.get_state(self.sensors['threshold']))
 
     @property
+    def max_threshold(self):
+        return self.current_threshold + self.hysteresis
+
+    @property
     def current_light_level(self):
         return int(self.get_state(self.sensors['light']))
 
@@ -169,28 +175,34 @@ class AutoLight(hass.Hass):
             enabled, configured, countdown), level='DEBUG')
         return enabled and configured and not countdown
 
-    @property
-    def desired_state(self):
+    def get_desired_state(self, state):
         """
         The light should be on if:
+        - the media mode is not "Movie" (media)
+        - the room is occupied (presence)
         - the light threshold is below the configured threshold
         - the light is already on but the light threshold has not exceeded the
           hysteresis threshold
-        - the media mode is not "Movie" (media)
-        - the room is occupied (presence)
 
         The light should be off if:
         - the light threshold is above the configured threshold
         - the media mode is "Movie" (media)
         - the room is not occupied (presence)
         """
-        dark = self.current_light_level < self.current_threshold
+        is_on = state == STATE_ON
+        level = self.current_light_level
+        dark = level < self.current_threshold
         movie = self.current_media_mode == STATE_MOVIE
         occupied = self.get_state(self.sensors['presence']) == STATE_OCCUPIED
-        self.log('dark:{} occupied:{} movie:{}'.format(dark, occupied, movie),
-                 level='DEBUG')
-        if dark and occupied and not movie:
+        self.log('dark:{} occupied:{} movie:{} thr:{} lvl:{} max:{}'.format(
+            dark, occupied, movie, self.current_threshold, level,
+            self.max_threshold), level='DEBUG')
+        if movie:
+            return STATE_OFF
+        if dark and occupied:
             return STATE_ON
+        if self.current_threshold <= level < self.max_threshold:
+            return state  # do nothing
         return STATE_OFF
 
     @property
@@ -231,10 +243,10 @@ class AutoLight(hass.Hass):
             self.log('not updating')
             return
 
-        new_state = self.desired_state
         attrs = self.desired_state_attrs
         for entity_id in self.entities:
             state = self.get_state(entity_id)
+            new_state = self.get_desired_state(state)
             attrs['transition'] = self.get_transition(
                 state, new_state, trigger)
             self.log('entity_id:{} state:{} desired:{} attrs:{}'.format(
@@ -260,6 +272,10 @@ class AutoLight(hass.Hass):
         if not self.auto_update and new == STATE_NOT_OCCUPIED:
             self.log('enabling auto update due to occupancy change')
             self.auto_update = True
+
+    def on_light_level_change(self, entity, attribute, old, new, kwargs):
+        """Callback for light level entity state changes"""
+        self.update_lights(trigger='light_level')
 
     def on_brightness_change(self, entity, attribute, old, new, kwargs):
         """Callback for brightness entity state changes"""
