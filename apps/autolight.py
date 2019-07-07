@@ -33,7 +33,7 @@ class AutoLight(hass.Hass):
         self.hysteresis = self.args.get('hysteresis', 0)
         self.run_minutely(self.on_schedule, time)
         self.listen_state(self.on_occupancy_change, self.sensors['presence'])
-        self.listen_state(self.on_light_level_change, self.sensors['light'])
+        #self.listen_state(self.on_light_level_change, self.sensors['light'])
         self.listen_state(self.on_auto_update_change,
                           self.sensors['auto_update'])
         self.listen_state(self.reenable_auto_update,
@@ -87,7 +87,7 @@ class AutoLight(hass.Hass):
                 adj = min(adj, states[current])
         adj = max(adj, 1)
         self.log('bri:{} adj:{} threshold:{} light:{} min:{}'.format(
-            bri, adj, threshold, light_pct, minimum), level='DEBUG')
+            bri, adj, threshold, light_pct, minimum), level='INFO')
         return adj
 
     def get_transition(self, state, new_state, trigger=None):
@@ -133,7 +133,7 @@ class AutoLight(hass.Hass):
 
     @property
     def current_threshold(self):
-        return int(self.get_state(self.sensors['threshold']))
+        return int(float(self.get_state(self.sensors['threshold'])))
 
     @property
     def max_threshold(self):
@@ -172,7 +172,7 @@ class AutoLight(hass.Hass):
         configured = self.home.mode in self.modes
         countdown = self.get_state(self.sensors['presence']) == STATE_COUNTDOWN
         self.log('enabled:{} configured:{} countdown:{}'.format(
-            enabled, configured, countdown), level='DEBUG')
+            enabled, configured, countdown), level='INFO')
         return enabled and configured and not countdown
 
     def get_desired_state(self, state):
@@ -196,7 +196,7 @@ class AutoLight(hass.Hass):
         occupied = self.get_state(self.sensors['presence']) == STATE_OCCUPIED
         self.log('dark:{} occupied:{} movie:{} thr:{} lvl:{} max:{}'.format(
             dark, occupied, movie, self.current_threshold, level,
-            self.max_threshold), level='DEBUG')
+            self.max_threshold), level='INFO')
         if movie:
             return STATE_OFF
         if dark and occupied:
@@ -239,8 +239,9 @@ class AutoLight(hass.Hass):
 
     def update_lights(self, trigger=None):
         """Updates the configured light entities with the desired state"""
+        self.log('update_lights:{}'.format(trigger))
         if not self.should_auto_update:
-            self.log('not updating')
+            self.log('not updating {}'.format(trigger))
             return
 
         attrs = self.desired_state_attrs
@@ -249,8 +250,9 @@ class AutoLight(hass.Hass):
             new_state = self.get_desired_state(state)
             attrs['transition'] = self.get_transition(
                 state, new_state, trigger)
-            self.log('entity_id:{} state:{} desired:{} attrs:{}'.format(
-                entity_id, state, new_state, attrs))
+            self.log('trigger:{} entity_id:{} state:{} desired:{} '
+                     'attrs:{}'.format(trigger, entity_id, state,
+                                       new_state, attrs))
             if new_state == STATE_ON:
                 self.call_service('light/turn_on', entity_id=entity_id,
                                   **attrs)

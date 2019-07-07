@@ -14,13 +14,20 @@ kitchen_threshold:
   module: light_threshold
   class: LightThreshold
   entity_id: input_number.kitchen_threshold
-  default: 13
+  default: 8
   modes:
     Morning: 30
-    Day: 18
-    Afternoon: 22
+    Day: 5
+    Afternoon: 10
     Evening: 25
     Night: 30
+  #default: 13
+  #modes:
+  #  Morning: 30
+  #  Day: 18
+  #  Afternoon: 22
+  #  Evening: 25
+  #  Night: 30
 
 bedroom_threshold:
   module: light_threshold

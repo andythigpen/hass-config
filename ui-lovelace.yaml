@@ -388,6 +388,8 @@ views:
                 entities:
                   - entity: sensor.living_room_threshold
                     name: THRESHOLD
+                  - entity: input_number.living_room_threshold
+                    name: THRESHOLD2
                   - entity: sensor.motion_sensor_10_2
                     name: SENSOR
               - type: custom:mini-graph-card
@@ -414,6 +416,8 @@ views:
                 entities:
                   - entity: sensor.bedroom_threshold
                     name: THRESHOLD
+                  - entity: input_number.bedroom_threshold
+                    name: THRESHOLD2
                   - entity: sensor.motion_sensor_2_2
                     name: SENSOR
               - type: custom:mini-graph-card
@@ -427,8 +431,12 @@ views:
                 entities:
                   - entity: sensor.kitchen_threshold
                     name: THRESHOLD
+                  - entity: input_number.kitchen_threshold
+                    name: THRESHOLD2
                   - entity: sensor.motion_sensor_10_2
                     name: SENSOR
+                  - entity: sensor.motion_sensor_4_2
+                    name: SENSOR2
               - type: custom:mini-graph-card
                 name: Hall
                 points_per_hour: 6
@@ -440,6 +448,8 @@ views:
                 entities:
                   - entity: sensor.hall_threshold
                     name: THRESHOLD
+                  - entity: input_number.hall_threshold
+                    name: THRESHOLD2
                   - entity: sensor.motion_sensor_5_2
                     name: SENSOR
           - type: custom:compact-custom-header

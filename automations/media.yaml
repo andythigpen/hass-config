@@ -74,6 +74,8 @@
           {% if is_state('media_player.android_tv', 'playing') %}
           {% if name in ('Amazon Prime Video', 'Netflix') %}
           Movie
+          {% elif 'amazonvideo' in name %}
+          Movie
           {% else %}
           TV
           {% endif %}

@@ -9,7 +9,7 @@ living_room_tv:
     switch: input_boolean.room_living_room
     presence: room.living_room
     light: sensor.motion_sensor_10_2
-    threshold: sensor.living_room_threshold
+    threshold: input_number.living_room_threshold
   media: input_select.media_mode
   hysteresis: 5
   brightness:
@@ -52,7 +52,7 @@ living_room_standing:
     switch: input_boolean.room_living_room
     presence: room.living_room
     light: sensor.motion_sensor_10_2
-    threshold: sensor.living_room_threshold
+    threshold: input_number.living_room_threshold
   media: input_select.media_mode
   hysteresis: 5
   brightness:
@@ -95,8 +95,9 @@ kitchen:
     auto_update: input_boolean.auto_kitchen
     switch: input_boolean.room_kitchen
     presence: room.kitchen
-    light: sensor.motion_sensor_10_2
-    threshold: sensor.kitchen_threshold
+    #light: sensor.motion_sensor_10_2
+    light: sensor.motion_sensor_4_2
+    threshold: input_number.kitchen_threshold
   brightness:
     min: 3
   hysteresis: 3
@@ -136,7 +137,7 @@ bedroom:
       - "!script.bedtime_now"
     presence: room.bedroom
     light: sensor.motion_sensor_2_2
-    threshold: sensor.bedroom_threshold
+    threshold: input_number.bedroom_threshold
   hysteresis: 5
   brightness:
     entity_id: binary_sensor.bed_sensor_16_1
@@ -166,7 +167,7 @@ hall:
     switch: input_boolean.room_hall
     presence: room.hall
     light: sensor.motion_sensor_5_2
-    threshold: sensor.hall_threshold
+    threshold: input_number.hall_threshold
   modes:
     Morning:
       brightness: 120
