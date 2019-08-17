@@ -220,3 +220,20 @@
         - group.kitchen
         - group.hall
       transition: 3
+
+- alias: Restart Hyperion
+  hide_entity: True
+  trigger:
+    - platform: template
+      value_template: "{{ states('sensor.memory_free')|float < 100.0 }}"
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_boolean.myhome_active
+        state: 'on'
+      - condition: state
+        entity_id: input_select.media_mode
+        state: 'Off'
+  action:
+    service: script.restart_hyperion

@@ -306,6 +306,9 @@ light:
 
 shell_command:
   adb: "adb connect 192.168.1.123"
+  # sudoers file required:
+  # homeassistant ALL=(ALL) NOPASSWD: /bin/systemctl restart hyperion
+  restart_hyperion: "sudo systemctl restart hyperion"
 
 custom_updater:
   card_urls:
