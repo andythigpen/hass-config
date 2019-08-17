@@ -34,7 +34,11 @@ class ModeEasing(Easing):
     Helper methods for easing functions based on home modes
     """
     def initialize(self):
-        self.home = self.get_app('homemode')
+        pass
+
+    @property
+    def home(self):
+        return self.get_app('homemode')
 
     def _easing(self, name, b, e):
         c = e - b
