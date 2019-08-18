@@ -18,8 +18,14 @@ resources:
     type: js
   - url: https://cdn.jsdelivr.net/gh/bramkragten/custom-ui@master/weather-card/weather-card.min.js
     type: module
+  - url: /customcards/github/custom-cards/bar-card.js?track=true
+    type: module
+  - url: /customcards/github/thomasloven/auto-entities.js?track=true
+    type: js
 
 cch:
+  swipe: true
+  swipe_animate: swipe
 
 button_card_templates:
   large:
@@ -349,6 +355,7 @@ views:
         cards:
           - type: entities
             title: Sensors
+            show_header_toggle: false
             entities:
               - type: section
                 label: Living Room
@@ -365,7 +372,7 @@ views:
                 label: Hall
               - binary_sensor.motion_sensor_5_1
               - type: section
-                label: Other
+                label: Date/Times
               - entity: binary_sensor.weekday
                 name: Weekday
               - entity: calendar.vacation
@@ -373,81 +380,88 @@ views:
               - entity: binary_sensor.dst
                 name: Daylight Savings
               - sun.sun
+              - type: section
+                label: Batteries
+              - type: custom:auto-entities
+                show_empty: false
+                title: Batteries
+                card:
+                  type: custom:bar-card
+                  severity:
+                    - value: 40
+                      color: '#d47272'
+                    - value: 60
+                      color: '#F2E58B'
+                    - value: 100
+                      color: '#bff3be'
+                  value_style:
+                    color: "#fff"
+                    text-shadow: "rgba(0,0,0,0.567) 0px 1px 2px"
+                  background_style:
+                    filter: "none"
+                  card_style:
+                    box-shadow: "none"
+                filter:
+                  include:
+                    - entity_id: sensor.*_battery
           - type: vertical-stack
             cards:
               - type: custom:mini-graph-card
                 name: Living Room
                 points_per_hour: 6
                 hours_to_show: 16
+                unit: '%'
                 show:
                   points: false
                 height: 175
                 line_width: 1
                 entities:
-                  - entity: sensor.living_room_threshold
-                    name: THRESHOLD
                   - entity: input_number.living_room_threshold
-                    name: THRESHOLD2
+                    name: THRESHOLD
                   - entity: sensor.motion_sensor_10_2
                     name: SENSOR
-              - type: custom:mini-graph-card
-                name: Bookcase
-                points_per_hour: 6
-                hours_to_show: 16
-                show:
-                  points: false
-                height: 175
-                line_width: 1
-                entities:
-                  - entity: sensor.bookcase_threshold
-                    name: THRESHOLD
                   - entity: sensor.motion_sensor_4_2
-                    name: SENSOR
+                    name: BOOKCASE
               - type: custom:mini-graph-card
                 name: Bedroom
                 points_per_hour: 6
                 hours_to_show: 16
+                unit: '%'
                 show:
                   points: false
                 height: 175
                 line_width: 1
                 entities:
-                  - entity: sensor.bedroom_threshold
-                    name: THRESHOLD
                   - entity: input_number.bedroom_threshold
-                    name: THRESHOLD2
+                    name: THRESHOLD
                   - entity: sensor.motion_sensor_2_2
                     name: SENSOR
               - type: custom:mini-graph-card
                 name: Kitchen
                 points_per_hour: 6
                 hours_to_show: 16
+                unit: '%'
                 show:
                   points: false
                 height: 175
                 line_width: 1
                 entities:
-                  - entity: sensor.kitchen_threshold
-                    name: THRESHOLD
                   - entity: input_number.kitchen_threshold
-                    name: THRESHOLD2
-                  - entity: sensor.motion_sensor_10_2
-                    name: SENSOR
+                    name: THRESHOLD
                   - entity: sensor.motion_sensor_4_2
-                    name: SENSOR2
+                    name: SENSOR
               - type: custom:mini-graph-card
                 name: Hall
                 points_per_hour: 6
                 hours_to_show: 16
+                unit: '%'
                 show:
                   points: false
                 height: 175
                 line_width: 1
                 entities:
-                  - entity: sensor.hall_threshold
-                    name: THRESHOLD
                   - entity: input_number.hall_threshold
-                    name: THRESHOLD2
+                    name: THRESHOLD
                   - entity: sensor.motion_sensor_5_2
                     name: SENSOR
 
@@ -487,6 +501,7 @@ views:
                   - sensor.swap_use
           - type: entities
             title: Scripts
+            show_header_toggle: false
             entities:
               - script.all_off
               - script.bedtime
@@ -494,6 +509,7 @@ views:
               - script.reset_bed
               - script.wakeup
               - script.snooze
+              - script.restart_hyperion
           - type: entities
             title: Theme
             entities:

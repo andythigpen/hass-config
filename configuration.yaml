@@ -68,36 +68,30 @@ sensor:
       - date
   - platform: template
     sensors:
-      living_room_threshold:
-        value_template: "{% include 'living_room_threshold.tpl' %}"
-        entity_id:
-          - sensor.motion_sensor_10_2
-        unit_of_measurement: "%"
-        friendly_name: "Living room threshold"
-      bookcase_threshold:
-        value_template: "{% include 'bookcase_threshold.tpl' %}"
-        entity_id:
-          - sensor.motion_sensor_4_2
-        unit_of_measurement: "%"
-        friendly_name: "Bookcase threshold"
-      kitchen_threshold:
-        value_template: "{% include 'kitchen_threshold.tpl' %}"
-        entity_id:
-          - sensor.motion_sensor_10_2
-        unit_of_measurement: "%"
-        friendly_name: "Kitchen threshold"
-      bedroom_threshold:
-        value_template: "{% include 'bedroom_threshold.tpl' %}"
+      bedroom_battery:
+        value_template: '{{ state_attr("sensor.motion_sensor_2_2", "battery_level") }}'
         entity_id:
           - sensor.motion_sensor_2_2
         unit_of_measurement: "%"
-        friendly_name: "Bedroom threshold"
-      hall_threshold:
-        value_template: "{% include 'hall_threshold.tpl' %}"
+        friendly_name: "Bedroom sensor battery"
+      bookcase_battery:
+        value_template: '{{ state_attr("sensor.motion_sensor_4_2", "battery_level") }}'
+        entity_id:
+          - sensor.motion_sensor_4_2
+        unit_of_measurement: "%"
+        friendly_name: "Bookcase sensor battery"
+      living_room_battery:
+        value_template: '{{ state_attr("sensor.motion_sensor_10_2", "battery_level") }}'
+        entity_id:
+          - sensor.motion_sensor_10_2
+        unit_of_measurement: "%"
+        friendly_name: "Living room sensor battery"
+      front_door_battery:
+        value_template: '{{ state_attr("sensor.motion_sensor_5_2", "battery_level") }}'
         entity_id:
           - sensor.motion_sensor_5_2
         unit_of_measurement: "%"
-        friendly_name: "Hall threshold"
+        friendly_name: "Front door sensor battery"
   - platform: openweathermap
     api_key: !secret weather_key
     name: owm_current
