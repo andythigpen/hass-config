@@ -1,14 +1,17 @@
 """
 Support for iCalendar.
 """
-from datetime import datetime, timedelta
+import copy
 import logging
-import voluptuous as vol
+from datetime import datetime, timedelta
 
+import voluptuous as vol
 from homeassistant.const import CONF_NAME, CONF_URL
 from homeassistant.helpers import config_validation as cv
+from homeassistant.helpers.entity import generate_entity_id
 from homeassistant.components.calendar import (
-    PLATFORM_SCHEMA, CalendarEventDevice,
+    ENTITY_ID_FORMAT, PLATFORM_SCHEMA, CalendarEventDevice,
+    calculate_offset, is_offset_reached,
 )
 from homeassistant.util import Throttle
 
@@ -30,12 +33,9 @@ MIN_TIME_BETWEEN_UPDATES = timedelta(hours=1)
 def setup_platform(hass, config, add_entities, disc_info=None):
     url = config.get(CONF_URL)
     name = config.get(CONF_NAME, DEFAULT_CALENDAR_NAME)
-    device_data = {
-        CONF_NAME: name,
-        CONF_DEVICE_ID: name,
-    }
+    entity_id = generate_entity_id(ENTITY_ID_FORMAT, name, hass=hass)
     add_entities([
-        ICalendarEventDevice(hass, device_data, url),
+        ICalendarEventDevice(name, entity_id, url),
     ])
 
 
@@ -77,6 +77,34 @@ class ICalendarData:
 
 
 class ICalendarEventDevice(CalendarEventDevice):
-    def __init__(self, hass, device_data, url):
+    def __init__(self, name, entity_id, url):
         self.data = ICalendarData(url)
-        super().__init__(hass, device_data)
+        self.entity_id = entity_id
+        self._name = name
+        self._event = None
+        self._offset_reached = False
+
+    @property
+    def device_state_attributes(self):
+        """Return the device state attributes."""
+        return {"offset_reached": self._offset_reached}
+
+    @property
+    def event(self):
+        """Return the next upcoming event."""
+        return self._event
+
+    @property
+    def name(self):
+        """Return the name of this entity."""
+        return self._name
+
+    def update(self):
+        self.data.update()
+        event = copy.deepcopy(self.data.event)
+        if event is None:
+            self._event = event
+            return
+        event = calculate_offset(event, OFFSET)
+        self._offset_reached = is_offset_reached(event)
+        self._event = event

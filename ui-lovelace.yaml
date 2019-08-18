@@ -19,6 +19,8 @@ resources:
   - url: https://cdn.jsdelivr.net/gh/bramkragten/custom-ui@master/weather-card/weather-card.min.js
     type: module
 
+cch:
+
 button_card_templates:
   large:
     color: var(--secondary-text-color)
@@ -289,8 +291,6 @@ views:
                       template: large
                       entity: device_tracker.rfid_sensor_12_1
                       label: "Wallet"
-            - type: custom:compact-custom-header
-              main_config: true
 
   - title: Lights
     icon: mdi:lightbulb-outline
@@ -321,7 +321,6 @@ views:
             title: Hall
             entities:
               - light.hall
-          - type: custom:compact-custom-header
 
   - title: Media
     icon: mdi:television-classic
@@ -339,7 +338,6 @@ views:
             title: My Media
             entities:
               - input_select.media_mode
-          - type: custom:compact-custom-header
 
   - title: Sensors
     icon: mdi:router-wireless
@@ -452,7 +450,6 @@ views:
                     name: THRESHOLD2
                   - entity: sensor.motion_sensor_5_2
                     name: SENSOR
-          - type: custom:compact-custom-header
 
   - title: System
     icon: mdi:wrench
@@ -503,4 +500,3 @@ views:
               - input_boolean.autodark_theme
               - input_select.current_theme
           - type: custom:tracker-card
-          - type: custom:compact-custom-header

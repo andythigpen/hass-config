@@ -1,0 +1,10 @@
+{
+  "domain": "ical",
+  "name": "ical",
+  "documentation": "",
+  "requirements": [
+    "icalevents==0.1.13"
+  ],
+  "dependencies": [],
+  "codeowners": [""]
+}

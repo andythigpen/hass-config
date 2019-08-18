@@ -11,7 +11,7 @@ import voluptuous as vol
 
 import homeassistant.helpers.config_validation as cv
 from homeassistant.components.scene import Scene, STATES
-from homeassistant.components.homeassistant.scene import _process_config
+from homeassistant.components.homeassistant.scene import _process_scene_config
 from homeassistant.const import (
     ATTR_ENTITY_ID, CONF_ENTITIES, CONF_NAME, CONF_PLATFORM,
     CONF_STATE_TEMPLATE)
@@ -70,7 +70,7 @@ class TemplateScene(Scene):
         if entities is None:
             _LOGGER.warning('Scene template "%s" contains no entities', self._name)
             return
-        scene_config = _process_config({
+        scene_config = _process_scene_config({
             CONF_NAME: self.name,
             CONF_ENTITIES: entities,
         })

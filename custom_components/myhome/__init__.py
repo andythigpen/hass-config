@@ -36,7 +36,7 @@ from homeassistant import core
 from homeassistant.helpers.entity import Entity
 from homeassistant.helpers.service import (
     extract_entity_ids, call_from_config)
-from homeassistant.helpers.template import ENV
+from homeassistant.helpers.template import Template
 
 from homeassistant.util import (slugify, convert)
 from homeassistant.util import dt as dt_util
@@ -280,13 +280,14 @@ def setup(hass, config):
     register_touch_control_handlers(hass, config)
     _LOGGER.info('registered touch control handlers')
 
-    # add a template dir for loading external macros/templates
-    ENV.loader = FileSystemLoader([
-        os.path.join(hass.config.config_dir, 'templates'),
-        os.path.join(hass.config.config_dir, 'scene_templates'),
-    ])
-    # add global utils for templates
-    ENV.globals['dt_util'] = dt_util
+    for tpl in (Template("", None), Template("", hass)):
+        # add a template dir for loading external macros/templates
+        tpl._env.loader = FileSystemLoader([
+            os.path.join(hass.config.config_dir, 'templates'),
+            os.path.join(hass.config.config_dir, 'scene_templates'),
+        ])
+        # add global utils for templates
+        tpl._env.globals['dt_util'] = dt_util
     _LOGGER.info('registered template helpers')
 
     def purge_entries(service):
