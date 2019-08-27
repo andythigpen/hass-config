@@ -226,6 +226,8 @@
   trigger:
     - platform: template
       value_template: "{{ states('sensor.memory_free')|float < 100.0 }}"
+    - platform: template
+      value_template: "{{ states('sensor.swap_free')|float < 20.0 }}"
   condition:
     condition: and
     conditions:
