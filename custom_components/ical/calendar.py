@@ -21,6 +21,7 @@ _LOGGER = logging.getLogger(__name__)
 
 CONF_DEVICE_ID = 'device_id'
 DEFAULT_CALENDAR_NAME = 'calendar'
+OFFSET = "!!"
 
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
     vol.Optional(CONF_NAME): cv.string,

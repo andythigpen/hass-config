@@ -287,6 +287,11 @@ media_player:
     adb_server_ip: 127.0.0.1
     #adbkey: "/home/homeassistant/hass-config/android/adbkey"
     scan_interval: 4
+    state_detection_rules:
+      com.amazon.amazonvideo.livingroom:
+        - playing: {'wake_lock_size': 2}
+        - paused: {'audio_state': 'paused'}
+        - standby
 
 calendar:
   - platform: ical
