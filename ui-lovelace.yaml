@@ -464,6 +464,74 @@ views:
                     name: THRESHOLD
                   - entity: sensor.motion_sensor_5_2
                     name: SENSOR
+              - type: horizontal-stack
+                cards:
+                  - type: custom:mini-graph-card
+                    name: Bed Sensor 1
+                    points_per_hour: 12
+                    hours_to_show: 16
+                    show:
+                      points: false
+                      state: false
+                      icon: false
+                      fill: false
+                    height: 175
+                    line_width: 2
+                    entities:
+                      - entity: sensor.bed_sensor_16_2
+                        name: P1
+                      - entity: sensor.bed_sensor_16_6
+                        name: L1
+                  - type: custom:mini-graph-card
+                    name: Bed Sensor 2
+                    points_per_hour: 12
+                    hours_to_show: 16
+                    show:
+                      points: false
+                      state: false
+                      icon: false
+                      fill: false
+                    height: 175
+                    line_width: 2
+                    entities:
+                      - entity: sensor.bed_sensor_16_3
+                        name: P2
+                      - entity: sensor.bed_sensor_16_7
+                        name: L2
+              - type: horizontal-stack
+                cards:
+                  - type: custom:mini-graph-card
+                    name: Bed Sensor 3
+                    points_per_hour: 12
+                    hours_to_show: 16
+                    show:
+                      points: false
+                      state: false
+                      icon: false
+                      fill: false
+                    height: 175
+                    line_width: 2
+                    entities:
+                      - entity: sensor.bed_sensor_16_4
+                        name: P3
+                      - entity: sensor.bed_sensor_16_8
+                        name: L3
+                  - type: custom:mini-graph-card
+                    name: Bed Sensor 4
+                    points_per_hour: 12
+                    hours_to_show: 16
+                    show:
+                      points: false
+                      state: false
+                      icon: false
+                      fill: false
+                    height: 175
+                    line_width: 2
+                    entities:
+                      - entity: sensor.bed_sensor_16_5
+                        name: P4
+                      - entity: sensor.bed_sensor_16_9
+                        name: L4
 
   - title: System
     icon: mdi:wrench

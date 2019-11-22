@@ -33,6 +33,30 @@ sensor.touch_controller_13_1:
 binary_sensor.bed_sensor_16_1:
   friendly_name: Bed Occupancy
   icon: mdi:hotel
+sensor.bed_sensor_16_2:
+  friendly_name: Bed Sensor 1
+  unit_of_measurement: '%'
+sensor.bed_sensor_16_3:
+  friendly_name: Bed Sensor 2
+  unit_of_measurement: '%'
+sensor.bed_sensor_16_4:
+  friendly_name: Bed Sensor 3
+  unit_of_measurement: '%'
+sensor.bed_sensor_16_5:
+  friendly_name: Bed Sensor 4
+  unit_of_measurement: '%'
+sensor.bed_sensor_16_6:
+  friendly_name: Bed LWM 1
+  unit_of_measurement: '%'
+sensor.bed_sensor_16_7:
+  friendly_name: Bed LWM 2
+  unit_of_measurement: '%'
+sensor.bed_sensor_16_8:
+  friendly_name: Bed LWM 3
+  unit_of_measurement: '%'
+sensor.bed_sensor_16_9:
+  friendly_name: Bed LWM 4
+  unit_of_measurement: '%'
 
 # rooms
 room.living_room:
