@@ -20,6 +20,8 @@ living_room_tv:
       TV: 20
       Paused: 20
       Awake: 70
+  cooldown:
+    media: 15
   modes:
     Morning:
       brightness: 1
@@ -63,6 +65,8 @@ living_room_standing:
       TV: 80
       Paused: 180
       Awake: 180
+  cooldown:
+    media: 15
   modes:
     Morning:
       brightness: 170

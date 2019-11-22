@@ -27,10 +27,13 @@ class AutoLight(hass.Hass):
         if self.media:
             self.listen_state(self.on_media_change, self.media)
         self.brightness = self.args.get('brightness', {})
-        if self.brightness.get('entity_id'):
+        if self.brightness.get('entity_id') and \
+                self.brightness['entity_id'] != self.media:
             self.listen_state(self.on_brightness_change,
                               self.brightness['entity_id'])
         self.hysteresis = self.args.get('hysteresis', 0)
+        self.cooldown = self.args.get('cooldown', {})
+        self.cooldown_end = None
         self.run_minutely(self.on_schedule, time)
         self.listen_state(self.on_occupancy_change, self.sensors['presence'])
         #self.listen_state(self.on_light_level_change, self.sensors['light'])
@@ -45,9 +48,6 @@ class AutoLight(hass.Hass):
             self.listen_state(self.on_state_change, entity_id,
                               attribute='context')
         self.log('initialized')
-
-    def get_autolight_entity(self, entity_id):
-        return 'autolight.{}'.format(self.split_entity(entity_id)[1])
 
     def calculate_attr(self, begin, end, easing):
         """
@@ -237,11 +237,32 @@ class AutoLight(hass.Hass):
         )
         return attrs
 
+    @property
+    def is_cooldown_active(self):
+        """Returns True if currently in cooldown"""
+        if self.cooldown_end is None:
+            return False
+        if self.datetime() > self.cooldown_end:
+            self.cooldown_end = None
+            return False
+        return True
+
+    def set_cooldown(self, trigger):
+        """Sets the cooldown timeout based on the configuration"""
+        if trigger not in self.cooldown:
+            return
+        timeout = datetime.timedelta(seconds=self.cooldown[trigger])
+        self.cooldown_end = self.datetime() + timeout
+        self.log('cooldown active until {}'.format(self.cooldown_end))
+
     def update_lights(self, trigger=None):
         """Updates the configured light entities with the desired state"""
         self.log('update_lights:{}'.format(trigger))
         if not self.should_auto_update:
-            self.log('not updating {}'.format(trigger))
+            self.log('not updating (auto) {}'.format(trigger))
+            return
+        if self.is_cooldown_active:
+            self.log('not updating (cooldown) {}'.format(trigger))
             return
 
         attrs = self.desired_state_attrs
@@ -253,6 +274,8 @@ class AutoLight(hass.Hass):
             self.log('trigger:{} entity_id:{} state:{} desired:{} '
                      'attrs:{}'.format(trigger, entity_id, state,
                                        new_state, attrs))
+            if new_state != state:
+                self.set_cooldown(trigger)
             if new_state == STATE_ON:
                 self.call_service('light/turn_on', entity_id=entity_id,
                                   **attrs)
@@ -262,7 +285,7 @@ class AutoLight(hass.Hass):
 
     def on_schedule(self, kwargs):
         """Callback for scheduled updates"""
-        self.update_lights()
+        self.update_lights(trigger='schedule')
 
     def on_media_change(self, entity, attribute, old, new, kwargs):
         """Callback for media state changes"""
