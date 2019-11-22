@@ -66,3 +66,16 @@
       data:
         entity_id: room.kitchen
         state: not_occupied
+
+# disable autolight updates for kitchen when manually set at the switch
+- alias: Autoupdate Kitchen Override
+  hide_entity: True
+  trigger:
+    - platform: template
+      value_template: "{{ state_attr('light.rgbw_15_1', 'V_VAR2') == '1' }}"
+    - platform: template
+      value_template: "{{ state_attr('light.rgbw_15_2', 'V_VAR2') == '1' }}"
+  action:
+    - service: input_boolean.turn_off
+      data:
+        entity_id: input_boolean.auto_kitchen
