@@ -52,7 +52,7 @@ class ICalendarData:
         if not events:
             self.event = None
             return True
-        event = events[0]
+        event = sorted(events, key=lambda ev: ev.start)[0]
         if event.all_day:
             start = {
                 'date': str(event.start.date()),
