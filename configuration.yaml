@@ -237,6 +237,10 @@ input_select:
     name: Theme
     options:
      - default
+     - clear
+     - clear-dark
+     - amoled
+     - blue_night
      - midnight
      - light
      - dark
@@ -312,3 +316,5 @@ shell_command:
 weather:
   - platform: openweathermap
     api_key: !secret weather_key
+
+mobile_app:
