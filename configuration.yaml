@@ -309,11 +309,6 @@ shell_command:
   # homeassistant ALL=(ALL) NOPASSWD: /bin/systemctl restart hyperion
   restart_hyperion: "sudo systemctl restart hyperion"
 
-custom_updater:
-  card_urls:
-    - https://raw.githubusercontent.com/kalkih/mini-graph-card/master/tracker.json
-    - https://raw.githubusercontent.com/matisaul/vertical-style-card/master/tracker.json
-
 weather:
   - platform: openweathermap
     api_key: !secret weather_key
