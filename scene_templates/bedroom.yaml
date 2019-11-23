@@ -1,9 +1,0 @@
-- name: Bedroom occupied
-  state_template: "{% include 'bedroom.tpl' %}"
-
-- name: Bedroom not occupied
-  state_template: |
-    light.night_stand: &light
-      state: 'off'
-      transition: 10
-    light.dresser: *light

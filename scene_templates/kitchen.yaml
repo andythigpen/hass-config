@@ -1,8 +1,0 @@
-- name: Kitchen occupied
-  state_template: "{% include 'kitchen.tpl' %}"
-
-- name: Kitchen not occupied
-  state_template: |
-    light.rgbw_15_1: &light
-      state: 'off'
-    light.rgbw_15_2: *light

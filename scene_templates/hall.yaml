@@ -1,8 +1,0 @@
-- name: Hall occupied
-  state_template: "{% include 'hall.tpl' %}"
-
-- name: Hall not occupied
-  state_template: |
-    light.hall:
-      state: 'off'
-      transition: 10
