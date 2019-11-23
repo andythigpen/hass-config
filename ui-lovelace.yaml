@@ -1,27 +1,25 @@
 title: My Home
 resources:
-  - url: /customcards/github/custom-cards/tracker-card.js?track=true
+  - url: /community_plugin/lovelace-card-tools/card-tools.js
     type: module
-  - url: /customcards/github/thomasloven/card-tools.js?track=true
-    type: js
-  - url: /customcards/github/thomasloven/layout-card.js?track=true
-    type: js
-  - url: /local/mini-graph-card-bundle.js?v=0.3.3
+  - url: /community_plugin/lovelace-layout-card/layout-card.js
+    type: module
+  - url: /community_plugin/mini-graph-card/mini-graph-card-bundle.js
     type: module
   - url: /local/theme-maker.js?v=0.1
     type: js
-  - url: /customcards/github/maykar/compact-custom-header.js?track=true
+  - url: /community_plugin/compact-custom-header/compact-custom-header.js
     type: module
-  - url: /customcards/github/custom-cards/button-card.js?track=true
+  - url: /community_plugin/button-card/button-card.js
     type: module
   - url: /local/vertical-style-card.js?v=0.1
     type: js
-  - url: https://cdn.jsdelivr.net/gh/bramkragten/custom-ui@master/weather-card/weather-card.min.js
+  - url: /community_plugin/weather-card/weather-card.js
     type: module
-  - url: /customcards/github/custom-cards/bar-card.js?track=true
-    type: module
-  - url: /customcards/github/thomasloven/auto-entities.js?track=true
+  - url: /community_plugin/bar-card/bar-card.js
     type: js
+  - url: /community_plugin/lovelace-auto-entities/auto-entities.js
+    type: module
 
 cch:
   swipe: true
@@ -469,7 +467,7 @@ views:
                   - type: custom:mini-graph-card
                     name: Bed Sensor 1
                     points_per_hour: 12
-                    hours_to_show: 16
+                    hours_to_show: 12
                     show:
                       points: false
                       state: false
@@ -485,7 +483,7 @@ views:
                   - type: custom:mini-graph-card
                     name: Bed Sensor 2
                     points_per_hour: 12
-                    hours_to_show: 16
+                    hours_to_show: 12
                     show:
                       points: false
                       state: false
@@ -503,7 +501,7 @@ views:
                   - type: custom:mini-graph-card
                     name: Bed Sensor 3
                     points_per_hour: 12
-                    hours_to_show: 16
+                    hours_to_show: 12
                     show:
                       points: false
                       state: false
@@ -519,7 +517,7 @@ views:
                   - type: custom:mini-graph-card
                     name: Bed Sensor 4
                     points_per_hour: 12
-                    hours_to_show: 16
+                    hours_to_show: 12
                     show:
                       points: false
                       state: false
@@ -583,4 +581,3 @@ views:
             entities:
               - input_boolean.autodark_theme
               - input_select.current_theme
-          - type: custom:tracker-card
