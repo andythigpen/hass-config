@@ -100,7 +100,6 @@ views:
     cards:
       - type: custom:layout-card
         max_columns: 2
-        max_width: [42%, 42%]
         cards:
           - type: vertical-stack
             cards:
@@ -302,7 +301,6 @@ views:
     cards:
       - type: custom:layout-card
         max_columns: 2
-        max_width: [42%, 42%]
         cards:
           - type: entities
             title: Living Room
@@ -332,7 +330,6 @@ views:
     cards:
       - type: custom:layout-card
         max_columns: 2
-        max_width: [42%, 42%]
         cards:
           - type: media-control
             entity: media_player.android_tv
@@ -349,7 +346,6 @@ views:
     cards:
       - type: custom:layout-card
         max_columns: 2
-        max_width: [42%, 42%]
         cards:
           - type: entities
             title: Sensors
@@ -537,7 +533,6 @@ views:
     cards:
       - type: custom:layout-card
         max_columns: 2
-        max_width: [42%, 42%]
         cards:
           - type: horizontal-stack
             cards:
