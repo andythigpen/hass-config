@@ -1,0 +1,25 @@
+# ------------------------------
+# Notification rules
+#
+
+- alias: Turn bluetooth on when leaving
+  hide_entity: True
+  trigger:
+    - platform: state
+      entity_id: device_tracker.rfid_sensor_12_1
+      to: 'not_home'
+  action:
+    - service: joaoapps_join.android_send_tasker
+      data:
+        command: cmd=:=bluetoothon
+
+- alias: Turn bluetooth off when arriving
+  hide_entity: True
+  trigger:
+    - platform: state
+      entity_id: device_tracker.rfid_sensor_12_1
+      to: 'home'
+  action:
+    - service: joaoapps_join.android_send_tasker
+      data:
+        command: cmd=:=bluetoothoff

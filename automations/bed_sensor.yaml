@@ -40,7 +40,29 @@
         entity_id: input_boolean.myhome_active
         state: 'on'
   action:
-    service: script.bedtime
+    - service: script.bedtime
+    - service: joaoapps_join.android_send_tasker
+      data:
+        command: "cmd=:=dndon"
+
+- alias: Bed not occupied DND
+  hide_entity: True
+  trigger:
+    platform: state
+    entity_id: binary_sensor.bed_sensor_16_1
+    to: 'off'
+    for:
+      minutes: 5
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_boolean.myhome_active
+        state: 'on'
+  action:
+    - service: joaoapps_join.android_send_tasker
+      data:
+        command: "cmd=:=dndoff"
 
 - alias: Bed not occupied
   hide_entity: True
