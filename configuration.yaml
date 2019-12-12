@@ -240,10 +240,13 @@ input_select:
      - midnight
      - light
      - dark
-    initial: light
+    initial: clear
     icon: mdi:theme-light-dark
 
 input_boolean:
+  maintenance_mode:
+    name: Maintenance mode
+    icon: mdi:wrench
   myhome_active:
     name: Active
     icon: mdi:home-variant

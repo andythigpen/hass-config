@@ -534,6 +534,10 @@ views:
       - type: custom:layout-card
         max_columns: 2
         cards:
+          - type: entities
+            show_header_toggle: false
+            entities:
+              - input_boolean.maintenance_mode
           - type: horizontal-stack
             cards:
               - type: gauge

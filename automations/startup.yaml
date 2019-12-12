@@ -1,5 +1,5 @@
 # ------------------------------
-# Room mode rules
+# Startup rules
 #
 - alias: 'Initialize rooms on start'
   hide_entity: True
@@ -23,3 +23,15 @@
       data:
         entity_id: room.hall
         state: 'not_occupied'
+
+- alias: 'Reset lights on start'
+  hide_entity: True
+  trigger:
+    platform: homeassistant
+    event: start
+  condition:
+    condition: state
+    entity_id: input_boolean.maintenance_mode
+    state: 'off'
+  action:
+    - service: script.all_off
