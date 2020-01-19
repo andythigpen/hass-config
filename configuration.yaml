@@ -328,3 +328,7 @@ joaoapps_join:
   - name: android
     device_id: group.android
     api_key: !secret join_api_key
+
+duckdns:
+  domain: !secret duckdns_domain
+  access_token: !secret duckdns_token
