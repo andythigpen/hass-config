@@ -46,6 +46,23 @@ logbook:
     domains:
       - automation
       - group
+      - input_number
+    entities:
+      - sensor.owm_current_cloud_coverage
+      - sensor.owm_current_condition
+      - sensor.owm_current_humidity
+      - sensor.owm_current_pressure
+      - sensor.owm_current_rain
+      - sensor.owm_current_temperature
+      - sensor.owm_current_weather_code
+      - sensor.owm_forecast_cloud_coverage
+      - sensor.owm_forecast_condition
+      - sensor.owm_forecast_forecast
+      - sensor.owm_forecast_humidity
+      - sensor.owm_forecast_pressure
+      - sensor.owm_forecast_rain
+      - sensor.owm_forecast_temperature
+      - sensor.owm_forecast_weather_code
 
 http:
 
