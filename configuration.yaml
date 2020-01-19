@@ -257,7 +257,9 @@ input_select:
      - midnight
      - light
      - dark
-    initial: clear
+     - "Google Light Theme"
+     - "Google Dark Theme"
+    initial: "Google Light Theme"
     icon: mdi:theme-light-dark
 
 input_boolean:

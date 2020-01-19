@@ -12,7 +12,7 @@
     - service: input_select.select_option
       data:
         entity_id: 'input_select.current_theme'
-        option: 'clear-dark'
+        option: 'Google Dark Theme'
 
 - alias: 'Set light theme for morning'
   hide_entity: True
@@ -28,7 +28,7 @@
     - service: input_select.select_option
       data:
         entity_id: 'input_select.current_theme'
-        option: 'clear'
+        option: 'Google Light Theme'
 
 - alias: 'Update theme from select'
   hide_entity: True
