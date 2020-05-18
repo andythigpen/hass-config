@@ -2,7 +2,6 @@
 # Wakeup rules
 #
 - alias: Wake-up
-  hide_entity: True
   trigger:
     platform: time
     at: '06:38:00'

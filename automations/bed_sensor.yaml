@@ -2,7 +2,6 @@
 # Bed sensor rules
 #
 - alias: Bed occupied
-  hide_entity: True
   trigger:
     platform: state
     entity_id: binary_sensor.bed_sensor_16_1
@@ -23,7 +22,6 @@
       command: 5
 
 - alias: Bed triggers nighttime
-  hide_entity: True
   trigger:
     platform: state
     entity_id: binary_sensor.bed_sensor_16_1
@@ -46,7 +44,6 @@
         command: "cmd=:=dndon"
 
 - alias: Bed not occupied DND
-  hide_entity: True
   trigger:
     platform: state
     entity_id: binary_sensor.bed_sensor_16_1
@@ -65,7 +62,6 @@
         command: "cmd=:=dndoff"
 
 - alias: Bed not occupied
-  hide_entity: True
   trigger:
     platform: state
     entity_id: binary_sensor.bed_sensor_16_1
@@ -89,7 +85,6 @@
     entity_id: script.bedtime
 
 - alias: Reset bed when away
-  hide_entity: True
   trigger:
     platform: state
     entity_id: group.all_devices

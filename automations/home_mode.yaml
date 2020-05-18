@@ -3,7 +3,6 @@
 # Updates the state of the home based on time of day
 #
 - alias: Morning home mode
-  hide_entity: True
   trigger:
     platform: time
     at: '06:00:00'
@@ -13,7 +12,6 @@
       mode: morning
 
 - alias: Day home mode
-  hide_entity: True
   trigger:
     platform: time
     at: '09:00:00'
@@ -23,7 +21,6 @@
       mode: day
 
 - alias: Afternoon home mode
-  hide_entity: True
   trigger:
     platform: time
     at: '13:00:00'
@@ -33,7 +30,6 @@
       mode: afternoon
 
 - alias: Evening home mode
-  hide_entity: True
   trigger:
     platform: time
     at: '18:00:00'
@@ -43,7 +39,6 @@
       mode: evening
 
 - alias: Night home mode
-  hide_entity: True
   trigger:
     platform: time
     at: '21:00:00'
@@ -57,7 +52,6 @@
       mode: night
 
 - alias: Update mode icon in interface
-  hide_entity: True
   trigger:
     - platform: state
       entity_id: input_select.myhome_mode

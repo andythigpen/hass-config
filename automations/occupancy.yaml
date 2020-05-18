@@ -2,7 +2,6 @@
 # Room occupancy rules
 #
 - alias: Set rooms to unoccupied when away
-  hide_entity: True
   trigger:
     platform: state
     entity_id: group.all_devices
@@ -12,7 +11,6 @@
     service: python_script.set_away
 
 - alias: Bedroom countdown
-  hide_entity: True
   trigger:
     platform: state
     entity_id: room.bedroom
@@ -26,7 +24,6 @@
         state: not_occupied
 
 - alias: Living room countdown
-  hide_entity: True
   trigger:
     platform: state
     entity_id: room.living_room
@@ -40,7 +37,6 @@
         state: not_occupied
 
 - alias: Hall countdown
-  hide_entity: True
   trigger:
     platform: state
     entity_id: room.hall
@@ -54,7 +50,6 @@
         state: not_occupied
 
 - alias: Kitchen countdown
-  hide_entity: True
   trigger:
     platform: state
     entity_id: room.kitchen
@@ -69,7 +64,6 @@
 
 # disable autolight updates for kitchen when manually set at the switch
 - alias: Autoupdate Kitchen Override
-  hide_entity: True
   trigger:
     - platform: template
       value_template: "{{ state_attr('light.rgbw_15_1', 'V_VAR2') == '1' }}"

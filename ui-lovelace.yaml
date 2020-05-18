@@ -1,29 +1,30 @@
 title: My Home
 resources:
-  - url: /community_plugin/lovelace-card-tools/card-tools.js
+  - url: /hacsfiles/lovelace-card-tools/card-tools.js
     type: module
-  - url: /community_plugin/lovelace-layout-card/layout-card.js
+  - url: /hacsfiles/lovelace-layout-card/layout-card.js
     type: module
-  - url: /community_plugin/mini-graph-card/mini-graph-card-bundle.js
+  - url: /hacsfiles/mini-graph-card/mini-graph-card-bundle.js
     type: module
-  - url: /local/theme-maker.js?v=0.1
-    type: js
-  - url: /community_plugin/compact-custom-header/compact-custom-header.js
+  - url: /hacsfiles/custom-header/custom-header.js
     type: module
-  - url: /community_plugin/button-card/button-card.js
+  - url: /hacsfiles/button-card/button-card.js
     type: module
-  - url: /local/vertical-style-card.js?v=0.1
-    type: js
-  - url: /community_plugin/weather-card/weather-card.js
+  - url: /hacsfiles/weather-card/weather-card.js
     type: module
-  - url: /community_plugin/bar-card/bar-card.js
-    type: js
-  - url: /community_plugin/lovelace-auto-entities/auto-entities.js
+  - url: /hacsfiles/bar-card/bar-card.js
+    type: module
+  - url: /hacsfiles/lovelace-auto-entities/auto-entities.js
+    type: module
+  - url: /hacsfiles/lovelace-swipe-navigation/swipe-navigation.js
     type: module
 
-cch:
-  swipe: true
-  swipe_animate: swipe
+swipe_nav:
+  animate: swipe
+  swipe_amount: 30
+
+custom_header:
+  compact_mode: true
 
 button_card_templates:
   large:
@@ -103,7 +104,6 @@ views:
         cards:
           - type: vertical-stack
             cards:
-              #- type: custom:theme-maker
               - type: conditional
                 conditions:
                   - entity: room.living_room
@@ -150,10 +150,8 @@ views:
                     - light.hall
           - type: vertical-stack
             cards:
-            - type: custom:vertical-style-card
+            - type: vertical-stack
               title: Media
-              style:
-                font_size: 22px
               cards:
                 - type: horizontal-stack
                   cards:
@@ -206,10 +204,8 @@ views:
                         action: more-info
             - type: custom:weather-card
               entity: weather.openweathermap
-            - type: custom:vertical-style-card
+            - type: vertical-stack
               title: Presence
-              style:
-                font_size: 18px
               cards:
                 - type: horizontal-stack
                   cards:
@@ -229,10 +225,8 @@ views:
                       template: small_presence
                       entity: room.hall
                       label: "Hall"
-            - type: custom:vertical-style-card
+            - type: vertical-stack
               title: Auto update
-              style:
-                font_size: 18px
               cards:
                 - type: horizontal-stack
                   cards:
@@ -256,10 +250,8 @@ views:
                       template: small_toggle_icon
                       entity: input_boolean.auto_hall
                       label: "Hall"
-            - type: custom:vertical-style-card
+            - type: vertical-stack
               title: Rooms
-              style:
-                font_size: 18px
               cards:
                 - type: horizontal-stack
                   cards:
@@ -279,10 +271,8 @@ views:
                       template: small_toggle
                       entity: input_boolean.room_hall
                       label: "Hall"
-            - type: custom:vertical-style-card
+            - type: vertical-stack
               title: Devices
-              style:
-                font_size: 22px
               cards:
                 - type: horizontal-stack
                   cards:

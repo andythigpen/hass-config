@@ -1,30 +1,7 @@
 # ------------------------------
 # Media automations
 #
-- alias: Connect ADB
-  hide_entity: True
-  trigger:
-    - platform: state
-      entity_id: media_player.android_tv
-      to: 'unavailable'
-    - platform: time_pattern
-      minutes: '/1'
-      seconds: 0
-    - platform: template
-      value_template: '{{ states("media_player.android_tv") == "unknown" }}'
-  condition:
-    condition: or
-    conditions:
-      - condition: state
-        entity_id: media_player.android_tv
-        state: 'unavailable'
-      - condition: template
-        value_template: '{{ states("media_player.android_tv") == "unknown" }}'
-  action:
-    service: shell_command.adb
-
 - alias: Android TV media mode
-  hide_entity: True
   trigger:
     # listing each state is a workaround so this is not
     # triggered by attribute changes
@@ -94,7 +71,6 @@
           {% endif %}
 
 - alias: TV backlight on HDMI
-  hide_entity: True
   trigger:
     - platform: state
       entity_id: input_select.media_mode
@@ -130,7 +106,6 @@
         effect: HDMI
 
 - alias: TV backlight on
-  hide_entity: True
   trigger:
     - platform: state
       entity_id: input_select.media_mode
@@ -166,7 +141,6 @@
             {{ prev }}-{{ curr }}
 
 - alias: TV backlight off
-  hide_entity: True
   trigger:
     - platform: state
       entity_id: input_select.media_mode
@@ -198,7 +172,6 @@
         entity_id: light.hyperion
 
 - alias: All lights off for movies
-  hide_entity: True
   trigger:
     - platform: state
       entity_id: input_select.media_mode
@@ -222,7 +195,6 @@
       transition: 3
 
 - alias: Restart Hyperion
-  hide_entity: True
   trigger:
     - platform: template
       value_template: "{{ states('sensor.memory_free')|float < 100.0 }}"

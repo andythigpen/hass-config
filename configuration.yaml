@@ -28,7 +28,6 @@ lovelace:
 history:
 
 recorder:
-  purge_interval: 1
   purge_keep_days: 7
   exclude:
     domains:
@@ -154,7 +153,7 @@ mysensors:
   gateways:
     - device: '127.0.0.1'
       tcp_port: 5003
-      persistence_file: '/home/homeassistant/hass-config/mysensors.json'
+      persistence_file: '/config/mysensors.json'
   persistence: true
   version: '1.5'
 
@@ -306,8 +305,6 @@ media_player:
   - platform: androidtv
     name: Android TV
     host: 192.168.1.123
-    adb_server_ip: 127.0.0.1
-    #adbkey: "/home/homeassistant/hass-config/android/adbkey"
     scan_interval: 4
     state_detection_rules:
       com.amazon.amazonvideo.livingroom:
@@ -326,7 +323,6 @@ light:
     hdmi_priority: 240
 
 shell_command:
-  adb: "adb connect 192.168.1.123"
   # sudoers file required:
   # homeassistant ALL=(ALL) NOPASSWD: /bin/systemctl restart hyperion
   restart_hyperion: "sudo systemctl restart hyperion"

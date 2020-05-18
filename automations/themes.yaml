@@ -1,5 +1,4 @@
 - alias: 'Set dark theme for night'
-  hide_entity: True
   trigger:
     - platform: state
       entity_id: input_select.myhome_mode
@@ -15,7 +14,6 @@
         option: 'Google Dark Theme'
 
 - alias: 'Set light theme for morning'
-  hide_entity: True
   trigger:
     - platform: state
       entity_id: input_select.myhome_mode
@@ -31,7 +29,6 @@
         option: 'Google Light Theme'
 
 - alias: 'Update theme from select'
-  hide_entity: True
   trigger:
     - platform: state
       entity_id: input_select.current_theme

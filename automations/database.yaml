@@ -2,7 +2,6 @@
 # Database automations
 #
 - alias: Purge entities hourly
-  hide_entity: True
   trigger:
     - platform: time_pattern
       minutes: 0
@@ -23,7 +22,6 @@
         hours: 12
 
 - alias: Purge entities daily
-  hide_entity: True
   trigger:
     - platform: time
       at: '03:02:10'

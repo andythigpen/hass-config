@@ -2,7 +2,6 @@
 # Startup rules
 #
 - alias: 'Initialize rooms on start'
-  hide_entity: True
   trigger:
     platform: homeassistant
     event: start
@@ -25,7 +24,6 @@
         state: 'not_occupied'
 
 - alias: 'Reset lights on start'
-  hide_entity: True
   trigger:
     platform: homeassistant
     event: start

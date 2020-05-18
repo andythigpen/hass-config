@@ -3,7 +3,6 @@
 # Updates the state of a room if motion is detected
 #
 - alias: Bedroom motion detected
-  hide_entity: True
   trigger:
     platform: state
     to: 'on'
@@ -26,7 +25,6 @@
       state: 'occupied'
 
 - alias: Hall motion detected
-  hide_entity: True
   trigger:
     platform: state
     to: 'on'
@@ -49,7 +47,6 @@
       state: 'occupied'
 
 - alias: Living Room motion detected
-  hide_entity: True
   trigger:
     platform: state
     to: 'on'
@@ -72,7 +69,6 @@
       state: 'occupied'
 
 - alias: Bookcase motion detected
-  hide_entity: True
   trigger:
     platform: state
     to: 'on'
@@ -95,7 +91,6 @@
       state: 'occupied'
 
 - alias: Kitchen motion detected
-  hide_entity: True
   trigger:
     platform: state
     to: 'on'

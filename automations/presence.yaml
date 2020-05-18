@@ -4,7 +4,6 @@
 #
 
 - alias: Turn lights off when not home
-  hide_entity: True
   trigger:
     platform: state
     entity_id: group.all_devices
@@ -15,7 +14,6 @@
     entity_id: group.all_lights
 
 - alias: Turn on hall light when arriving home
-  hide_entity: True
   trigger:
     platform: state
     entity_id: group.all_devices
@@ -32,7 +30,6 @@
       state: 'occupied'
 
 - alias: Turn off lights when leaving on weekdays
-  hide_entity: True
   trigger:
     - platform: state
       entity_id: device_tracker.rfid_sensor_12_1
