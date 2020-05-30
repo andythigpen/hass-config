@@ -187,14 +187,14 @@ script: !include_dir_merge_named scripts/
 logger:
   default: warning
   logs:
-    homeassistant.components: info
+    homeassistant.components: warning
     homeassistant.components.light: warning
     homeassistant.components.tomato.device_tracker: warning
     homeassistant.components.http: warning
-    homeassistant.components.template.scene: info
-    mysensors: info
-    homeassistant.components.mysensors: info
-    custom_components.myhome: debug
+    homeassistant.components.template.scene: warning
+    mysensors: warning
+    homeassistant.components.mysensors: warning
+    custom_components.myhome: warning
 
 input_number:
   living_room_threshold:
@@ -347,3 +347,5 @@ joaoapps_join:
 duckdns:
   domain: !secret duckdns_domain
   access_token: !secret duckdns_token
+
+person:

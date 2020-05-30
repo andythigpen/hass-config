@@ -5,3 +5,5 @@ easing:
 modeeasing:
   module: easing
   class: ModeEasing
+  dependencies:
+    - homemode

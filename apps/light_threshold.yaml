@@ -1,6 +1,9 @@
 living_room_threshold:
   module: light_threshold
   class: LightThreshold
+  dependencies:
+    - modeeasing
+    - homemode
   entity_id: input_number.living_room_threshold
   default: 32
   modes:
@@ -13,6 +16,9 @@ living_room_threshold:
 kitchen_threshold:
   module: light_threshold
   class: LightThreshold
+  dependencies:
+    - modeeasing
+    - homemode
   entity_id: input_number.kitchen_threshold
   default: 8
   modes:
@@ -32,6 +38,9 @@ kitchen_threshold:
 bedroom_threshold:
   module: light_threshold
   class: LightThreshold
+  dependencies:
+    - modeeasing
+    - homemode
   entity_id: input_number.bedroom_threshold
   default: 6
   modes:
@@ -44,6 +53,9 @@ bedroom_threshold:
 hall_threshold:
   module: light_threshold
   class: LightThreshold
+  dependencies:
+    - modeeasing
+    - homemode
   entity_id: input_number.hall_threshold
   default: 2
   modes:

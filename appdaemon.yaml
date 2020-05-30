@@ -1,6 +1,10 @@
 appdaemon:
   threads: 10
-  user_id: 2c1fa5b5ee2e4c35b71b5947b349941f
+  user_id: eb7d3a33f4484358afe4efa73e09293a
+  latitude: !secret latitude
+  longitude: !secret longitude
+  elevation: !secret elevation
+  time_zone: America/Chicago
   plugins:
     HASS:
       type: hass

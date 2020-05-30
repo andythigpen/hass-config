@@ -1,6 +1,9 @@
 living_room_tv:
   module: autolight
   class: AutoLight
+  dependencies:
+    - homemode
+    - modeeasing
   entities:
     - light.tv_left
     - light.tv_right
@@ -47,6 +50,9 @@ living_room_tv:
 living_room_standing:
   module: autolight
   class: AutoLight
+  dependencies:
+    - homemode
+    - modeeasing
   entities:
     - light.living_room_standing
   sensors:
@@ -92,6 +98,9 @@ living_room_standing:
 kitchen:
   module: autolight
   class: AutoLight
+  dependencies:
+    - homemode
+    - modeeasing
   entities:
     - light.rgbw_15_1
     - light.rgbw_15_2
@@ -130,6 +139,9 @@ kitchen:
 bedroom:
   module: autolight
   class: AutoLight
+  dependencies:
+    - homemode
+    - modeeasing
   entities:
     - light.night_stand
     - light.dresser
@@ -164,6 +176,9 @@ bedroom:
 hall:
   module: autolight
   class: AutoLight
+  dependencies:
+    - homemode
+    - modeeasing
   entities:
     - light.hall
   sensors:

@@ -4,7 +4,7 @@
 - alias: Set rooms to unoccupied when away
   trigger:
     platform: state
-    entity_id: group.all_devices
+    entity_id: person.andrew
     from: 'home'
     to: 'not_home'
   action:
