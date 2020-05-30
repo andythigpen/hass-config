@@ -151,7 +151,7 @@ device_tracker:
 
 mysensors:
   gateways:
-    - device: '127.0.0.1'
+    - device: '192.168.1.141'
       tcp_port: 5003
       persistence_file: '/config/mysensors.json'
   persistence: true
@@ -297,11 +297,6 @@ input_boolean:
 python_script:
 
 media_player:
-  - platform: samsungtv
-    name: Samsung TV
-    host: 192.168.1.134
-    port: 8001
-    mac: "F8:77:B8:CD:B2:9A"
   - platform: androidtv
     name: Android TV
     host: 192.168.1.123
