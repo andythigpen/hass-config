@@ -1,5 +1,5 @@
 import datetime
-import appdaemon.plugins.hass.hassapi as hass
+import hassapi as hass
 
 STATE_OCCUPIED = 'occupied'
 STATE_COUNTDOWN = 'countdown'
@@ -75,7 +75,11 @@ class AutoLight(hass.Hass):
         threshold = self.max_threshold
         light_pct = self.current_light_level
         minimum = self.brightness.get('min', 0)
-        adj = int(bri / threshold * (threshold - max(light_pct - minimum, 0)))
+        div = threshold * (threshold - max(light_pct - minimum, 0))
+        if div == 0:
+            adj = 0
+        else:
+            adj = int(bri / div)
         if self.brightness.get('entity_id'):
             current = self.get_state(self.brightness['entity_id'])
             self.log('current:{} brightness:{}'.format(
@@ -193,15 +197,22 @@ class AutoLight(hass.Hass):
         level = self.current_light_level
         dark = level < self.current_threshold
         movie = self.current_media_mode == STATE_MOVIE
-        occupied = self.get_state(self.sensors['presence']) == STATE_OCCUPIED
-        self.log('dark:{} occupied:{} movie:{} thr:{} lvl:{} max:{}'.format(
-            dark, occupied, movie, self.current_threshold, level,
-            self.max_threshold), level='INFO')
+        presence = self.get_state(self.sensors['presence'])
+        occupied = presence == STATE_OCCUPIED
+        self.log(
+            'dark:{} presence:{} occupied:{} movie:{} thr:{} '
+            'lvl:{} max:{}'.format(
+                dark, presence, occupied, movie, self.current_threshold,
+                level, self.max_threshold,
+            ),
+            level='INFO',
+        )
         if movie:
             return STATE_OFF
         if dark and occupied:
             return STATE_ON
-        if self.current_threshold <= level < self.max_threshold:
+        if self.current_threshold <= level < self.max_threshold or \
+                presence == STATE_COUNTDOWN:
             return state  # do nothing
         return STATE_OFF
 

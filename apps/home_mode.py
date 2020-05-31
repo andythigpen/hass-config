@@ -1,6 +1,6 @@
 import datetime
 from collections import OrderedDict
-import appdaemon.plugins.hass.hassapi as hass
+import hassapi as hass
 
 ENTITY_ID = 'input_select.myhome_mode'
 

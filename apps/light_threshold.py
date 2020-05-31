@@ -1,5 +1,5 @@
 import datetime
-import appdaemon.plugins.hass.hassapi as hass
+import hassapi as hass
 
 
 class LightThreshold(hass.Hass):
@@ -26,5 +26,6 @@ class LightThreshold(hass.Hass):
             end = start
         app = self.get_app('modeeasing')
         value = int(round(app.in_out_quad(start, end)))
+        value = max(value, 0)
         self.log('value:{}'.format(value), level='INFO')
         self.set_value(self.entity_id, value)

@@ -1,5 +1,5 @@
 appdaemon:
-  threads: 10
+  total_threads: 10
   user_id: eb7d3a33f4484358afe4efa73e09293a
   latitude: !secret latitude
   longitude: !secret longitude
@@ -10,3 +10,6 @@ appdaemon:
       type: hass
       ha_url: http://127.0.0.1:8123
       token: !secret appdaemon_token
+http:
+  url: http://0.0.0.0:8124
+admin:

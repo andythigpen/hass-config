@@ -1,8 +1,9 @@
 from functools import partialmethod
-import appdaemon.appapi as appapi
+import adbase as ad
+import adapi as api
 
 
-class Easing(appapi.AppDaemon):
+class Easing(ad.ADBase, api.ADAPI):
     """
     Easing functions from https://easings.net/ and
     http://robertpenner.com/easing/
