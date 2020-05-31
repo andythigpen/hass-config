@@ -314,7 +314,7 @@ calendar:
 
 light:
   - platform: hyperion
-    host: 127.0.0.1
+    host: 192.168.1.142
     hdmi_priority: 240
 
 shell_command:
