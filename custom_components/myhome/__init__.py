@@ -206,6 +206,9 @@ def register_touch_control_handlers(hass, config):
         entity_ids = extract_entity_ids(hass, service)
         for entity_id in entity_ids:
             state = hass.states.get(entity_id)
+            if state is None:
+                _LOGGER.error('unable to find entity %s', entity_id)
+                continue
             attr = state.attributes
             node_id = attr.get(ATTR_NODE_ID, None)
             child_id = attr.get(ATTR_CHILD_ID, None)
