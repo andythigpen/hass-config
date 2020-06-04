@@ -14,4 +14,4 @@ bedtime_now:
         seconds: 30
     - service: light.turn_off
       data:
-        entity_id: group.all_lights
+        entity_id: all
