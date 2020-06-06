@@ -318,9 +318,9 @@ light:
     hdmi_priority: 240
 
 shell_command:
-  # sudoers file required:
-  # homeassistant ALL=(ALL) NOPASSWD: /bin/systemctl restart hyperion
-  restart_hyperion: "sudo systemctl restart hyperion"
+  # sudoers file required on remote machine:
+  # pi ALL=(ALL) NOPASSWD: /bin/systemctl restart hyperiond@pi.service
+  restart_hyperion: "ssh pi@192.168.1.142 'sudo systemctl restart hyperiond@pi.service'"
 
 weather:
   - platform: openweathermap
