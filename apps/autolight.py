@@ -10,6 +10,10 @@ STATE_MOVIE = 'Movie'
 STATE_TV = 'TV'
 
 
+def mapv(x, inmin, inmax, outmin, outmax):
+    return (x - inmin) * (outmax - outmin) / (inmax - inmin) + outmin
+
+
 class AutoLight(hass.Hass):
     """
     Automatically update lights based on external conditions.
@@ -75,24 +79,19 @@ class AutoLight(hass.Hass):
         threshold = self.max_threshold
         light_pct = self.current_light_level
         minimum = self.brightness.get('min', 0)
-        div = threshold * (threshold - max(light_pct - minimum, 0))
-        if div == 0:
-            adj = 0
-        else:
-            adj = int(bri / div)
+        adj = max(mapv(threshold - light_pct, 0, threshold, 0, 255), minimum)
         if self.brightness.get('entity_id'):
             current = self.get_state(self.brightness['entity_id'])
             self.log('current:{} brightness:{}'.format(
-                current, self.brightness), level='DEBUG')
+                current, self.brightness), level='INFO')
             states = self.brightness['states']
             if current in states:
                 self.log('current:{} adj:{} limit:{}'.format(
-                    current, adj, states[current]), level='DEBUG')
+                    current, adj, states[current]), level='INFO')
                 adj = min(adj, states[current])
-        adj = max(adj, 1)
         self.log('bri:{} adj:{} threshold:{} light:{} min:{}'.format(
             bri, adj, threshold, light_pct, minimum), level='INFO')
-        return adj
+        return int(adj)
 
     def get_transition(self, state, new_state, trigger=None):
         """
@@ -193,7 +192,6 @@ class AutoLight(hass.Hass):
         - the media mode is "Movie" (media)
         - the room is not occupied (presence)
         """
-        is_on = state == STATE_ON
         level = self.current_light_level
         dark = level < self.current_threshold
         movie = self.current_media_mode == STATE_MOVIE
@@ -201,9 +199,9 @@ class AutoLight(hass.Hass):
         occupied = presence == STATE_OCCUPIED
         self.log(
             'dark:{} presence:{} occupied:{} movie:{} thr:{} '
-            'lvl:{} max:{}'.format(
+            'lvl:{} max:{} state:{}'.format(
                 dark, presence, occupied, movie, self.current_threshold,
-                level, self.max_threshold,
+                level, self.max_threshold, state,
             ),
             level='INFO',
         )

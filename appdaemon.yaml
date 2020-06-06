@@ -13,3 +13,16 @@ appdaemon:
 http:
   url: http://0.0.0.0:8124
 admin:
+logs:
+  living_room:
+    name: LivingRoom
+    filename: /home/pi/.homeassistant/logs/living_room.log
+  kitchen:
+    name: Kitchen
+    filename: /home/pi/.homeassistant/logs/kitchen.log
+  hall:
+    name: Hall
+    filename: /home/pi/.homeassistant/logs/hall.log
+  bedroom:
+    name: Bedroom
+    filename: /home/pi/.homeassistant/logs/bedroom.log

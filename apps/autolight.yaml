@@ -1,6 +1,7 @@
 living_room_tv:
   module: autolight
   class: AutoLight
+  log: living_room
   dependencies:
     - homemode
     - modeeasing
@@ -50,6 +51,7 @@ living_room_tv:
 living_room_standing:
   module: autolight
   class: AutoLight
+  log: living_room
   dependencies:
     - homemode
     - modeeasing
@@ -98,6 +100,7 @@ living_room_standing:
 kitchen:
   module: autolight
   class: AutoLight
+  log: kitchen
   dependencies:
     - homemode
     - modeeasing
@@ -139,6 +142,7 @@ kitchen:
 bedroom:
   module: autolight
   class: AutoLight
+  log: bedroom
   dependencies:
     - homemode
     - modeeasing
@@ -176,6 +180,7 @@ bedroom:
 hall:
   module: autolight
   class: AutoLight
+  log: hall
   dependencies:
     - homemode
     - modeeasing
