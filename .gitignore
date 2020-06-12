@@ -19,3 +19,4 @@ deps/
 android/
 mysensors.json
 secrets.yaml
+logs/*
