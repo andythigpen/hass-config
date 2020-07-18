@@ -84,14 +84,22 @@
     service: script.turn_off
     entity_id: script.bedtime
 
-- alias: Reset bed when away
+- alias: Reset bed when not occupied
   trigger:
     platform: state
-    entity_id: person.andrew
-    from: 'home'
-    to: 'not_home'
+    entity_id: binary_sensor.bed_sensor_16_1
+    to: 'off'
     for:
-      minutes: 20
+      minutes: 60
+  condition:
+    condition: or
+    conditions:
+      - condition: state
+        entity_id: input_select.myhome_mode
+        state: Morning
+      - condition: state
+        entity_id: input_select.myhome_mode
+        state: Day
   action:
     service: script.turn_on
     entity_id: script.reset_bed
