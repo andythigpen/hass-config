@@ -138,7 +138,7 @@ binary_sensor:
 
 hue:
   bridges:
-    - host: 192.168.1.124
+    - host: 192.168.2.101
       filename: phue.conf
 
 device_tracker:
@@ -146,7 +146,6 @@ device_tracker:
   host: 192.168.1.1
   username: !secret device_tracker_username
   password: !secret device_tracker_password
-  http_id: !secret device_tracker_http_id
   track_new_devices: no
 
 mysensors:
@@ -299,7 +298,7 @@ python_script:
 media_player:
   - platform: androidtv
     name: Android TV
-    host: 192.168.1.123
+    host: 192.168.1.130
     scan_interval: 4
     state_detection_rules:
       com.amazon.amazonvideo.livingroom:
