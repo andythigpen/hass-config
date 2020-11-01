@@ -13,7 +13,7 @@
     service: light.turn_off
     entity_id: all
 
-- alias: Turn on hall light when arriving home
+- alias: Turn on kitchen light when arriving home
   trigger:
     platform: state
     entity_id: person.andrew
@@ -26,7 +26,7 @@
   action:
     service: python_script.set_room_state
     data:
-      entity_id: room.hall
+      entity_id: room.kitchen
       state: 'occupied'
 
 - alias: Turn off lights when leaving on weekdays
@@ -34,9 +34,6 @@
     - platform: state
       entity_id: device_tracker.rfid_sensor_12_1
       to: 'not_home'
-    - platform: state
-      entity_id: room.hall
-      to: 'occupied'
   condition:
     condition: and
     conditions:
@@ -46,9 +43,6 @@
       - condition: state
         entity_id: binary_sensor.weekday
         state: 'on'
-      - condition: state
-        entity_id: room.hall
-        state: 'occupied'
       - condition: state
         entity_id: device_tracker.rfid_sensor_12_1
         state: 'not_home'
@@ -61,9 +55,4 @@
         - group.kitchen
         - group.living_room
         - group.bedroom
-    - delay: '00:00:30'
-    - service: light.turn_off
-      data:
-        transition: 120
-        entity_id:
-          - group.hall
+        - group.office

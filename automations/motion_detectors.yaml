@@ -24,7 +24,7 @@
       entity_id: room.bedroom
       state: 'occupied'
 
-- alias: Hall motion detected
+- alias: Office motion detected
   trigger:
     platform: state
     to: 'on'
@@ -39,11 +39,11 @@
         entity_id: input_boolean.myhome_active
         state: 'on'
       - condition: template
-        value_template: '{{ not is_state("room.hall", "occupied") }}'
+        value_template: '{{ not is_state("room.office", "occupied") }}'
   action:
     service: python_script.set_room_state
     data:
-      entity_id: room.hall
+      entity_id: room.office
       state: 'occupied'
 
 - alias: Living Room motion detected

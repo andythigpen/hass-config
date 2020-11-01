@@ -46,21 +46,21 @@ bedroom_threshold:
   modes:
     Morning: 9
     Day: 0
-    Afternoon: 3
-    Evening: 7
+    Afternoon: 1
+    Evening: 5
     Night: 9
 
-hall_threshold:
+office_threshold:
   module: light_threshold
   class: LightThreshold
   dependencies:
     - modeeasing
     - homemode
-  entity_id: input_number.hall_threshold
+  entity_id: input_number.office_threshold
   default: 2
   modes:
     Morning: 2
-    Day: 1
-    Afternoon: 1
+    Day: 0
+    Afternoon: 0
     Evening: 1
     Night: 2

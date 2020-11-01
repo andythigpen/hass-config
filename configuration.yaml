@@ -102,12 +102,12 @@ sensor:
           - sensor.motion_sensor_10_2
         unit_of_measurement: "%"
         friendly_name: "Living room sensor battery"
-      front_door_battery:
+      office_battery:
         value_template: '{{ state_attr("sensor.motion_sensor_5_2", "battery_level") }}'
         entity_id:
           - sensor.motion_sensor_5_2
         unit_of_measurement: "%"
-        friendly_name: "Front door sensor battery"
+        friendly_name: "Office sensor battery"
   - platform: openweathermap
     api_key: !secret weather_key
     name: owm_current
@@ -174,8 +174,8 @@ group:
     entities:
     - light.rgbw_15_1
     - light.rgbw_15_2
-  hall:
-    name: Hall
+  office:
+    name: Office
     entities:
     - light.hall
 
@@ -214,8 +214,8 @@ input_number:
     max: 255
     mode: box
     unit_of_measurement: step
-  hall_threshold:
-    name: Hall threshold
+  office_threshold:
+    name: Office threshold
     min: 0
     max: 255
     mode: box
@@ -273,8 +273,8 @@ input_boolean:
   room_kitchen:
     name: Kitchen
     icon: mdi:silverware-spoon
-  room_hall:
-    name: Hall
+  room_office:
+    name: Office
     icon: mdi:glassdoor
   room_living_room:
     name: Living Room
@@ -290,8 +290,8 @@ input_boolean:
     name: Auto update kitchen
   auto_bedroom:
     name: Auto update bedroom
-  auto_hall:
-    name: Auto update hall
+  auto_office:
+    name: Auto update office
 
 python_script:
 

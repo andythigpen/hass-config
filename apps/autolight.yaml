@@ -177,21 +177,21 @@ bedroom:
       brightness: 150
       easing: "out_quad"
 
-hall:
+office:
   module: autolight
   class: AutoLight
-  log: hall
+  log: office
   dependencies:
     - homemode
     - modeeasing
   entities:
     - light.hall
   sensors:
-    auto_update: input_boolean.auto_hall
-    switch: input_boolean.room_hall
-    presence: room.hall
+    auto_update: input_boolean.auto_office
+    switch: input_boolean.room_office
+    presence: room.office
     light: sensor.motion_sensor_5_2
-    threshold: input_number.hall_threshold
+    threshold: input_number.office_threshold
   modes:
     Morning:
       brightness: 120

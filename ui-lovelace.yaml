@@ -140,11 +140,11 @@ views:
                     - light.rgbw_15_2
               - type: conditional
                 conditions:
-                  - entity: room.hall
+                  - entity: room.office
                     state_not: "not_occupied"
                 card:
                   type: entities
-                  title: Hall
+                  title: Office
                   show_header_toggle: true
                   entities:
                     - light.hall
@@ -223,8 +223,8 @@ views:
                       label: "Kitchen"
                     - type: "custom:button-card"
                       template: small_presence
-                      entity: room.hall
-                      label: "Hall"
+                      entity: room.office
+                      label: "Office"
             - type: vertical-stack
               title: Auto update
               cards:
@@ -248,8 +248,8 @@ views:
                       label: "Kitchen"
                     - type: "custom:button-card"
                       template: small_toggle_icon
-                      entity: input_boolean.auto_hall
-                      label: "Hall"
+                      entity: input_boolean.auto_office
+                      label: "Office"
             - type: vertical-stack
               title: Rooms
               cards:
@@ -269,8 +269,8 @@ views:
                       label: "Kitchen"
                     - type: "custom:button-card"
                       template: small_toggle
-                      entity: input_boolean.room_hall
-                      label: "Hall"
+                      entity: input_boolean.room_office
+                      label: "Office"
             - type: vertical-stack
               title: Devices
               cards:
@@ -310,7 +310,7 @@ views:
               - light.rgbw_15_1
               - light.rgbw_15_2
           - type: entities
-            title: Hall
+            title: Office
             entities:
               - light.hall
 
@@ -351,7 +351,7 @@ views:
                 label: Kitchen
               - binary_sensor.motion_sensor_1_1
               - type: section
-                label: Hall
+                label: Office
               - binary_sensor.motion_sensor_5_1
               - type: section
                 label: Date/Times
@@ -433,7 +433,7 @@ views:
                   - entity: sensor.motion_sensor_4_2
                     name: SENSOR
               - type: custom:mini-graph-card
-                name: Hall
+                name: Office
                 points_per_hour: 6
                 hours_to_show: 16
                 unit: '%'
@@ -442,7 +442,7 @@ views:
                 height: 175
                 line_width: 1
                 entities:
-                  - entity: input_number.hall_threshold
+                  - entity: input_number.office_threshold
                     name: THRESHOLD
                   - entity: sensor.motion_sensor_5_2
                     name: SENSOR

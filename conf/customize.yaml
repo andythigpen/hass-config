@@ -1,4 +1,6 @@
 # lights
+light.hall:
+  friendly_name: Office
 light.rgbw_15_1:
   friendly_name: Cabinet Top
 light.rgbw_15_2:
@@ -18,9 +20,9 @@ binary_sensor.motion_sensor_4_1:
 sensor.motion_sensor_4_2:
   friendly_name: Bookcase Light
 binary_sensor.motion_sensor_5_1:
-  friendly_name: Front Door Motion
+  friendly_name: Office Motion
 sensor.motion_sensor_5_2:
-  friendly_name: Front Door Light
+  friendly_name: Office Light
 binary_sensor.motion_sensor_10_1:
   friendly_name: Living Room Motion
 sensor.motion_sensor_10_2:
@@ -63,7 +65,7 @@ room.living_room:
   friendly_name: 'Living Room'
 room.kitchen:
   friendly_name: Kitchen
-room.hall:
-  friendly_name: Hall
+room.office:
+  friendly_name: Office
 room.bedroom:
   friendly_name: Bedroom

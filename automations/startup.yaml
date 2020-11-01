@@ -20,7 +20,7 @@
         state: 'not_occupied'
     - service: python_script.set_room_state
       data:
-        entity_id: room.hall
+        entity_id: room.office
         state: 'not_occupied'
 
 - alias: 'Reset lights on start'

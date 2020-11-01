@@ -20,9 +20,9 @@ logs:
   kitchen:
     name: Kitchen
     filename: /home/pi/.homeassistant/logs/kitchen.log
-  hall:
-    name: Hall
-    filename: /home/pi/.homeassistant/logs/hall.log
+  office:
+    name: Office
+    filename: /home/pi/.homeassistant/logs/office.log
   bedroom:
     name: Bedroom
     filename: /home/pi/.homeassistant/logs/bedroom.log

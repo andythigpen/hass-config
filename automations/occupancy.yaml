@@ -36,17 +36,17 @@
         entity_id: room.living_room
         state: not_occupied
 
-- alias: Hall countdown
+- alias: Office countdown
   trigger:
     platform: state
-    entity_id: room.hall
+    entity_id: room.office
     to: 'countdown'
     for:
       minutes: 5
   action:
     - service: python_script.set_room_state
       data:
-        entity_id: room.hall
+        entity_id: room.office
         state: not_occupied
 
 - alias: Kitchen countdown
