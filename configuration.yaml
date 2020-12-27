@@ -19,7 +19,6 @@ config:
 myhome: !include conf/myhome.yaml
 
 frontend:
-  javascript_version: latest
   themes: !include_dir_merge_named themes/
 
 lovelace:
@@ -86,51 +85,20 @@ sensor:
     sensors:
       bedroom_battery:
         value_template: '{{ state_attr("sensor.motion_sensor_2_2", "battery_level") }}'
-        entity_id:
-          - sensor.motion_sensor_2_2
         unit_of_measurement: "%"
         friendly_name: "Bedroom sensor battery"
       bookcase_battery:
         value_template: '{{ state_attr("sensor.motion_sensor_4_2", "battery_level") }}'
-        entity_id:
-          - sensor.motion_sensor_4_2
         unit_of_measurement: "%"
         friendly_name: "Bookcase sensor battery"
       living_room_battery:
         value_template: '{{ state_attr("sensor.motion_sensor_10_2", "battery_level") }}'
-        entity_id:
-          - sensor.motion_sensor_10_2
         unit_of_measurement: "%"
         friendly_name: "Living room sensor battery"
       office_battery:
         value_template: '{{ state_attr("sensor.motion_sensor_5_2", "battery_level") }}'
-        entity_id:
-          - sensor.motion_sensor_5_2
         unit_of_measurement: "%"
         friendly_name: "Office sensor battery"
-  - platform: openweathermap
-    api_key: !secret weather_key
-    name: owm_current
-    monitored_conditions:
-      - weather
-      - temperature
-      - humidity
-      - pressure
-      - clouds
-      - rain
-      - weather_code
-  - platform: openweathermap
-    api_key: !secret weather_key
-    name: owm_forecast
-    forecast: true
-    monitored_conditions:
-      - weather
-      - temperature
-      - humidity
-      - pressure
-      - clouds
-      - rain
-      - weather_code
 
 binary_sensor:
   - platform: template
@@ -269,13 +237,13 @@ input_boolean:
     icon: mdi:home-variant
   room_bedroom:
     name: Bedroom
-    icon: mdi:hotel
+    icon: mdi:bed
   room_kitchen:
     name: Kitchen
     icon: mdi:silverware-spoon
   room_office:
     name: Office
-    icon: mdi:glassdoor
+    icon: mdi:briefcase-outline
   room_living_room:
     name: Living Room
     icon: mdi:television-classic
@@ -320,10 +288,6 @@ shell_command:
   # sudoers file required on remote machine:
   # pi ALL=(ALL) NOPASSWD: /bin/systemctl restart hyperiond@pi.service
   restart_hyperion: "ssh pi@192.168.1.142 'sudo systemctl restart hyperiond@pi.service'"
-
-weather:
-  - platform: openweathermap
-    api_key: !secret weather_key
 
 mobile_app:
 

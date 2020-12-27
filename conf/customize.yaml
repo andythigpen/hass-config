@@ -34,7 +34,7 @@ sensor.touch_controller_13_1:
   hidden: true
 binary_sensor.bed_sensor_16_1:
   friendly_name: Bed Occupancy
-  icon: mdi:hotel
+  icon: mdi:bed
 sensor.bed_sensor_16_2:
   friendly_name: Bed Sensor 1
   unit_of_measurement: '%'
