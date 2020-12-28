@@ -23,6 +23,23 @@ frontend:
 
 lovelace:
   mode: yaml
+  resources:
+    - url: /hacsfiles/lovelace-card-tools/card-tools.js
+      type: module
+    - url: /hacsfiles/lovelace-layout-card/layout-card.js
+      type: module
+    - url: /hacsfiles/mini-graph-card/mini-graph-card-bundle.js
+      type: module
+    - url: /hacsfiles/button-card/button-card.js
+      type: module
+    - url: /hacsfiles/weather-card/weather-card.js
+      type: module
+    - url: /hacsfiles/bar-card/bar-card.js
+      type: module
+    - url: /hacsfiles/lovelace-auto-entities/auto-entities.js
+      type: module
+    - url: /hacsfiles/lovelace-swipe-navigation/swipe-navigation.js
+      type: module
 
 history:
 
@@ -282,7 +299,6 @@ calendar:
 light:
   - platform: hyperion
     host: 192.168.1.142
-    hdmi_priority: 240
 
 shell_command:
   # sudoers file required on remote machine:
