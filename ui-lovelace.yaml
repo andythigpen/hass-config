@@ -168,7 +168,7 @@ views:
                         service: light.toggle
                         service_data:
                           entity_id: light.hyperion
-                          effect: HDMI
+                          effect: V4L
             - type: vertical-stack
               cards:
                 - type: horizontal-stack
