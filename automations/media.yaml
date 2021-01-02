@@ -23,9 +23,9 @@
       to: 'off'
     # trigger immediately when returning to the homescreen
     - platform: template
-      value_template: "{{ state_attr('media_player.android_tv', 'app_name') == 'com.google.android.tvlauncher' }}"
+      value_template: "{{ state_attr('media_player.android_tv', 'app_id') == 'com.google.android.tvlauncher' }}"
     - platform: template
-      value_template: "{{ state_attr('media_player.android_tv', 'app_name') != 'com.google.android.tvlauncher' }}"
+      value_template: "{{ state_attr('media_player.android_tv', 'app_id') != 'com.google.android.tvlauncher' }}"
   condition:
     condition: and
     conditions:
@@ -49,7 +49,7 @@
         option: >
           {% set name = state_attr('media_player.android_tv', 'app_name') %}
           {% if is_state('media_player.android_tv', 'playing') %}
-          {% if name in ('Amazon Prime Video', 'Netflix') %}
+          {% if name in ('Prime Video', 'Netflix') %}
           Movie
           {% elif 'amazonvideo' in name or 'hbonow' in name %}
           Movie
@@ -57,7 +57,7 @@
           TV
           {% endif %}
           {% elif is_state('media_player.android_tv', 'paused') %}
-          {% if name in ('com.google.android.tvlauncher', 'com.android.tv.settings') %}
+          {% if name in ('com.google.android.tvlauncher', 'com.android.tv.settings', 'Android TV Launcher') %}
           Awake
           {% else %}
           Paused
