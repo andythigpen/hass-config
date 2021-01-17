@@ -43,6 +43,7 @@ def setup_platform(hass, config, add_entities, disc_info=None):
 class ICalendarData:
     def __init__(self, url):
         self.url = url
+        self.events = []
         self.event = None
 
     @Throttle(MIN_TIME_BETWEEN_UPDATES)
@@ -50,9 +51,16 @@ class ICalendarData:
         from icalevents import icalevents
         events = icalevents.events(self.url, start=datetime.now())
         if not events:
+            self.events = []
             self.event = None
             return True
-        event = sorted(events, key=lambda ev: ev.start)[0]
+        sorted_events = sorted(events, key=lambda ev: ev.start)
+        self.events = list(map(self.convert_event, sorted_events))
+        self.event = self.events[0]
+        return True
+
+    def convert_event(self, event):
+        """Return a dict formatted event."""
         if event.all_day:
             start = {
                 'date': str(event.start.date()),
@@ -67,14 +75,13 @@ class ICalendarData:
             end = {
                 'dateTime': str(event.end),
             }
-        self.event = {
+        return {
             'start': start,
             'end': end,
             'summary': event.summary,
             'location': '',
             'description': event.description,
         }
-        return True
 
 
 class ICalendarEventDevice(CalendarEventDevice):
@@ -109,3 +116,7 @@ class ICalendarEventDevice(CalendarEventDevice):
         event = calculate_offset(event, OFFSET)
         self._offset_reached = is_offset_reached(event)
         self._event = event
+
+    async def async_get_events(self, hass, start_date, end_date):
+        """Return calendar events within a datetime range."""
+        return self.data.events
