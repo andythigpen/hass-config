@@ -105,3 +105,38 @@
   action:
     service: script.turn_on
     entity_id: script.reset_bed
+
+- alias: Notify disconnected sensors
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.bed_sensor_16_2
+      above: 90
+    - platform: numeric_state
+      entity_id: sensor.bed_sensor_16_3
+      above: 90
+    - platform: numeric_state
+      entity_id: sensor.bed_sensor_16_4
+      above: 70
+    - platform: numeric_state
+      entity_id: sensor.bed_sensor_16_5
+      above: 70
+  action:
+    service: notify.mobile_app_pixel_3a_xl
+    data:
+      message: Check the bed sensors
+      title: Bed sensor disconnected
+      data:
+        clickAction: "/lovelace/3"
+        actions:
+          - action: "reset"
+            title: "Reset"
+
+- alias: Reset bed notification action
+  trigger:
+    platform: event
+    event_type: mobile_app_notification_action
+    event_data:
+      action: reset
+  action:
+    service: script.turn_on
+    entity_id: script.reset_bed
