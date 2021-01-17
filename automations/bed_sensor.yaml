@@ -39,9 +39,10 @@
         state: 'on'
   action:
     - service: script.bedtime
-    - service: joaoapps_join.android_send_tasker
+    - service: notify.mobile_app_pixel_3a_xl
       data:
-        command: "cmd=:=dndon"
+        message: "command_dnd"
+        title: "alarms_only"
 
 - alias: Bed not occupied DND
   trigger:
@@ -57,9 +58,10 @@
         entity_id: input_boolean.myhome_active
         state: 'on'
   action:
-    - service: joaoapps_join.android_send_tasker
+    - service: notify.mobile_app_pixel_3a_xl
       data:
-        command: "cmd=:=dndoff"
+        message: "command_dnd"
+        title: "off"
 
 - alias: Bed not occupied
   trigger:

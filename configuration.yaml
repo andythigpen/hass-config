@@ -307,17 +307,6 @@ shell_command:
 
 mobile_app:
 
-# join app
-notify:
-  - platform: joaoapps_join
-    api_key: !secret join_api_key
-    device_id: !secret join_device_id
-    name: pixel
-joaoapps_join:
-  - name: android
-    device_id: group.android
-    api_key: !secret join_api_key
-
 duckdns:
   domain: !secret duckdns_domain
   access_token: !secret duckdns_token
