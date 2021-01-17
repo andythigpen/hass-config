@@ -8,9 +8,10 @@
       entity_id: device_tracker.rfid_sensor_12_1
       to: 'not_home'
   action:
-    - service: joaoapps_join.android_send_tasker
+    - service: notify.mobile_app_pixel_3a_xl
       data:
-        command: cmd=:=bluetoothon
+        message: "command_bluetooth"
+        title: "turn_on"
 
 - alias: Turn bluetooth off when arriving
   trigger:
@@ -18,6 +19,7 @@
       entity_id: device_tracker.rfid_sensor_12_1
       to: 'home'
   action:
-    - service: joaoapps_join.android_send_tasker
+    - service: notify.mobile_app_pixel_3a_xl
       data:
-        command: cmd=:=bluetoothoff
+        message: "command_bluetooth"
+        title: "turn_off"
