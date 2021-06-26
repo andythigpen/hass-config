@@ -111,8 +111,7 @@ kitchen:
     auto_update: input_boolean.auto_kitchen
     switch: input_boolean.room_kitchen
     presence: room.kitchen
-    #light: sensor.motion_sensor_10_2
-    light: sensor.motion_sensor_4_2
+    light: sensor.motion_sensor_1_2
     threshold: input_number.kitchen_threshold
   brightness:
     min: 3
@@ -148,7 +147,6 @@ bedroom:
     - modeeasing
   entities:
     - light.night_stand
-    - light.dresser
   sensors:
     auto_update: input_boolean.auto_bedroom
     switch:
@@ -177,21 +175,22 @@ bedroom:
       brightness: 150
       easing: "out_quad"
 
-office:
+dining_room:
   module: autolight
   class: AutoLight
-  log: office
+  log: dining_room
   dependencies:
     - homemode
     - modeeasing
   entities:
     - light.hall
+    - light.dresser
   sensors:
-    auto_update: input_boolean.auto_office
-    switch: input_boolean.room_office
-    presence: room.office
+    auto_update: input_boolean.auto_dining_room
+    switch: input_boolean.room_dining_room
+    presence: room.dining_room
     light: sensor.motion_sensor_5_2
-    threshold: input_number.office_threshold
+    threshold: input_number.dining_room_threshold
   modes:
     Morning:
       brightness: 120

@@ -5,13 +5,13 @@ living_room_threshold:
     - modeeasing
     - homemode
   entity_id: input_number.living_room_threshold
-  default: 32
+  default: 60
   modes:
-    Morning: 30
-    Day: 12
-    Afternoon: 15
-    Evening: 25
-    Night: 31
+    Morning: 40
+    Day: 20
+    Afternoon: 20
+    Evening: 50
+    Night: 60
 
 kitchen_threshold:
   module: light_threshold
@@ -20,20 +20,13 @@ kitchen_threshold:
     - modeeasing
     - homemode
   entity_id: input_number.kitchen_threshold
-  default: 8
+  default: 4
   modes:
-    Morning: 30
-    Day: 5
-    Afternoon: 10
-    Evening: 25
-    Night: 30
-  #default: 13
-  #modes:
-  #  Morning: 30
-  #  Day: 18
-  #  Afternoon: 22
-  #  Evening: 25
-  #  Night: 30
+    Morning: 10
+    Day: 2
+    Afternoon: 1
+    Evening: 3
+    Night: 10
 
 bedroom_threshold:
   module: light_threshold
@@ -42,25 +35,25 @@ bedroom_threshold:
     - modeeasing
     - homemode
   entity_id: input_number.bedroom_threshold
-  default: 6
+  default: 12
   modes:
     Morning: 9
-    Day: 0
-    Afternoon: 1
-    Evening: 5
-    Night: 9
+    Day: 2
+    Afternoon: 2
+    Evening: 20
+    Night: 40
 
-office_threshold:
+dining_room_threshold:
   module: light_threshold
   class: LightThreshold
   dependencies:
     - modeeasing
     - homemode
-  entity_id: input_number.office_threshold
-  default: 2
+  entity_id: input_number.dining_room_threshold
+  default: 10
   modes:
-    Morning: 2
-    Day: 0
-    Afternoon: 0
-    Evening: 1
-    Night: 2
+    Morning: 5
+    Day: 2
+    Afternoon: 2
+    Evening: 20
+    Night: 40

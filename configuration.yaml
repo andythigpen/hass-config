@@ -112,10 +112,10 @@ sensor:
         value_template: '{{ state_attr("sensor.motion_sensor_10_2", "battery_level") }}'
         unit_of_measurement: "%"
         friendly_name: "Living room sensor battery"
-      office_battery:
+      dining_room_battery:
         value_template: '{{ state_attr("sensor.motion_sensor_5_2", "battery_level") }}'
         unit_of_measurement: "%"
-        friendly_name: "Office sensor battery"
+        friendly_name: "Dining room sensor battery"
 
 binary_sensor:
   - platform: template
@@ -159,8 +159,8 @@ group:
     entities:
     - light.rgbw_15_1
     - light.rgbw_15_2
-  office:
-    name: Office
+  dining_room:
+    name: Dining Room
     entities:
     - light.hall
 
@@ -199,8 +199,8 @@ input_number:
     max: 255
     mode: box
     unit_of_measurement: step
-  office_threshold:
-    name: Office threshold
+  dining_room_threshold:
+    name: Dining room threshold
     min: 0
     max: 255
     mode: box
@@ -258,9 +258,9 @@ input_boolean:
   room_kitchen:
     name: Kitchen
     icon: mdi:silverware-spoon
-  room_office:
-    name: Office
-    icon: mdi:briefcase-outline
+  room_dining_room:
+    name: Dining Room
+    icon: mdi:table-chair
   room_living_room:
     name: Living Room
     icon: mdi:television-classic
@@ -275,12 +275,18 @@ input_boolean:
     name: Auto update kitchen
   auto_bedroom:
     name: Auto update bedroom
-  auto_office:
-    name: Auto update office
+  auto_dining_room:
+    name: Auto update dining room
 
 python_script:
 
 media_player:
+  - platform: samsungtv_custom
+    host: 192.168.2.100
+    mac: "F8:77:B8:CD:B2:9A"
+    port: 8001
+    sourcelist: '{"Shield": "KEY_HDMI1", "Xbox": "KEY_HDMI2"}'
+
   - platform: androidtv
     name: Android TV
     host: 192.168.1.130

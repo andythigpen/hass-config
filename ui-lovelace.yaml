@@ -121,11 +121,11 @@ views:
                     - light.rgbw_15_2
               - type: conditional
                 conditions:
-                  - entity: room.office
+                  - entity: room.dining_room
                     state_not: "not_occupied"
                 card:
                   type: entities
-                  title: Office
+                  title: Dining room
                   show_header_toggle: true
                   entities:
                     - light.hall
@@ -204,8 +204,8 @@ views:
                       label: "Kitchen"
                     - type: "custom:button-card"
                       template: small_presence
-                      entity: room.office
-                      label: "Office"
+                      entity: room.dining_room
+                      label: "Dining Room"
             - type: vertical-stack
               title: Auto update
               cards:
@@ -229,8 +229,8 @@ views:
                       label: "Kitchen"
                     - type: "custom:button-card"
                       template: small_toggle_icon
-                      entity: input_boolean.auto_office
-                      label: "Office"
+                      entity: input_boolean.auto_dining_room
+                      label: "Dining Room"
             - type: vertical-stack
               title: Rooms
               cards:
@@ -250,8 +250,8 @@ views:
                       label: "Kitchen"
                     - type: "custom:button-card"
                       template: small_toggle
-                      entity: input_boolean.room_office
-                      label: "Office"
+                      entity: input_boolean.room_dining_room
+                      label: "Dining Room"
             - type: vertical-stack
               title: Devices
               cards:
@@ -284,16 +284,16 @@ views:
             title: Bedroom
             entities:
               - light.night_stand
-              - light.dresser
           - type: entities
             title: Kitchen
             entities:
               - light.rgbw_15_1
               - light.rgbw_15_2
           - type: entities
-            title: Office
+            title: Dining Room
             entities:
               - light.hall
+              - light.dresser
 
   - title: Media
     icon: mdi:television-classic
@@ -332,7 +332,7 @@ views:
                 label: Kitchen
               - binary_sensor.motion_sensor_1_1
               - type: section
-                label: Office
+                label: Dining Room
               - binary_sensor.motion_sensor_5_1
               - type: section
                 label: Date/Times
@@ -411,10 +411,10 @@ views:
                 entities:
                   - entity: input_number.kitchen_threshold
                     name: THRESHOLD
-                  - entity: sensor.motion_sensor_4_2
+                  - entity: sensor.motion_sensor_1_2
                     name: SENSOR
               - type: custom:mini-graph-card
-                name: Office
+                name: Dining Room
                 points_per_hour: 6
                 hours_to_show: 16
                 unit: '%'
@@ -423,7 +423,7 @@ views:
                 height: 175
                 line_width: 1
                 entities:
-                  - entity: input_number.office_threshold
+                  - entity: input_number.dining_room_threshold
                     name: THRESHOLD
                   - entity: sensor.motion_sensor_5_2
                     name: SENSOR

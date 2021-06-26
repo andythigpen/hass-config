@@ -191,5 +191,5 @@
       entity_id:
         - group.bedroom
         - group.kitchen
-        - group.office
+        - group.dining_room
       transition: 3

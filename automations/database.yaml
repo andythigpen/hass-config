@@ -32,7 +32,7 @@
         - sensor.living_room_threshold
         - sensor.kitchen_threshold
         - sensor.bedroom_threshold
-        - sensor.office_threshold
+        - sensor.dining_room_threshold
         - sensor.motion_sensor_1_1
         - sensor.motion_sensor_2_1
         - sensor.motion_sensor_4_1
@@ -46,6 +46,6 @@
         - input_number.living_room_threshold
         - input_number.kitchen_threshold
         - input_number.bedroom_threshold
-        - input_number.office_threshold
+        - input_number.dining_room_threshold
       keep:
         days: 1

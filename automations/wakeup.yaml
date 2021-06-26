@@ -4,7 +4,7 @@
 - alias: Wake-up
   trigger:
     platform: time
-    at: '06:38:00'
+    at: '07:20:00'
   condition:
     condition: and
     conditions:
