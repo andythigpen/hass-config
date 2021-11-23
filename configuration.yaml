@@ -198,8 +198,7 @@ group:
   bedroom:
     name: Bedroom
     entities:
-    - light.night_stand
-    - light.dresser
+    - light.lifx_white_656ad2
   kitchen:
     name: Kitchen
     entities:
@@ -207,6 +206,11 @@ group:
     - light.rgbw_15_2
   dining_room:
     name: Dining Room
+    entities:
+    - light.night_stand
+    - light.dresser
+  office:
+    name: Office
     entities:
     - light.hall
 
@@ -247,6 +251,12 @@ input_number:
     unit_of_measurement: step
   dining_room_threshold:
     name: Dining room threshold
+    min: 0
+    max: 255
+    mode: box
+    unit_of_measurement: step
+  office_threshold:
+    name: Office threshold
     min: 0
     max: 255
     mode: box
@@ -334,6 +344,9 @@ input_boolean:
   room_living_room:
     name: Living Room
     icon: mdi:television-classic
+  room_office:
+    name: Office
+    icon: mdi:briefcase
   autodark_theme:
     name: Auto-dark theme
     icon: mdi:theme-light-dark
@@ -347,6 +360,8 @@ input_boolean:
     name: Auto update bedroom
   auto_dining_room:
     name: Auto update dining room
+  auto_office:
+    name: Auto update office
 
 python_script:
 
@@ -372,10 +387,6 @@ calendar:
     url: !secret ical_url
     name: vacation
 
-light:
-  - platform: hyperion
-    host: 192.168.1.142
-
 shell_command:
   # sudoers file required on remote machine:
   # pi ALL=(ALL) NOPASSWD: /bin/systemctl restart hyperiond@pi.service
@@ -394,3 +405,7 @@ panel_iframe:
     title: 'Hyperion'
     url: 'http://192.168.1.142:8090'
     icon: mdi:led-variant-on
+
+lifx:
+  light:
+    - broadcast: 192.168.1.228

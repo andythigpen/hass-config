@@ -26,3 +26,6 @@ logs:
   bedroom:
     name: Bedroom
     filename: /home/pi/.homeassistant/logs/bedroom.log
+  office:
+    name: Office
+    filename: /home/pi/.homeassistant/logs/office.log

@@ -192,4 +192,5 @@
         - group.bedroom
         - group.kitchen
         - group.dining_room
+        - group.office
       transition: 3

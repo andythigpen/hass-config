@@ -146,7 +146,7 @@ bedroom:
     - homemode
     - modeeasing
   entities:
-    - light.night_stand
+    - light.lifx_white_656ad2
   sensors:
     auto_update: input_boolean.auto_bedroom
     switch:
@@ -183,7 +183,7 @@ dining_room:
     - homemode
     - modeeasing
   entities:
-    - light.hall
+    - light.night_stand
     - light.dresser
   sensors:
     auto_update: input_boolean.auto_dining_room
@@ -191,6 +191,33 @@ dining_room:
     presence: room.dining_room
     light: sensor.motion_sensor_5_2
     threshold: input_number.dining_room_threshold
+  modes:
+    Morning:
+      brightness: 120
+    Day:
+      brightness: 175
+    Afternoon:
+      brightness: 175
+    Evening:
+      brightness: 100
+    Night:
+      brightness: 50
+
+office:
+  module: autolight
+  class: AutoLight
+  log: office
+  dependencies:
+    - homemode
+    - modeeasing
+  entities:
+    - light.hall
+  sensors:
+    auto_update: input_boolean.auto_office
+    switch: input_boolean.room_office
+    presence: room.office
+    light: sensor.motion_sensor_5_2
+    threshold: input_number.office_threshold
   modes:
     Morning:
       brightness: 120

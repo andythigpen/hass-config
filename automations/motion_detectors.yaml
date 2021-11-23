@@ -83,11 +83,11 @@
         entity_id: input_boolean.myhome_active
         state: 'on'
       - condition: template
-        value_template: '{{ not is_state("room.living_room", "occupied") }}'
+        value_template: '{{ not is_state("room.office", "occupied") }}'
   action:
     service: python_script.set_room_state
     data:
-      entity_id: room.living_room
+      entity_id: room.office
       state: 'occupied'
 
 - alias: Kitchen motion detected

@@ -60,7 +60,7 @@
 - alias: Turn off bedroom lights on weekday mornings
   trigger:
     - platform: state
-      entity_id: room.dining_room
+      entity_id: room.office
       to: "occupied"
       for: "00:20:00"
   condition:

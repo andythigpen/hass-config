@@ -57,3 +57,18 @@ dining_room_threshold:
     Afternoon: 2
     Evening: 20
     Night: 40
+
+office_threshold:
+  module: light_threshold
+  class: LightThreshold
+  dependencies:
+    - modeeasing
+    - homemode
+  entity_id: input_number.office_threshold
+  default: 10
+  modes:
+    Morning: 5
+    Day: 2
+    Afternoon: 2
+    Evening: 20
+    Night: 40

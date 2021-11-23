@@ -198,9 +198,9 @@ class AutoLight(hass.Hass):
         presence = self.get_state(self.sensors['presence'])
         occupied = presence == STATE_OCCUPIED
         self.log(
-            'dark:{} presence:{} occupied:{} movie:{} thr:{} '
+            'dark:{} presence:{} ({}) occupied:{} movie:{} thr:{} '
             'lvl:{} max:{} state:{}'.format(
-                dark, presence, occupied, movie, self.current_threshold,
+                dark, presence, self.sensors['presence'], occupied, movie, self.current_threshold,
                 level, self.max_threshold, state,
             ),
             level='INFO',

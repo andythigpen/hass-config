@@ -1,5 +1,7 @@
 # lights
 light.hall:
+  friendly_name: Office
+light.night_stand:
   friendly_name: Dining room side
 light.dresser:
   friendly_name: Dining room floor
@@ -74,3 +76,5 @@ room.dining_room:
   friendly_name: Dining Room
 room.bedroom:
   friendly_name: Bedroom
+room.office:
+  friendly_name: Office

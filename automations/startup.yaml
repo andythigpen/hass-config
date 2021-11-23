@@ -22,6 +22,10 @@
       data:
         entity_id: room.dining_room
         state: 'not_occupied'
+    - service: python_script.set_room_state
+      data:
+        entity_id: room.office
+        state: 'not_occupied'
 
 - alias: 'Reset lights on start'
   trigger:

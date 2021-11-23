@@ -106,8 +106,7 @@ views:
                   title: Bedroom
                   show_header_toggle: true
                   entities:
-                    - light.night_stand
-                    - light.dresser
+                    - light.lifx_white_656ad2
               - type: conditional
                 conditions:
                   - entity: room.kitchen
@@ -126,6 +125,17 @@ views:
                 card:
                   type: entities
                   title: Dining room
+                  show_header_toggle: true
+                  entities:
+                    - light.night_stand
+                    - light.dresser
+              - type: conditional
+                conditions:
+                  - entity: room.office
+                    state_not: "not_occupied"
+                card:
+                  type: entities
+                  title: Office
                   show_header_toggle: true
                   entities:
                     - light.hall
@@ -206,6 +216,10 @@ views:
                       template: small_presence
                       entity: room.dining_room
                       label: "Dining Room"
+                    - type: "custom:button-card"
+                      template: small_presence
+                      entity: room.office
+                      label: "Office"
             - type: vertical-stack
               title: Auto update
               cards:
@@ -231,6 +245,10 @@ views:
                       template: small_toggle_icon
                       entity: input_boolean.auto_dining_room
                       label: "Dining Room"
+                    - type: "custom:button-card"
+                      template: small_toggle_icon
+                      entity: input_boolean.auto_office
+                      label: "Office"
             - type: vertical-stack
               title: Rooms
               cards:
@@ -252,6 +270,10 @@ views:
                       template: small_toggle
                       entity: input_boolean.room_dining_room
                       label: "Dining Room"
+                    - type: "custom:button-card"
+                      template: small_toggle
+                      entity: input_boolean.room_office
+                      label: "Office"
             - type: vertical-stack
               title: Devices
               cards:
@@ -283,7 +305,11 @@ views:
           - type: entities
             title: Bedroom
             entities:
-              - light.night_stand
+              - light.lifx_white_656ad2
+          - type: entities
+            title: Office
+            entities:
+              - light.hall
           - type: entities
             title: Kitchen
             entities:
@@ -292,7 +318,7 @@ views:
           - type: entities
             title: Dining Room
             entities:
-              - light.hall
+              - light.night_stand
               - light.dresser
 
   - title: Media
@@ -322,7 +348,6 @@ views:
             entities:
               - type: section
                 label: Living Room
-              - binary_sensor.motion_sensor_4_1
               - binary_sensor.motion_sensor_10_1
               - type: section
                 label: Bedroom
@@ -335,6 +360,9 @@ views:
               - type: section
                 label: Dining Room
               - binary_sensor.motion_sensor_5_1
+              - type: section
+                label: Office
+              - binary_sensor.motion_sensor_4_1
               - type: section
                 label: Date/Times
               - entity: binary_sensor.weekday
@@ -428,6 +456,21 @@ views:
                     name: THRESHOLD
                   - entity: sensor.motion_sensor_5_2
                     name: SENSOR
+              - type: custom:mini-graph-card
+                name: Office
+                points_per_hour: 6
+                hours_to_show: 16
+                unit: '%'
+                show:
+                  points: false
+                height: 175
+                line_width: 1
+                entities:
+                  - entity: input_number.office_threshold
+                    name: THRESHOLD
+                  - entity: sensor.motion_sensor_5_2
+                    name: SENSOR
+
               - type: entities
                 title: Sensors
                 show_header_toggle: false
