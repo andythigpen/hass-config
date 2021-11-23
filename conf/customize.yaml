@@ -61,6 +61,9 @@ sensor.bed_sensor_16_8:
 sensor.bed_sensor_16_9:
   friendly_name: Bed LWM 4
   unit_of_measurement: '%'
+sensor.bed_occupied:
+  friendly_name: Bed occupied
+  icon: mdi:bed
 
 # rooms
 room.living_room:

@@ -1,31 +1,31 @@
 bedtime:
   alias: Bedtime
   sequence:
+    #- service: light.turn_on
+    #  data:
+    #    entity_id: light.dresser
+    #    transition: 10
+    #    brightness: 60
     - service: light.turn_on
       data:
-        entity_id: light.dresser
-        transition: 10
-        brightness: 60
-    - service: light.turn_on
-      data:
-        entity_id: light.night_stand
+        entity_id: light.lifx_white_656ad2
         transition: 10
         brightness: 150
-    - service: myhome.set_touch
-      data:
-        entity_id: sensor.touch_controller_13_1
-        command: 5
+    #- service: myhome.set_touch
+    #  data:
+    #    entity_id: sensor.touch_controller_13_1
+    #    command: 5
     - delay:
         minutes: 10
     - service: light.turn_off
       data:
-        entity_id: light.night_stand
+        entity_id: light.lifx_white_656ad2
         transition: 600
       alias: Bedroom lights off
-    - service: light.turn_off
-      data:
-        entity_id: light.dresser
-        transition: 30
+    #- service: light.turn_off
+    #  data:
+    #    entity_id: light.dresser
+    #    transition: 30
     - service: python_script.set_home_mode
       data:
         mode: asleep

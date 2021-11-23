@@ -4,7 +4,7 @@
 - alias: Bed occupied
   trigger:
     platform: state
-    entity_id: binary_sensor.bed_sensor_16_1
+    entity_id: sensor.bed_occupied
     to: 'on'
   condition:
     condition: and
@@ -24,7 +24,7 @@
 - alias: Bed triggers nighttime
   trigger:
     platform: state
-    entity_id: binary_sensor.bed_sensor_16_1
+    entity_id: sensor.bed_occupied
     to: 'on'
     for:
       minutes: 2
@@ -47,7 +47,7 @@
 - alias: Bed not occupied DND
   trigger:
     platform: state
-    entity_id: binary_sensor.bed_sensor_16_1
+    entity_id: sensor.bed_occupied
     to: 'off'
     for:
       minutes: 5
@@ -66,7 +66,7 @@
 - alias: Bed not occupied
   trigger:
     platform: state
-    entity_id: binary_sensor.bed_sensor_16_1
+    entity_id: sensor.bed_occupied
     to: 'off'
     for:
       minutes: 3
@@ -89,7 +89,7 @@
 - alias: Reset bed when not occupied
   trigger:
     platform: state
-    entity_id: binary_sensor.bed_sensor_16_1
+    entity_id: sensor.bed_occupied
     to: 'off'
     for:
       minutes: 60

@@ -158,7 +158,7 @@ bedroom:
     threshold: input_number.bedroom_threshold
   hysteresis: 5
   brightness:
-    entity_id: binary_sensor.bed_sensor_16_1
+    entity_id: sensor.bed_occupied
     states:
       "on": 100
   modes:

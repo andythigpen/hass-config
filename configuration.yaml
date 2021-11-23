@@ -4,7 +4,7 @@ homeassistant:
   longitude: !secret longitude
   elevation: !secret elevation
   unit_system: imperial
-  time_zone: America/Chicago
+  time_zone: America/New_York
   customize: !include conf/customize.yaml
   customize_glob:
     "scene.*_occupied":
@@ -116,6 +116,52 @@ sensor:
         value_template: '{{ state_attr("sensor.motion_sensor_5_2", "battery_level") }}'
         unit_of_measurement: "%"
         friendly_name: "Dining room sensor battery"
+      bed_triggered_1:
+        value_template: '{{ states("sensor.bed_sensor_1") < states("input_number.bed_sensor_1") }}'
+      bed_triggered_2:
+        value_template: '{{ states("sensor.bed_sensor_2") < states("input_number.bed_sensor_2") }}'
+      bed_triggered_3:
+        value_template: '{{ states("sensor.bed_sensor_3") < states("input_number.bed_sensor_3") }}'
+      bed_triggered_4:
+        value_template: '{{ states("sensor.bed_sensor_4") < states("input_number.bed_sensor_4") }}'
+      bed_occupied:
+        value_template: '{% if [states("sensor.bed_triggered_1"), states("sensor.bed_triggered_2"), states("sensor.bed_triggered_3"), states("sensor.bed_triggered_4")]|select("equalto", "True")|list|length >= 2 %}on{% else %}off{% endif %}'
+  - platform: filter
+    name: "Bed sensor 1"
+    entity_id: sensor.bed_sensor_16_2
+    filters:
+      - filter: lowpass
+        time_constant: 5
+        precision: 1
+      - filter: time_simple_moving_average
+        window_size: "00:00:10"
+  - platform: filter
+    name: "Bed sensor 2"
+    entity_id: sensor.bed_sensor_16_3
+    filters:
+      - filter: lowpass
+        time_constant: 5
+        precision: 1
+      - filter: time_simple_moving_average
+        window_size: "00:00:10"
+  - platform: filter
+    name: "Bed sensor 3"
+    entity_id: sensor.bed_sensor_16_4
+    filters:
+      - filter: lowpass
+        time_constant: 5
+        precision: 1
+      - filter: time_simple_moving_average
+        window_size: "00:00:10"
+  - platform: filter
+    name: "Bed sensor 4"
+    entity_id: sensor.bed_sensor_16_5
+    filters:
+      - filter: lowpass
+        time_constant: 5
+        precision: 1
+      - filter: time_simple_moving_average
+        window_size: "00:00:10"
 
 binary_sensor:
   - platform: template
@@ -203,6 +249,30 @@ input_number:
     name: Dining room threshold
     min: 0
     max: 255
+    mode: box
+    unit_of_measurement: step
+  bed_sensor_1:
+    name: Bed sensor 1 threshold
+    min: 0
+    max: 100
+    mode: box
+    unit_of_measurement: step
+  bed_sensor_2:
+    name: Bed sensor 2 threshold
+    min: 0
+    max: 100
+    mode: box
+    unit_of_measurement: step
+  bed_sensor_3:
+    name: Bed sensor 3 threshold
+    min: 0
+    max: 80
+    mode: box
+    unit_of_measurement: step
+  bed_sensor_4:
+    name: Bed sensor 4 threshold
+    min: 0
+    max: 80
     mode: box
     unit_of_measurement: step
 

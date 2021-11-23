@@ -5,5 +5,6 @@
   "dependencies": ["group", "scene", "input_select", "mysensors", "device_tracker"],
   "codeowners": [],
   "requirements": [],
-  "iot_class": "cloud_polling"
+  "iot_class": "cloud_polling",
+  "version": "1.0.0"
 }
