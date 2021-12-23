@@ -119,24 +119,19 @@ kitchen:
   modes:
     Morning:
       brightness: 255
-      rgb_color: [255, 75, 0]
-      white_value: 120
+      rgbw_color: [255, 75, 0, 120]
     Day:
       brightness: 255
-      rgb_color: [255, 75, 20]
-      white_value: 255
+      rgbw_color: [255, 75, 20, 255]
     Afternoon:
       brightness: 255
-      rgb_color: [255, 75, 100]
-      white_value: 255
+      rgbw_color: [255, 75, 100, 255]
     Evening:
       brightness: 255
-      rgb_color: [255, 75, 0]
-      white_value: 75
+      rgbw_color: [255, 75, 0, 75]
     Night:
       brightness: 200
-      rgb_color: [255, 75, 0]
-      white_value: 50
+      rgbw_color: [255, 75, 0, 50]
 
 bedroom:
   module: autolight
@@ -215,7 +210,7 @@ office:
   sensors:
     auto_update: input_boolean.auto_office
     switch: input_boolean.room_office
-    presence: room.office
+    presence: room.dining_room
     light: sensor.motion_sensor_5_2
     threshold: input_number.office_threshold
   modes:
