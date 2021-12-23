@@ -178,7 +178,7 @@ views:
                         service: light.toggle
                         service_data:
                           entity_id: light.hyperion
-                          effect: V4L
+                          effect: 'USB Capture'
             - type: vertical-stack
               cards:
                 - type: horizontal-stack
@@ -334,6 +334,7 @@ views:
             title: My Media
             entities:
               - input_select.media_mode
+              - binary_sensor.xbox
 
   - title: Sensors
     icon: mdi:router-wireless
