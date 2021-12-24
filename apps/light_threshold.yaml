@@ -23,7 +23,7 @@ kitchen_threshold:
   default: 4
   modes:
     Morning: 10
-    Day: 2
+    Day: 0
     Afternoon: 1
     Evening: 3
     Night: 10
@@ -38,8 +38,8 @@ bedroom_threshold:
   default: 12
   modes:
     Morning: 9
-    Day: 2
-    Afternoon: 2
+    Day: 1
+    Afternoon: 1
     Evening: 20
     Night: 40
 
