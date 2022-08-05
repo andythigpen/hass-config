@@ -371,11 +371,11 @@ input_boolean:
 python_script:
 
 media_player:
-  - platform: samsungtv_custom
-    host: 192.168.2.100
-    mac: "F8:77:B8:CD:B2:9A"
-    port: 8001
-    sourcelist: '{"Shield": "KEY_HDMI1", "Xbox": "KEY_HDMI2"}'
+  #- platform: samsungtv_custom
+  #  host: 192.168.2.100
+  #  mac: "F8:77:B8:CD:B2:9A"
+  #  port: 8001
+  #  sourcelist: '{"Shield": "KEY_HDMI1", "Xbox": "KEY_HDMI2"}'
 
   - platform: androidtv
     name: Android TV
