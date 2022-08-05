@@ -11,7 +11,7 @@ from homeassistant.helpers import config_validation as cv
 from homeassistant.helpers.entity import generate_entity_id
 from homeassistant.components.calendar import (
     ENTITY_ID_FORMAT, PLATFORM_SCHEMA, CalendarEventDevice,
-    calculate_offset, is_offset_reached,
+    extract_offset, is_offset_reached,
 )
 from homeassistant.util import Throttle
 
@@ -113,7 +113,7 @@ class ICalendarEventDevice(CalendarEventDevice):
         if event is None:
             self._event = event
             return
-        event = calculate_offset(event, OFFSET)
+        event = extract_offset(event["summary"], OFFSET)
         self._offset_reached = is_offset_reached(event)
         self._event = event
 
