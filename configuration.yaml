@@ -184,13 +184,13 @@ device_tracker:
   password: !secret device_tracker_password
   track_new_devices: no
 
-mysensors:
-  gateways:
-    - device: '192.168.1.141'
-      tcp_port: 5003
-      persistence_file: '/home/pi/.homeassistant/mysensors.json'
-  persistence: true
-  version: '1.5'
+#mysensors:
+#  gateways:
+#    - device: '192.168.1.141'
+#      tcp_port: 5003
+#      persistence_file: '/home/pi/.homeassistant/mysensors.json'
+#  persistence: true
+#  version: '1.5'
 
 group:
   living_room:
