@@ -414,3 +414,5 @@ panel_iframe:
 lifx:
   light:
     - broadcast: 192.168.1.228
+
+system_health:
