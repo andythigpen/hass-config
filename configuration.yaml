@@ -370,22 +370,22 @@ input_boolean:
 
 python_script:
 
-media_player:
-  #- platform: samsungtv_custom
-  #  host: 192.168.2.100
-  #  mac: "F8:77:B8:CD:B2:9A"
-  #  port: 8001
-  #  sourcelist: '{"Shield": "KEY_HDMI1", "Xbox": "KEY_HDMI2"}'
-
-  - platform: androidtv
-    name: Android TV
-    host: 192.168.1.130
-    scan_interval: 4
-    state_detection_rules:
-      com.amazon.amazonvideo.livingroom:
-        - playing: {'wake_lock_size': 2}
-        - paused: {'audio_state': 'paused'}
-        - standby
+#media_player:
+#  #- platform: samsungtv_custom
+#  #  host: 192.168.2.100
+#  #  mac: "F8:77:B8:CD:B2:9A"
+#  #  port: 8001
+#  #  sourcelist: '{"Shield": "KEY_HDMI1", "Xbox": "KEY_HDMI2"}'
+#
+#  - platform: androidtv
+#    name: Android TV
+#    host: 192.168.1.130
+#    scan_interval: 4
+#    state_detection_rules:
+#      com.amazon.amazonvideo.livingroom:
+#        - playing: {'wake_lock_size': 2}
+#        - paused: {'audio_state': 'paused'}
+#        - standby
 
 calendar:
   - platform: ical
