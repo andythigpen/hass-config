@@ -195,8 +195,8 @@
     - service: light.turn_on
       data_template:
         entity_id: light.hyperion
-        brightness: 80
-        rgb_color: [255, 181, 108]
+        brightness: 20
+        rgb_color: [103, 74, 39]
         effect: 'Solid'
 
 - alias: TV backlight off
