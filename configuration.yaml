@@ -387,10 +387,13 @@ python_script:
 #        - paused: {'audio_state': 'paused'}
 #        - standby
 
-calendar:
-  - platform: ical
-    url: !secret ical_url
-    name: vacation
+#calendar:
+#  - platform: ical
+#    url: !secret ical_url
+#    name: vacation
+#  - platform: ical
+#    url: https://api.calreply.net/webcal/f4e3a89f-d4aa-4f1d-8a61-972ef5a6de7d
+#    name: dortmund
 
 shell_command:
   # sudoers file required on remote machine:
