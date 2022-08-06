@@ -184,14 +184,6 @@ device_tracker:
   password: !secret device_tracker_password
   track_new_devices: no
 
-#mysensors:
-#  gateways:
-#    - device: '192.168.1.141'
-#      tcp_port: 5003
-#      persistence_file: '/home/pi/.homeassistant/mysensors.json'
-#  persistence: true
-#  version: '1.5'
-
 group:
   living_room:
     name: Living Room
@@ -219,7 +211,6 @@ group:
     entities:
     - light.hall
 
-#automation: !include_dir_merge_list automations/
 automation: !include automations.yaml
 
 script: !include_dir_merge_named scripts/
@@ -371,31 +362,6 @@ input_boolean:
 
 python_script:
 
-#media_player:
-#  #- platform: samsungtv_custom
-#  #  host: 192.168.2.100
-#  #  mac: "F8:77:B8:CD:B2:9A"
-#  #  port: 8001
-#  #  sourcelist: '{"Shield": "KEY_HDMI1", "Xbox": "KEY_HDMI2"}'
-#
-#  - platform: androidtv
-#    name: Android TV
-#    host: 192.168.1.130
-#    scan_interval: 4
-#    state_detection_rules:
-#      com.amazon.amazonvideo.livingroom:
-#        - playing: {'wake_lock_size': 2}
-#        - paused: {'audio_state': 'paused'}
-#        - standby
-
-#calendar:
-#  - platform: ical
-#    url: !secret ical_url
-#    name: vacation
-#  - platform: ical
-#    url: https://api.calreply.net/webcal/f4e3a89f-d4aa-4f1d-8a61-972ef5a6de7d
-#    name: dortmund
-
 shell_command:
   # sudoers file required on remote machine:
   # pi ALL=(ALL) NOPASSWD: /bin/systemctl restart hyperiond@pi.service
@@ -420,3 +386,7 @@ lifx:
     - broadcast: 192.168.1.228
 
 system_health:
+
+backup:
+
+my:
