@@ -1,0 +1,54 @@
+blueprint:
+  name: Motion detection
+  description: Sets a room entity to occupied when motion is detected.
+  domain: automation
+  input:
+    motion_sensor:
+      name: Motion sensor
+      description: The motion sensor used to trigger the automation
+      selector:
+        entity:
+          domain: binary_sensor
+    person:
+      name: Person
+      description: This person must be home for the automation to trigger
+      selector:
+        entity:
+          domain: person
+    active_switch:
+      name: Active switch
+      description: This switch must be on for the automation to trigger
+      selector:
+        entity:
+          domain: input_boolean
+    room:
+      name: Room
+      description: This room will be set to occupied
+      selector:
+        entity:
+          domain: room
+
+variables:
+  room: !input room
+
+trigger:
+  platform: state
+  to: 'on'
+  entity_id: !input motion_sensor
+
+condition:
+  condition: and
+  conditions:
+  - condition: state
+    entity_id: !input person
+    state: home
+  - condition: state
+    entity_id: !input active_switch
+    state: 'on'
+  - condition: template
+    value_template: '{{ not is_state(room, "occupied") }}'
+action:
+  service: python_script.set_room_state
+  data:
+    entity_id: !input room
+    state: occupied

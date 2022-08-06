@@ -911,3 +911,88 @@
   action:
     service: script.turn_on
     entity_id: script.wakeup
+- id: '1659792514683'
+  alias: Home mode - morning
+  description: Set the home mode to morning
+  use_blueprint:
+    path: common/set_input_select.yaml
+    input:
+      at_time: 06:00:00
+      input_select: input_select.myhome_mode
+      option: Morning
+- id: '1659792566405'
+  alias: Home mode - day
+  description: Set the home mode to day
+  use_blueprint:
+    path: common/set_input_select.yaml
+    input:
+      at_time: 09:00:00
+      input_select: input_select.myhome_mode
+      option: Day
+- id: '1659792630080'
+  alias: Home mode - afternoon
+  description: Set the home mode to afternoon
+  use_blueprint:
+    path: common/set_input_select.yaml
+    input:
+      at_time: '13:00:00'
+      input_select: input_select.myhome_mode
+      option: Afternoon
+- id: '1659792686845'
+  alias: Home mode - evening
+  description: Set the home mode to evening
+  use_blueprint:
+    path: common/set_input_select.yaml
+    input:
+      at_time: '18:00:00'
+      input_select: input_select.myhome_mode
+      option: Evening
+- id: '1659792727019'
+  alias: Home mode - night
+  description: Set the home mode to night
+  use_blueprint:
+    path: common/set_input_select.yaml
+    input:
+      at_time: '21:00:00'
+      input_select: input_select.myhome_mode
+      option: Night
+- id: '1659795633684'
+  alias: Motion detection - kitchen
+  description: Set the kitchen to occupied when motion is detected
+  use_blueprint:
+    path: presence/motion_detection.yaml
+    input:
+      motion_sensor: binary_sensor.motion_sensor_1_1
+      person: person.andrew
+      active_switch: input_boolean.myhome_active
+      room: room.kitchen
+- id: '1659795789483'
+  alias: Motion detection - bedroom
+  description: Set the bedroom to occupied when motion is detected
+  use_blueprint:
+    path: presence/motion_detection.yaml
+    input:
+      motion_sensor: binary_sensor.motion_sensor_2_1
+      person: person.andrew
+      active_switch: input_boolean.myhome_active
+      room: room.bedroom
+- id: '1659795862181'
+  alias: Motion detection - dining room
+  description: Set the dining room to occupied when motion is detected
+  use_blueprint:
+    path: presence/motion_detection.yaml
+    input:
+      motion_sensor: binary_sensor.motion_sensor_5_1
+      person: person.andrew
+      active_switch: input_boolean.myhome_active
+      room: room.dining_room
+- id: '1659795910513'
+  alias: Motion detection - living room
+  description: Set the living room to occupied when motion is detected
+  use_blueprint:
+    path: presence/motion_detection.yaml
+    input:
+      motion_sensor: binary_sensor.motion_sensor_10_1
+      person: person.andrew
+      active_switch: input_boolean.myhome_active
+      room: room.living_room
