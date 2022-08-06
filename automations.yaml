@@ -155,55 +155,6 @@
   action:
     service: script.turn_on
     entity_id: script.reset_bed
-- id: '1659749281110'
-  alias: Morning home mode
-  trigger:
-    platform: time
-    at: 06:00:00
-  action:
-    service: python_script.set_home_mode
-    data:
-      mode: morning
-- id: '1659749303240'
-  alias: Day home mode
-  trigger:
-    platform: time
-    at: 09:00:00
-  action:
-    service: python_script.set_home_mode
-    data:
-      mode: day
-- id: '1659749325751'
-  alias: Afternoon home mode
-  trigger:
-    platform: time
-    at: '13:00:00'
-  action:
-    service: python_script.set_home_mode
-    data:
-      mode: afternoon
-- id: '1659749349659'
-  alias: Evening home mode
-  trigger:
-    platform: time
-    at: '18:00:00'
-  action:
-    service: python_script.set_home_mode
-    data:
-      mode: evening
-- id: '1659749377336'
-  alias: Night home mode
-  trigger:
-    platform: time
-    at: '21:00:00'
-  condition:
-    condition: state
-    entity_id: input_select.myhome_mode
-    state: Evening
-  action:
-    service: python_script.set_home_mode
-    data:
-      mode: night
 - id: '1659749422757'
   alias: Update mode icon in interface
   trigger:
