@@ -6,9 +6,11 @@ bedtime_now:
         entity_id: group.Bedroom
         transition: 60
       alias: Bedroom lights off
-    - service: python_script.set_home_mode
+    - service: input_select.select_option
+      target:
+        entity_id: input_select.myhome_mode
       data:
-        mode: asleep
+        option: Asleep
     - delay:
         minutes: 1
         seconds: 30

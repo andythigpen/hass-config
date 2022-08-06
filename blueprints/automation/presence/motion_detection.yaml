@@ -28,6 +28,8 @@ blueprint:
         entity:
           domain: room
 
+mode: queued
+
 variables:
   room: !input room
 

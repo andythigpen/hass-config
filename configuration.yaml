@@ -233,55 +233,55 @@ input_number:
     min: 0
     max: 255
     mode: box
-    unit_of_measurement: step
+    unit_of_measurement: '%'
   kitchen_threshold:
     name: Kitchen threshold
     min: 0
     max: 255
     mode: box
-    unit_of_measurement: step
+    unit_of_measurement: '%'
   bedroom_threshold:
     name: Bedroom threshold
     min: 0
     max: 255
     mode: box
-    unit_of_measurement: step
+    unit_of_measurement: '%'
   dining_room_threshold:
     name: Dining room threshold
     min: 0
     max: 255
     mode: box
-    unit_of_measurement: step
+    unit_of_measurement: '%'
   office_threshold:
     name: Office threshold
     min: 0
     max: 255
     mode: box
-    unit_of_measurement: step
+    unit_of_measurement: '%'
   bed_sensor_1:
     name: Bed sensor 1 threshold
     min: 0
     max: 100
     mode: box
-    unit_of_measurement: step
+    unit_of_measurement: '%'
   bed_sensor_2:
     name: Bed sensor 2 threshold
     min: 0
     max: 100
     mode: box
-    unit_of_measurement: step
+    unit_of_measurement: '%'
   bed_sensor_3:
     name: Bed sensor 3 threshold
     min: 0
     max: 80
     mode: box
-    unit_of_measurement: step
+    unit_of_measurement: '%'
   bed_sensor_4:
     name: Bed sensor 4 threshold
     min: 0
     max: 80
     mode: box
-    unit_of_measurement: step
+    unit_of_measurement: '%'
 
 input_select:
   myhome_mode:

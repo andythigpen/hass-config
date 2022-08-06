@@ -10,11 +10,12 @@ blueprint:
         duration:
     room:
       name: Room
-      description: This room will be set to occupied
+      description: This room will be set to unoccupied
       selector:
         entity:
           domain: room
 
+mode: queued
 trigger:
   platform: state
   entity_id: !input room

@@ -13,9 +13,11 @@ bedtime:
         entity_id: light.lifx_white_656ad2
         transition: "{% if now().hour >= 23 %}300{% else %}600{% endif %}"
       alias: Bedroom lights off
-    - service: python_script.set_home_mode
+    - service: input_select.select_option
+      target:
+        entity_id: input_select.myhome_mode
       data:
-        mode: asleep
+        option: Asleep
     - service: light.turn_off
       data:
         entity_id: group.living_room
