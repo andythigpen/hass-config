@@ -1,0 +1,913 @@
+- id: '1659748228472'
+  alias: Notify Dortmund game
+  description: Send a mobile notification prior to a Dortmund game
+  trigger:
+  - platform: calendar
+    event: start
+    offset: -0:15:0
+    entity_id: calendar.bundesliga_schedule
+  condition: []
+  action:
+  - service: notify.mobile_app_pixel_3a_xl
+    data:
+      message: '{{ state_attr("calendar.bundesliga_schedule", "message") }}'
+      title: Dortmund Game
+      data:
+        actions:
+        - action: OPEN_ESPN
+          title: Watch
+  mode: single
+- id: '1659748462454'
+  alias: Open ESPN on TV
+  description: ''
+  trigger:
+  - platform: event
+    event_type: mobile_app_notification_action
+    event_data:
+      action: OPEN_ESPN
+  condition: []
+  action:
+  - service: media_player.select_source
+    data:
+      source: com.espn.score_center
+    target:
+      device_id: 17e961c2caf2f5e0b0daafa45cd34ebb
+  mode: single
+- id: '1659748935069'
+  alias: Bed triggers nighttime
+  trigger:
+    platform: state
+    entity_id: sensor.bed_occupied
+    to: 'on'
+    for:
+      minutes: 2
+  condition:
+    condition: and
+    conditions:
+    - condition: state
+      entity_id: input_select.myhome_mode
+      state: Night
+    - condition: state
+      entity_id: input_boolean.myhome_active
+      state: 'on'
+  action:
+  - service: script.bedtime
+  - service: notify.mobile_app_pixel_3a_xl
+    data:
+      message: command_dnd
+      title: alarms_only
+- id: '1659748972004'
+  alias: Bed not occupied DND
+  trigger:
+    platform: state
+    entity_id: sensor.bed_occupied
+    to: 'off'
+    for:
+      minutes: 5
+  condition:
+    condition: and
+    conditions:
+    - condition: state
+      entity_id: input_boolean.myhome_active
+      state: 'on'
+  action:
+  - service: notify.mobile_app_pixel_3a_xl
+    data:
+      message: command_dnd
+      title: 'off'
+- id: '1659749000122'
+  alias: Bed not occupied
+  trigger:
+    platform: state
+    entity_id: sensor.bed_occupied
+    to: 'off'
+    for:
+      minutes: 3
+  condition:
+    condition: and
+    conditions:
+    - condition: state
+      entity_id: input_select.myhome_mode
+      state: Night
+    - condition: state
+      entity_id: input_boolean.myhome_active
+      state: 'on'
+    - condition: state
+      entity_id: script.bedtime
+      state: 'on'
+  action:
+    service: script.turn_off
+    entity_id: script.bedtime
+- id: '1659749030151'
+  alias: Reset bed when not occupied
+  trigger:
+    platform: state
+    entity_id: sensor.bed_occupied
+    to: 'off'
+    for:
+      minutes: 60
+  condition:
+    condition: or
+    conditions:
+    - condition: state
+      entity_id: input_select.myhome_mode
+      state: Morning
+    - condition: state
+      entity_id: input_select.myhome_mode
+      state: Day
+  action:
+    service: script.turn_on
+    entity_id: script.reset_bed
+- id: '1659749058554'
+  alias: Notify disconnected sensors
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.bed_sensor_16_2
+    above: 90
+  - platform: numeric_state
+    entity_id: sensor.bed_sensor_16_3
+    above: 90
+  - platform: numeric_state
+    entity_id: sensor.bed_sensor_16_4
+    above: 70
+  - platform: numeric_state
+    entity_id: sensor.bed_sensor_16_5
+    above: 70
+  action:
+    service: notify.mobile_app_pixel_3a_xl
+    data:
+      message: Check the bed sensors
+      title: Bed sensor disconnected
+      data:
+        clickAction: /lovelace/3
+        actions:
+        - action: reset
+          title: Reset
+- id: '1659749214938'
+  alias: Reset bed notification action
+  trigger:
+    platform: event
+    event_type: mobile_app_notification_action
+    event_data:
+      action: reset
+  action:
+    service: script.turn_on
+    entity_id: script.reset_bed
+- id: '1659749281110'
+  alias: Morning home mode
+  trigger:
+    platform: time
+    at: 06:00:00
+  action:
+    service: python_script.set_home_mode
+    data:
+      mode: morning
+- id: '1659749303240'
+  alias: Day home mode
+  trigger:
+    platform: time
+    at: 09:00:00
+  action:
+    service: python_script.set_home_mode
+    data:
+      mode: day
+- id: '1659749325751'
+  alias: Afternoon home mode
+  trigger:
+    platform: time
+    at: '13:00:00'
+  action:
+    service: python_script.set_home_mode
+    data:
+      mode: afternoon
+- id: '1659749349659'
+  alias: Evening home mode
+  trigger:
+    platform: time
+    at: '18:00:00'
+  action:
+    service: python_script.set_home_mode
+    data:
+      mode: evening
+- id: '1659749377336'
+  alias: Night home mode
+  trigger:
+    platform: time
+    at: '21:00:00'
+  condition:
+    condition: state
+    entity_id: input_select.myhome_mode
+    state: Evening
+  action:
+    service: python_script.set_home_mode
+    data:
+      mode: night
+- id: '1659749422757'
+  alias: Update mode icon in interface
+  trigger:
+  - platform: state
+    entity_id: input_select.myhome_mode
+  - platform: homeassistant
+    event: start
+  action:
+    service: python_script.update_myhome_icon
+- id: '1659749520572'
+  alias: Android TV media mode
+  trigger:
+  - platform: state
+    entity_id: media_player.android_tv
+    to: playing
+  - platform: state
+    entity_id: media_player.android_tv
+    to: paused
+    for: 00:00:05
+  - platform: state
+    entity_id: media_player.android_tv
+    to: standby
+  - platform: state
+    entity_id: media_player.android_tv
+    to: idle
+  - platform: state
+    entity_id: media_player.android_tv
+    to: 'off'
+  - platform: template
+    value_template: '{{ state_attr(''media_player.android_tv'', ''app_id'') == ''com.google.android.tvlauncher''
+      }}'
+  - platform: template
+    value_template: '{{ state_attr(''media_player.android_tv'', ''app_id'') != ''com.google.android.tvlauncher''
+      }}'
+  condition:
+    condition: and
+    conditions:
+    - condition: template
+      value_template: '{% set mode = states("input_select.media_mode") %} {% if mode
+        != "Disabled" %}true{% endif %}
+
+        '
+    - condition: state
+      entity_id: input_boolean.myhome_active
+      state: 'on'
+    - condition: state
+      entity_id: binary_sensor.xbox
+      state: 'off'
+  action:
+  - service: system_log.write
+    data_template:
+      level: info
+      message: 'Current app {{ state_attr(''media_player.android_tv'', ''app_name'')
+        }} {{ state_attr(''media_player.android_tv'', ''app_id'') }}
+
+        '
+  - service: input_select.select_option
+    data_template:
+      entity_id: input_select.media_mode
+      option: '{% set name = state_attr(''media_player.android_tv'', ''app_name'')
+        %} {% if is_state(''media_player.android_tv'', ''playing'') %} {% if name
+        in (''Prime Video'', ''Netflix'') %} Movie {% elif ''amazonvideo'' in name
+        or ''hbonow'' in name %} Movie {% else %} TV {% endif %} {% elif is_state(''media_player.android_tv'',
+        ''paused'') %} {% if name in (''com.google.android.tvlauncher'', ''com.android.tv.settings'',
+        ''Android TV Launcher'') %} Awake {% else %} Paused {% endif %} {% elif is_state(''media_player.android_tv'',
+        ''standby'') %} Awake {% elif is_state(''media_player.android_tv'', ''idle'')
+        %} Idle {% elif is_state(''media_player.android_tv'', ''off'') %} Off {% endif
+        %}
+
+        '
+- id: '1659749553504'
+  alias: Xbox TV media mode
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.xbox
+  condition:
+    condition: and
+    conditions:
+    - condition: template
+      value_template: '{% set mode = states("input_select.media_mode") %} {% if mode
+        != "Disabled" %}true{% endif %}
+
+        '
+    - condition: state
+      entity_id: input_boolean.myhome_active
+      state: 'on'
+  action:
+  - service: input_select.select_option
+    data_template:
+      entity_id: input_select.media_mode
+      option: '{% if is_state(''binary_sensor.xbox'', ''on'') %} TV {% else %} Off
+        {% endif %}
+
+        '
+- id: '1659749620781'
+  alias: TV backlight on HDMI
+  trigger:
+  - platform: state
+    entity_id: input_select.media_mode
+    to: TV
+  - platform: state
+    entity_id: input_select.media_mode
+    to: Movie
+  condition:
+    condition: and
+    conditions:
+    - condition: template
+      value_template: '{% set mode = states("input_select.media_mode") %} {% if mode
+        != "Disabled" %}true{% endif %}
+
+        '
+    - condition: state
+      entity_id: input_boolean.myhome_active
+      state: 'on'
+    - condition: template
+      value_template: '{{ state_attr(''light.hyperion'', ''effect'') != ''USB Capture''
+        }}'
+    - condition: state
+      entity_id: binary_sensor.xbox
+      state: 'off'
+  action:
+  - delay: 00:00:06
+  - service: light.turn_on
+    data_template:
+      entity_id: light.hyperion
+      effect: '{%- set prev = trigger.from_state.state|lower -%} {%- if prev == ''paused''
+        -%}{%- set prev = ''idle'' -%}{%- endif -%} {{ prev }}-off
+
+        '
+  - delay: 00:00:03
+  - service: light.turn_on
+    data_template:
+      entity_id: light.hyperion
+      brightness: 180
+      effect: USB Capture
+- id: '1659749654865'
+  alias: TV backlight on Android
+  trigger:
+  - platform: state
+    entity_id: input_select.media_mode
+    to: Paused
+  - platform: state
+    entity_id: input_select.media_mode
+    to: Awake
+  - platform: state
+    entity_id: input_select.media_mode
+    to: Idle
+  condition:
+    condition: and
+    conditions:
+    - condition: template
+      value_template: '{% set mode = states("input_select.media_mode") %} {% if mode
+        != "Disabled" %}true{% endif %}
+
+        '
+    - condition: state
+      entity_id: input_boolean.myhome_active
+      state: 'on'
+    - condition: state
+      entity_id: binary_sensor.xbox
+      state: 'off'
+  action:
+  - service: light.turn_on
+    data_template:
+      entity_id: light.hyperion
+      brightness: 180
+      effect: '{%- set prev = trigger.from_state.state|lower -%} {%- if prev in (''paused'',
+        ''movie'', ''tv'') -%}{%- set prev = ''idle'' -%}{%- endif -%} {%- set curr
+        = trigger.to_state.state|lower -%} {%- if curr == ''paused'' -%} {%- set prev
+        = ''off'' -%} {%- set curr = ''idle'' -%} {%- endif -%} {{ prev }}-{{ curr
+        }}
+
+        '
+- id: '1659749694244'
+  alias: TV backlight on Xbox
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.xbox
+    to: 'on'
+  condition:
+    condition: and
+    conditions:
+    - condition: template
+      value_template: '{% set mode = states("input_select.media_mode") %} {% if mode
+        != "Disabled" %}true{% endif %}
+
+        '
+    - condition: state
+      entity_id: input_boolean.myhome_active
+      state: 'on'
+  action:
+  - service: light.turn_on
+    data_template:
+      entity_id: light.hyperion
+      brightness: 20
+      rgb_color:
+      - 103
+      - 74
+      - 39
+      effect: Solid
+- id: '1659749726228'
+  alias: TV backlight off
+  trigger:
+  - platform: state
+    entity_id: input_select.media_mode
+    to: 'Off'
+  - platform: state
+    entity_id: media_player.samsung_tv
+    to: 'off'
+  condition:
+    condition: and
+    conditions:
+    - condition: template
+      value_template: '{% set mode = states("input_select.media_mode") %} {% if mode
+        != "Disabled" %}true{% endif %}
+
+        '
+    - condition: state
+      entity_id: input_boolean.myhome_active
+      state: 'on'
+    - condition: state
+      entity_id: light.hyperion
+      state: 'on'
+  action:
+  - service: light.turn_on
+    data_template:
+      entity_id: light.hyperion
+      effect: '{{ trigger.from_state.state|lower }}-{{ trigger.to_state.state|lower
+        }}'
+  - delay: 00:00:04
+  - service: light.turn_off
+    data:
+      entity_id: light.hyperion
+- id: '1659749751938'
+  alias: All lights off for movies
+  trigger:
+  - platform: state
+    entity_id: input_select.media_mode
+    to: Movie
+  condition:
+    condition: and
+    conditions:
+    - condition: state
+      entity_id: input_boolean.myhome_active
+      state: 'on'
+    - condition: state
+      entity_id: room.living_room
+      state: occupied
+  action:
+    service: light.turn_off
+    data:
+      entity_id:
+      - group.bedroom
+      - group.kitchen
+      - group.dining_room
+      - group.office
+      transition: 3
+- id: '1659749798701'
+  alias: Bedroom motion detected
+  trigger:
+    platform: state
+    to: 'on'
+    entity_id: binary_sensor.motion_sensor_2_1
+  condition:
+    condition: and
+    conditions:
+    - condition: state
+      entity_id: person.andrew
+      state: home
+    - condition: state
+      entity_id: input_boolean.myhome_active
+      state: 'on'
+    - condition: template
+      value_template: '{{ not is_state("room.bedroom", "occupied") }}'
+  action:
+    service: python_script.set_room_state
+    data:
+      entity_id: room.bedroom
+      state: occupied
+- id: '1659749827339'
+  alias: Dining room motion detected
+  trigger:
+    platform: state
+    to: 'on'
+    entity_id: binary_sensor.motion_sensor_5_1
+  condition:
+    condition: and
+    conditions:
+    - condition: state
+      entity_id: person.andrew
+      state: home
+    - condition: state
+      entity_id: input_boolean.myhome_active
+      state: 'on'
+    - condition: template
+      value_template: '{{ not is_state("room.dining_room", "occupied") }}'
+  action:
+    service: python_script.set_room_state
+    data:
+      entity_id: room.dining_room
+      state: occupied
+- id: '1659749850352'
+  alias: Living Room motion detected
+  trigger:
+    platform: state
+    to: 'on'
+    entity_id: binary_sensor.motion_sensor_10_1
+  condition:
+    condition: and
+    conditions:
+    - condition: state
+      entity_id: person.andrew
+      state: home
+    - condition: state
+      entity_id: input_boolean.myhome_active
+      state: 'on'
+    - condition: template
+      value_template: '{{ not is_state("room.living_room", "occupied") }}'
+  action:
+    service: python_script.set_room_state
+    data:
+      entity_id: room.living_room
+      state: occupied
+- id: '1659749876775'
+  alias: Bookcase motion detected
+  trigger:
+    platform: state
+    to: 'on'
+    entity_id: binary_sensor.motion_sensor_4_1
+  condition:
+    condition: and
+    conditions:
+    - condition: state
+      entity_id: person.andrew
+      state: home
+    - condition: state
+      entity_id: input_boolean.myhome_active
+      state: 'on'
+    - condition: template
+      value_template: '{{ not is_state("room.office", "occupied") }}'
+  action:
+    service: python_script.set_room_state
+    data:
+      entity_id: room.office
+      state: occupied
+- id: '1659749896807'
+  alias: Kitchen motion detected
+  trigger:
+    platform: state
+    to: 'on'
+    entity_id: binary_sensor.motion_sensor_1_1
+  condition:
+    condition: and
+    conditions:
+    - condition: state
+      entity_id: person.andrew
+      state: home
+    - condition: state
+      entity_id: input_boolean.myhome_active
+      state: 'on'
+    - condition: template
+      value_template: '{{ not is_state("room.kitchen", "occupied") }}'
+  action:
+    service: python_script.set_room_state
+    data:
+      entity_id: room.kitchen
+      state: occupied
+- id: '1659749946030'
+  alias: Turn bluetooth on when leaving
+  trigger:
+  - platform: state
+    entity_id: device_tracker.rfid_sensor_12_1
+    to: not_home
+  action:
+  - service: notify.mobile_app_pixel_3a_xl
+    data:
+      message: command_bluetooth
+      title: turn_on
+- id: '1659749965530'
+  alias: Turn bluetooth off when arriving
+  trigger:
+  - platform: state
+    entity_id: device_tracker.rfid_sensor_12_1
+    to: home
+  action:
+  - service: notify.mobile_app_pixel_3a_xl
+    data:
+      message: command_bluetooth
+      title: turn_off
+- id: '1659749990931'
+  alias: Turn off alarm reminder for vacations
+  trigger:
+  - platform: time
+    at: '19:00:00'
+  condition:
+  - condition: template
+    value_template: '{{ (state_attr(''calendar.vacation'', ''start_time'')|as_timestamp)|round
+      <= (now() + timedelta(days=1))|as_timestamp|round }}'
+  - condition: not
+    conditions:
+    - condition: state
+      entity_id: sensor.pixel_3a_xl_next_alarm
+      state: unavailable
+  action:
+  - service: notify.mobile_app_pixel_3a_xl
+    data:
+      message: Vacaction starts tomorrow but your alarm is still set.
+      title: Vacation start
+      data:
+        actions:
+        - action: URI
+          uri: app://com.google.android.deskclock
+          title: Open Alarms
+- id: '1659750014247'
+  alias: Turn on alarm reminder for vacations
+  trigger:
+  - platform: time
+    at: '19:00:00'
+  condition:
+  - condition: template
+    value_template: '{{ (state_attr(''calendar.vacation'', ''end_time'')|as_timestamp)|round
+      <= (now() + timedelta(days=1))|as_timestamp|round }}'
+  - condition: state
+    entity_id: sensor.pixel_3a_xl_next_alarm
+    state: unavailable
+  action:
+  - service: notify.mobile_app_pixel_3a_xl
+    data:
+      message: Vacaction ends tomorrow but your alarm is not set.
+      title: Vacation end
+      data:
+        actions:
+        - action: URI
+          uri: app://com.google.android.deskclock
+          title: Open Alarms
+- id: '1659750059099'
+  alias: Set rooms to unoccupied when away
+  trigger:
+    platform: state
+    entity_id: person.andrew
+    from: home
+    to: not_home
+  action:
+    service: python_script.set_away
+- id: '1659750088825'
+  alias: Bedroom countdown
+  trigger:
+    platform: state
+    entity_id: room.bedroom
+    to: countdown
+    for:
+      minutes: 10
+  action:
+  - service: python_script.set_room_state
+    data:
+      entity_id: room.bedroom
+      state: not_occupied
+- id: '1659750106963'
+  alias: Living room countdown
+  trigger:
+    platform: state
+    entity_id: room.living_room
+    to: countdown
+    for:
+      minutes: 20
+  action:
+  - service: python_script.set_room_state
+    data:
+      entity_id: room.living_room
+      state: not_occupied
+- id: '1659750128760'
+  alias: Dining room countdown
+  trigger:
+    platform: state
+    entity_id: room.dining_room
+    to: countdown
+    for:
+      minutes: 5
+  action:
+  - service: python_script.set_room_state
+    data:
+      entity_id: room.dining_room
+      state: not_occupied
+- id: '1659750143934'
+  alias: Office countdown
+  trigger:
+    platform: state
+    entity_id: room.office
+    to: countdown
+    for:
+      minutes: 5
+  action:
+  - service: python_script.set_room_state
+    data:
+      entity_id: room.office
+      state: not_occupied
+- id: '1659750169797'
+  alias: Kitchen countdown
+  trigger:
+    platform: state
+    entity_id: room.kitchen
+    to: countdown
+    for:
+      minutes: 7
+  action:
+  - service: python_script.set_room_state
+    data:
+      entity_id: room.kitchen
+      state: not_occupied
+- id: '1659750191012'
+  alias: Autoupdate Kitchen Override
+  trigger:
+  - platform: template
+    value_template: '{{ state_attr(''light.rgbw_15_1'', ''V_VAR2'') == ''1'' }}'
+  - platform: template
+    value_template: '{{ state_attr(''light.rgbw_15_2'', ''V_VAR2'') == ''1'' }}'
+  action:
+  - service: input_boolean.turn_off
+    data:
+      entity_id: input_boolean.auto_kitchen
+- id: '1659750227659'
+  alias: Turn lights off when not home
+  trigger:
+    platform: state
+    entity_id: person.andrew
+    from: home
+    to: not_home
+  action:
+    service: light.turn_off
+    entity_id: all
+- id: '1659750245917'
+  alias: Turn on kitchen light when arriving home
+  trigger:
+    platform: state
+    entity_id: person.andrew
+    from: not_home
+    to: home
+  condition:
+    condition: state
+    entity_id: input_boolean.myhome_active
+    state: 'on'
+  action:
+    service: python_script.set_room_state
+    data:
+      entity_id: room.kitchen
+      state: occupied
+- id: '1659750273131'
+  alias: Turn off lights when leaving on weekdays
+  trigger:
+  - platform: state
+    entity_id: device_tracker.rfid_sensor_12_1
+    to: not_home
+  condition:
+    condition: and
+    conditions:
+    - condition: state
+      entity_id: input_boolean.myhome_active
+      state: 'on'
+    - condition: state
+      entity_id: binary_sensor.weekday
+      state: 'on'
+    - condition: state
+      entity_id: device_tracker.rfid_sensor_12_1
+      state: not_home
+    - condition: time
+      after: 07:30:00
+      before: 09:30:00
+  action:
+  - service: light.turn_off
+    entity_id:
+    - group.kitchen
+    - group.living_room
+    - group.bedroom
+    - group.dining_room
+- id: '1659750294547'
+  alias: Turn off bedroom lights on weekday mornings
+  trigger:
+  - platform: state
+    entity_id: room.office
+    to: occupied
+    for: 00:20:00
+  condition:
+    condition: and
+    conditions:
+    - condition: state
+      entity_id: input_boolean.myhome_active
+      state: 'on'
+    - condition: state
+      entity_id: binary_sensor.weekday
+      state: 'on'
+    - condition: time
+      after: 06:00:00
+      before: '10:00:00'
+  action:
+  - service: light.turn_off
+    entity_id:
+    - group.bedroom
+- id: '1659750357408'
+  alias: Initialize rooms on start
+  trigger:
+    platform: homeassistant
+    event: start
+  action:
+  - service: python_script.set_room_state
+    data:
+      entity_id: room.bedroom
+      state: not_occupied
+  - service: python_script.set_room_state
+    data:
+      entity_id: room.living_room
+      state: not_occupied
+  - service: python_script.set_room_state
+    data:
+      entity_id: room.kitchen
+      state: not_occupied
+  - service: python_script.set_room_state
+    data:
+      entity_id: room.dining_room
+      state: not_occupied
+  - service: python_script.set_room_state
+    data:
+      entity_id: room.office
+      state: not_occupied
+- id: '1659750378911'
+  alias: Reset lights on start
+  trigger:
+    platform: homeassistant
+    event: start
+  condition:
+    condition: state
+    entity_id: input_boolean.maintenance_mode
+    state: 'off'
+  action:
+  - service: script.all_off
+- id: '1659750379437'
+  alias: Reset lights on start
+  trigger:
+    platform: homeassistant
+    event: start
+  condition:
+    condition: state
+    entity_id: input_boolean.maintenance_mode
+    state: 'off'
+  action:
+  - service: script.all_off
+- id: '1659750417344'
+  alias: Set dark theme for night
+  trigger:
+  - platform: state
+    entity_id: input_select.myhome_mode
+    to: Night
+  condition:
+    condition: state
+    entity_id: input_boolean.autodark_theme
+    state: 'on'
+  action:
+  - service: input_select.select_option
+    data:
+      entity_id: input_select.current_theme
+      option: Google Dark Theme
+- id: '1659750433169'
+  alias: Set light theme for morning
+  trigger:
+  - platform: state
+    entity_id: input_select.myhome_mode
+    to: Morning
+  condition:
+    condition: state
+    entity_id: input_boolean.autodark_theme
+    state: 'on'
+  action:
+  - service: input_select.select_option
+    data:
+      entity_id: input_select.current_theme
+      option: Google Light Theme
+- id: '1659750449154'
+  alias: Update theme from select
+  trigger:
+  - platform: state
+    entity_id: input_select.current_theme
+  - platform: homeassistant
+    event: start
+  action:
+  - service: frontend.set_theme
+    data_template:
+      name: '{{states.input_select.current_theme.state}}'
+- id: '1659750479072'
+  alias: Wake-up
+  trigger:
+    platform: time
+    at: 07:20:00
+  condition:
+    condition: and
+    conditions:
+    - condition: state
+      entity_id: calendar.vacation
+      state: 'off'
+    - condition: state
+      entity_id: binary_sensor.weekday
+      state: 'on'
+    - condition: state
+      entity_id: room.bedroom
+      state: occupied
+    - condition: state
+      entity_id: input_boolean.myhome_active
+      state: 'on'
+  action:
+    service: script.turn_on
+    entity_id: script.wakeup

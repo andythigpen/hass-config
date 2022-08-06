@@ -219,7 +219,8 @@ group:
     entities:
     - light.hall
 
-automation: !include_dir_merge_list automations/
+#automation: !include_dir_merge_list automations/
+automation: !include automations.yaml
 
 script: !include_dir_merge_named scripts/
 
