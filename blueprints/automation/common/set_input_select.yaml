@@ -1,0 +1,28 @@
+blueprint:
+  name: Set Input Select
+  description: Sets an input select to a pre-selected value at a given time.
+  domain: automation
+  input:
+    at_time:
+      name: At time
+      description: The time when this automation will be triggered
+      selector:
+        time:
+    input_select:
+      name: Input select
+      description: The input_select that will be set when triggered
+      selector:
+        entity:
+          domain: input_select
+    option:
+      name: Option
+      description: The value to set the input select entity
+trigger:
+  platform: time
+  at: !input at_time
+action:
+  service: input_select.select_option
+  target:
+    entity_id: !input input_select
+  data:
+    option: !input option
