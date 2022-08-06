@@ -1,0 +1,27 @@
+blueprint:
+  name: Unoccupied countdown
+  description: Sets a room entity to unoccupied after a configurable countdown.
+  domain: automation
+  input:
+    duration:
+      name: Duration
+      description: How long before setting a room to unoccupied
+      selector:
+        duration:
+    room:
+      name: Room
+      description: This room will be set to occupied
+      selector:
+        entity:
+          domain: room
+
+trigger:
+  platform: state
+  entity_id: !input room
+  to: countdown
+  for: !input duration
+action:
+- service: python_script.set_room_state
+  data:
+    entity_id: !input room
+    state: not_occupied

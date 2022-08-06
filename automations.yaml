@@ -77,14 +77,16 @@
       title: 'off'
 - id: '1659749000122'
   alias: Bed not occupied
+  description: Disable the bedtime script if the bed is not occupied for some time
+    at night
   trigger:
-    platform: state
+  - platform: state
     entity_id: sensor.bed_occupied
     to: 'off'
     for:
       minutes: 3
   condition:
-    condition: and
+  - condition: and
     conditions:
     - condition: state
       entity_id: input_select.myhome_mode
@@ -96,7 +98,7 @@
       entity_id: script.bedtime
       state: 'on'
   action:
-    service: script.turn_off
+  - service: script.turn_off
     entity_id: script.bedtime
 - id: '1659749030151'
   alias: Reset bed when not occupied
@@ -459,116 +461,6 @@
       - group.dining_room
       - group.office
       transition: 3
-- id: '1659749798701'
-  alias: Bedroom motion detected
-  trigger:
-    platform: state
-    to: 'on'
-    entity_id: binary_sensor.motion_sensor_2_1
-  condition:
-    condition: and
-    conditions:
-    - condition: state
-      entity_id: person.andrew
-      state: home
-    - condition: state
-      entity_id: input_boolean.myhome_active
-      state: 'on'
-    - condition: template
-      value_template: '{{ not is_state("room.bedroom", "occupied") }}'
-  action:
-    service: python_script.set_room_state
-    data:
-      entity_id: room.bedroom
-      state: occupied
-- id: '1659749827339'
-  alias: Dining room motion detected
-  trigger:
-    platform: state
-    to: 'on'
-    entity_id: binary_sensor.motion_sensor_5_1
-  condition:
-    condition: and
-    conditions:
-    - condition: state
-      entity_id: person.andrew
-      state: home
-    - condition: state
-      entity_id: input_boolean.myhome_active
-      state: 'on'
-    - condition: template
-      value_template: '{{ not is_state("room.dining_room", "occupied") }}'
-  action:
-    service: python_script.set_room_state
-    data:
-      entity_id: room.dining_room
-      state: occupied
-- id: '1659749850352'
-  alias: Living Room motion detected
-  trigger:
-    platform: state
-    to: 'on'
-    entity_id: binary_sensor.motion_sensor_10_1
-  condition:
-    condition: and
-    conditions:
-    - condition: state
-      entity_id: person.andrew
-      state: home
-    - condition: state
-      entity_id: input_boolean.myhome_active
-      state: 'on'
-    - condition: template
-      value_template: '{{ not is_state("room.living_room", "occupied") }}'
-  action:
-    service: python_script.set_room_state
-    data:
-      entity_id: room.living_room
-      state: occupied
-- id: '1659749876775'
-  alias: Bookcase motion detected
-  trigger:
-    platform: state
-    to: 'on'
-    entity_id: binary_sensor.motion_sensor_4_1
-  condition:
-    condition: and
-    conditions:
-    - condition: state
-      entity_id: person.andrew
-      state: home
-    - condition: state
-      entity_id: input_boolean.myhome_active
-      state: 'on'
-    - condition: template
-      value_template: '{{ not is_state("room.office", "occupied") }}'
-  action:
-    service: python_script.set_room_state
-    data:
-      entity_id: room.office
-      state: occupied
-- id: '1659749896807'
-  alias: Kitchen motion detected
-  trigger:
-    platform: state
-    to: 'on'
-    entity_id: binary_sensor.motion_sensor_1_1
-  condition:
-    condition: and
-    conditions:
-    - condition: state
-      entity_id: person.andrew
-      state: home
-    - condition: state
-      entity_id: input_boolean.myhome_active
-      state: 'on'
-    - condition: template
-      value_template: '{{ not is_state("room.kitchen", "occupied") }}'
-  action:
-    service: python_script.set_room_state
-    data:
-      entity_id: room.kitchen
-      state: occupied
 - id: '1659749946030'
   alias: Turn bluetooth on when leaving
   trigger:
@@ -646,71 +538,6 @@
     to: not_home
   action:
     service: python_script.set_away
-- id: '1659750088825'
-  alias: Bedroom countdown
-  trigger:
-    platform: state
-    entity_id: room.bedroom
-    to: countdown
-    for:
-      minutes: 10
-  action:
-  - service: python_script.set_room_state
-    data:
-      entity_id: room.bedroom
-      state: not_occupied
-- id: '1659750106963'
-  alias: Living room countdown
-  trigger:
-    platform: state
-    entity_id: room.living_room
-    to: countdown
-    for:
-      minutes: 20
-  action:
-  - service: python_script.set_room_state
-    data:
-      entity_id: room.living_room
-      state: not_occupied
-- id: '1659750128760'
-  alias: Dining room countdown
-  trigger:
-    platform: state
-    entity_id: room.dining_room
-    to: countdown
-    for:
-      minutes: 5
-  action:
-  - service: python_script.set_room_state
-    data:
-      entity_id: room.dining_room
-      state: not_occupied
-- id: '1659750143934'
-  alias: Office countdown
-  trigger:
-    platform: state
-    entity_id: room.office
-    to: countdown
-    for:
-      minutes: 5
-  action:
-  - service: python_script.set_room_state
-    data:
-      entity_id: room.office
-      state: not_occupied
-- id: '1659750169797'
-  alias: Kitchen countdown
-  trigger:
-    platform: state
-    entity_id: room.kitchen
-    to: countdown
-    for:
-      minutes: 7
-  action:
-  - service: python_script.set_room_state
-    data:
-      entity_id: room.kitchen
-      state: not_occupied
 - id: '1659750191012'
   alias: Autoupdate Kitchen Override
   trigger:
@@ -748,57 +575,6 @@
     data:
       entity_id: room.kitchen
       state: occupied
-- id: '1659750273131'
-  alias: Turn off lights when leaving on weekdays
-  trigger:
-  - platform: state
-    entity_id: device_tracker.rfid_sensor_12_1
-    to: not_home
-  condition:
-    condition: and
-    conditions:
-    - condition: state
-      entity_id: input_boolean.myhome_active
-      state: 'on'
-    - condition: state
-      entity_id: binary_sensor.weekday
-      state: 'on'
-    - condition: state
-      entity_id: device_tracker.rfid_sensor_12_1
-      state: not_home
-    - condition: time
-      after: 07:30:00
-      before: 09:30:00
-  action:
-  - service: light.turn_off
-    entity_id:
-    - group.kitchen
-    - group.living_room
-    - group.bedroom
-    - group.dining_room
-- id: '1659750294547'
-  alias: Turn off bedroom lights on weekday mornings
-  trigger:
-  - platform: state
-    entity_id: room.office
-    to: occupied
-    for: 00:20:00
-  condition:
-    condition: and
-    conditions:
-    - condition: state
-      entity_id: input_boolean.myhome_active
-      state: 'on'
-    - condition: state
-      entity_id: binary_sensor.weekday
-      state: 'on'
-    - condition: time
-      after: 06:00:00
-      before: '10:00:00'
-  action:
-  - service: light.turn_off
-    entity_id:
-    - group.bedroom
 - id: '1659750357408'
   alias: Initialize rooms on start
   trigger:
@@ -826,17 +602,6 @@
       entity_id: room.office
       state: not_occupied
 - id: '1659750378911'
-  alias: Reset lights on start
-  trigger:
-    platform: homeassistant
-    event: start
-  condition:
-    condition: state
-    entity_id: input_boolean.maintenance_mode
-    state: 'off'
-  action:
-  - service: script.all_off
-- id: '1659750379437'
   alias: Reset lights on start
   trigger:
     platform: homeassistant
@@ -996,3 +761,47 @@
       person: person.andrew
       active_switch: input_boolean.myhome_active
       room: room.living_room
+- id: '1659797545200'
+  alias: Unoccupied countdown - bedroom
+  description: Set bedroom to unoccupied after a countdown
+  use_blueprint:
+    path: presence/unoccupied_countdown.yaml
+    input:
+      duration:
+        hours: 0
+        minutes: 10
+        seconds: 0
+      room: room.bedroom
+- id: '1659797591093'
+  alias: Unoccupied countdown - living room
+  description: Set living room to unoccupied after a countdown
+  use_blueprint:
+    path: presence/unoccupied_countdown.yaml
+    input:
+      duration:
+        hours: 0
+        minutes: 20
+        seconds: 0
+      room: room.living_room
+- id: '1659797647651'
+  alias: Unoccupied countdown - dining room
+  description: Set dining room to unoccupied after a countdown
+  use_blueprint:
+    path: presence/unoccupied_countdown.yaml
+    input:
+      duration:
+        hours: 0
+        minutes: 5
+        seconds: 0
+      room: room.dining_room
+- id: '1659797673518'
+  alias: Unoccupied countdown - kitchen
+  description: Set kitchen to unoccupied after a countdown
+  use_blueprint:
+    path: presence/unoccupied_countdown.yaml
+    input:
+      duration:
+        hours: 0
+        minutes: 7
+        seconds: 0
+      room: room.kitchen
