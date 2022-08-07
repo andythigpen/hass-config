@@ -59,13 +59,6 @@ blueprint:
       selector:
         entity:
           multiple: true
-    disable_when_off:
-      name: Disable when off
-      description: Disable auto-updating when these entities are off.
-      default: ""
-      selector:
-        entity:
-          multiple: true
     brightness_override_entity:
       name: Brightness override entity
       description: Optional entity that can override brightness values based on state
@@ -95,6 +88,7 @@ variables:
   minimum_brightness: !input minimum_brightness
   hysteresis: !input hysteresis
   transition: !input transition
+  disable_when_on: !input disable_when_on
 
 # TODO: separate automation to re-enable auto-toggle switches after being turned off for 5 hours
 # TODO: separate automation to turn off auto-toggle switches if a light changes state manually (user_id is set in event data)
@@ -123,13 +117,6 @@ condition:
         true
       {% else %}
         {{ expand(disable_when_on)|map(attribute="state")|select("equalto", "on")|list|length == 0 }}
-      {% endif %}
-  - condition: template
-    value_template: >-
-      {% if disable_when_off is not defined %}
-        true
-      {% else %}
-        {{ expand(disable_when_off)|map(attribute="state")|select("equalto", "off")|list|length == 0 }}
       {% endif %}
   - condition: state
     entity_id: !input presence_sensor

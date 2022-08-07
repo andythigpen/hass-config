@@ -778,16 +778,117 @@
   alias: Auto brightness - kitchen
   description: ''
   use_blueprint:
-    path: lights/autolight.yaml
+    path: lights/brightness.yaml
     input:
       lights:
-      - light.rgbw_15_2
       - light.rgbw_15_1
+      - light.rgbw_15_2
       toggle_switch:
       - input_boolean.auto_kitchen
       - input_boolean.room_kitchen
       light_sensor: sensor.motion_sensor_1_2
       light_threshold: input_number.kitchen_threshold
-      presence_sensor: room.kitchen
       minimum_brightness: 3
+      presence_sensor: room.kitchen
+      hysteresis: 2
+- id: '1659892407583'
+  alias: Auto brightness - bedroom
+  description: ''
+  use_blueprint:
+    path: lights/brightness.yaml
+    input:
+      lights:
+      - light.lifx_white_656ad2
+      toggle_switch:
+      - input_boolean.auto_bedroom
+      - input_boolean.room_bedroom
+      light_sensor: sensor.motion_sensor_2_2
+      light_threshold: input_number.bedroom_threshold
+      minimum_brightness: 3
+      presence_sensor: room.bedroom
       hysteresis: 3
+      disable_when_on:
+      - script.bedtime
+      - script.bedtime_now
+      brightness_override_entity: sensor.bed_occupied
+      brightness_override_states:
+        'on': 100
+      transition: 10
+- id: '1659892714101'
+  alias: Auto brightness - dining room
+  description: ''
+  use_blueprint:
+    path: lights/brightness.yaml
+    input:
+      lights:
+      - light.dresser
+      - light.night_stand
+      toggle_switch:
+      - input_boolean.auto_dining_room
+      - input_boolean.room_dining_room
+      light_sensor: sensor.motion_sensor_5_2
+      light_threshold: input_number.dining_room_threshold
+      presence_sensor: room.dining_room
+      transition: 10
+- id: '1659892834477'
+  alias: Auto brightness - office
+  description: ''
+  use_blueprint:
+    path: lights/brightness.yaml
+    input:
+      lights:
+      - light.hall
+      toggle_switch:
+      - input_boolean.auto_office
+      - input_boolean.room_office
+      light_sensor: sensor.motion_sensor_5_2
+      light_threshold: input_number.office_threshold
+      presence_sensor: room.dining_room
+      transition: 10
+- id: '1659893000885'
+  alias: Auto brightness - living room
+  description: ''
+  use_blueprint:
+    path: lights/brightness.yaml
+    input:
+      lights:
+      - light.living_room_standing
+      toggle_switch:
+      - input_boolean.auto_living_room_standing
+      - input_boolean.room_living_room
+      light_sensor: sensor.motion_sensor_10_2
+      minimum_brightness: 3
+      hysteresis: 5
+      presence_sensor: room.living_room
+      brightness_override_entity: input_select.media_mode
+      brightness_override_states:
+        Movie: 0
+        TV: 80
+        Paused: 180
+        Awake: 180
+      transition: 10
+      light_threshold: input_number.living_room_threshold
+- id: '1659893141131'
+  alias: Auto brightness - living room TV
+  description: ''
+  use_blueprint:
+    path: lights/brightness.yaml
+    input:
+      lights:
+      - light.tv_left
+      - light.tv_right
+      toggle_switch:
+      - input_boolean.auto_living_room_tv
+      - input_boolean.room_living_room
+      light_sensor: sensor.motion_sensor_10_2
+      light_threshold: input_number.living_room_threshold
+      minimum_brightness: 3
+      hysteresis: 5
+      presence_sensor: room.living_room
+      brightness_override_entity: input_select.media_mode
+      brightness_override_states:
+        Movie: 0
+        TV: 20
+        Paused: 20
+        Awake: 70
+      transition: 10
