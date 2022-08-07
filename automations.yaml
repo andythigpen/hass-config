@@ -892,3 +892,212 @@
         Paused: 20
         Awake: 70
       transition: 10
+- id: '1659895843973'
+  alias: Auto threshold - living room afternoon
+  description: ''
+  use_blueprint:
+    path: lights/threshold.yaml
+    input:
+      end_time: '18:00:00'
+      start_time: '13:00:00'
+      start_value: 20
+      end_value: 50
+      number: input_number.living_room_threshold
+- id: '1659896659572'
+  alias: Auto threshold - living room evening
+  description: ''
+  use_blueprint:
+    path: lights/threshold.yaml
+    input:
+      end_time: '21:00:00'
+      start_time: '18:00:00'
+      start_value: 50
+      end_value: 60
+      number: input_number.living_room_threshold
+- id: '1659896742334'
+  alias: Auto threshold - living room morning
+  description: ''
+  use_blueprint:
+    path: lights/threshold.yaml
+    input:
+      end_time: 09:00:00
+      start_time: 06:00:00
+      start_value: 60
+      end_value: 20
+      number: input_number.living_room_threshold
+- id: '1659896984524'
+  alias: Auto threshold - kitchen morning
+  description: ''
+  use_blueprint:
+    path: lights/threshold.yaml
+    input:
+      end_time: 09:00:00
+      number: input_number.kitchen_threshold
+      start_time: 06:00:00
+      start_value: 100
+      end_value: 0
+- id: '1659897123941'
+  alias: Auto threshold - kitchen day
+  description: ''
+  use_blueprint:
+    path: lights/threshold.yaml
+    input:
+      end_time: '13:00:00'
+      number: input_number.kitchen_threshold
+      start_time: 09:00:00
+      start_value: 100
+      end_value: 1
+- id: '1659897149225'
+  alias: Auto threshold - kitchen afternoon
+  description: ''
+  use_blueprint:
+    path: lights/threshold.yaml
+    input:
+      end_time: '18:00:00'
+      number: input_number.kitchen_threshold
+      start_time: '13:00:00'
+      start_value: 1
+      end_value: 3
+- id: '1659897181402'
+  alias: Auto threshold - kitchen evening
+  description: ''
+  use_blueprint:
+    path: lights/threshold.yaml
+    input:
+      end_time: '21:00:00'
+      number: input_number.kitchen_threshold
+      start_time: '18:00:00'
+      start_value: 3
+      end_value: 100
+- id: '1659897265910'
+  alias: Auto threshold - bedroom morning
+  description: ''
+  use_blueprint:
+    path: lights/threshold.yaml
+    input:
+      end_time: 09:00:00
+      number: input_number.bedroom_threshold
+      start_time: 06:00:00
+      start_value: 0
+      end_value: 0
+- id: '1659897306363'
+  alias: Auto threshold - bedroom day
+  description: ''
+  use_blueprint:
+    path: lights/threshold.yaml
+    input:
+      end_time: '13:00:00'
+      number: input_number.bedroom_threshold
+      start_time: 09:00:00
+      start_value: 0
+      end_value: 1
+- id: '1659897349679'
+  alias: Auto threshold - bedroom afternoon
+  description: ''
+  use_blueprint:
+    path: lights/threshold.yaml
+    input:
+      end_time: '18:00:00'
+      number: input_number.bedroom_threshold
+      start_time: '13:00:00'
+      start_value: 1
+      end_value: 20
+- id: '1659897458673'
+  alias: Auto threshold - bedroom evening
+  description: ''
+  use_blueprint:
+    path: lights/threshold.yaml
+    input:
+      end_time: '21:00:00'
+      number: input_number.bedroom_threshold
+      start_time: '18:00:00'
+      start_value: 20
+      end_value: 40
+- id: '1659897591178'
+  alias: Auto threshold - dining room morning
+  description: ''
+  use_blueprint:
+    path: lights/threshold.yaml
+    input:
+      end_time: 09:00:00
+      number: input_number.dining_room_threshold
+      start_time: 06:00:00
+      start_value: 40
+      end_value: 5
+- id: '1659897611701'
+  alias: Auto threshold - dining room day
+  description: ''
+  use_blueprint:
+    path: lights/threshold.yaml
+    input:
+      end_time: '13:00:00'
+      number: input_number.dining_room_threshold
+      start_time: 09:00:00
+      start_value: 5
+      end_value: 2
+- id: '1659897634869'
+  alias: Auto threshold - dining room afternoon
+  description: ''
+  use_blueprint:
+    path: lights/threshold.yaml
+    input:
+      end_time: '18:00:00'
+      number: input_number.dining_room_threshold
+      start_time: '13:00:00'
+      start_value: 2
+      end_value: 20
+- id: '1659897665753'
+  alias: Auto threshold - dining room evening
+  description: ''
+  use_blueprint:
+    path: lights/threshold.yaml
+    input:
+      end_time: '21:00:00'
+      number: input_number.dining_room_threshold
+      start_time: '18:00:00'
+      start_value: 20
+      end_value: 40
+- id: '1659897750178'
+  alias: Auto threshold - office morning
+  description: ''
+  use_blueprint:
+    path: lights/threshold.yaml
+    input:
+      end_time: 09:00:00
+      number: input_number.office_threshold
+      start_time: 06:00:00
+      start_value: 40
+      end_value: 5
+- id: '1659897750701'
+  alias: Auto threshold - office day
+  description: ''
+  use_blueprint:
+    path: lights/threshold.yaml
+    input:
+      end_time: '13:00:00'
+      number: input_number.office_threshold
+      start_time: 09:00:00
+      start_value: 5
+      end_value: 2
+- id: '1659897750869'
+  alias: Auto threshold - office afternoon
+  description: ''
+  use_blueprint:
+    path: lights/threshold.yaml
+    input:
+      end_time: '18:00:00'
+      number: input_number.office_threshold
+      start_time: '13:00:00'
+      start_value: 2
+      end_value: 20
+- id: '1659897750753'
+  alias: Auto threshold - office evening
+  description: ''
+  use_blueprint:
+    path: lights/threshold.yaml
+    input:
+      end_time: '21:00:00'
+      number: input_number.office_threshold
+      start_time: '18:00:00'
+      start_value: 20
+      end_value: 40

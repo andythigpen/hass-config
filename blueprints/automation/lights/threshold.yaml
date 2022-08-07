@@ -1,0 +1,77 @@
+blueprint:
+  name: Auto-Light threshold
+  description: Controls the threshold value of an input_number
+  domain: automation
+  input:
+    number:
+      name: Input number
+      description: The input_number to control
+      selector:
+        entity:
+          domain: input_number
+    start_time:
+      name: Start time
+      selector:
+        time:
+    end_time:
+      name: End time
+      selector:
+        time:
+    start_value:
+      name: Start value
+      selector:
+        number:
+          min: 0
+          max: 100
+    end_value:
+      name: End value
+      selector:
+        number:
+          min: 0
+          max: 100
+
+variables:
+  start_time: !input start_time
+  end_time: !input end_time
+  start_value: !input start_value
+  end_value: !input end_value
+
+# Easing functions from https://easings.net/ and
+# http://robertpenner.com/easing/
+# t: current time
+# b: beginning value
+# c: change in value
+# d: duration
+#
+# def in_out_quad(self, t, b, c, d):
+#     t = t / d * 2
+#     if t < 1:
+#         return c / 2 * t * t + b
+#     return -c / 2 * ((t - 1) * (t - 3) - 1) + b
+
+trigger:
+  - platform: time_pattern
+    minutes: "/1"
+
+condition:
+  - condition: time
+    after: !input start_time
+    before: !input end_time
+
+action:
+  - variables:
+      start_datetime: "{{ today_at(start_time) }}"
+      end_datetime: "{{ today_at(end_time) }}"
+      duration: "{{ (as_datetime(end_datetime) - as_datetime(start_datetime)).total_seconds() }}"
+      current: "{{ (now() - as_datetime(start_datetime)).total_seconds() }}"
+      change: "{{ end_value - start_value }}"
+  - service: input_number.set_value
+    entity_id: !input number
+    data:
+      value: >-
+        {% set t = current / duration * 2 %}
+        {% if t < 1 %}
+          {{ (change / 2 * t * t + int(start_value))|round }}
+        {% else %}
+          {{ (-change / 2 ((t - 1) * (t - 3) - 1) + int(start_value))|round }}
+        {% endif %}
