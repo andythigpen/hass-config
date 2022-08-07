@@ -79,6 +79,9 @@ blueprint:
           min: 0
           max: 300
 
+mode: single
+max_exceeded: silent
+
 variables:
   brightness_override_entity: !input brightness_override_entity
   brightness_override_states: !input brightness_override_states
@@ -90,7 +93,6 @@ variables:
   transition: !input transition
   disable_when_on: !input disable_when_on
 
-# TODO: separate automation to re-enable auto-toggle switches after being turned off for 5 hours
 # TODO: separate automation to turn off auto-toggle switches if a light changes state manually (user_id is set in event data)
 # TODO: separate automation to turn off all lights in a room that's unoccupied for x minutes
 

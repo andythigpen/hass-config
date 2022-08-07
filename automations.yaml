@@ -682,6 +682,7 @@
       person: person.andrew
       active_switch: input_boolean.myhome_active
       room: room.kitchen
+      occupied_boolean: input_boolean.kitchen_occupied
 - id: '1659795789483'
   alias: Motion detection - bedroom
   description: Set the bedroom to occupied when motion is detected
@@ -692,6 +693,7 @@
       person: person.andrew
       active_switch: input_boolean.myhome_active
       room: room.bedroom
+      occupied_boolean: input_boolean.bedroom_occupied
 - id: '1659795862181'
   alias: Motion detection - dining room
   description: Set the dining room to occupied when motion is detected
@@ -702,6 +704,7 @@
       person: person.andrew
       active_switch: input_boolean.myhome_active
       room: room.dining_room
+      occupied_boolean: input_boolean.dining_room_occupied
 - id: '1659795910513'
   alias: Motion detection - living room
   description: Set the living room to occupied when motion is detected
@@ -712,6 +715,7 @@
       person: person.andrew
       active_switch: input_boolean.myhome_active
       room: room.living_room
+      occupied_boolean: input_boolean.living_room_occupied
 - id: '1659797545200'
   alias: Unoccupied countdown - bedroom
   description: Set bedroom to unoccupied after a countdown
@@ -1101,3 +1105,75 @@
       start_time: '18:00:00'
       start_value: 15
       end_value: 40
+- id: '1659907134521'
+  alias: Re-enable toggle switch - bedroom
+  description: ''
+  use_blueprint:
+    path: common/reenable_toggle_switch.yaml
+    input:
+      toggle_switch:
+      - input_boolean.auto_bedroom
+      duration:
+        hours: 5
+        minutes: 0
+        seconds: 0
+- id: '1659907252044'
+  alias: Re-enable toggle switch - kitchen
+  description: ''
+  use_blueprint:
+    path: common/reenable_toggle_switch.yaml
+    input:
+      toggle_switch:
+      - input_boolean.auto_kitchen
+      duration:
+        hours: 5
+        minutes: 0
+        seconds: 0
+- id: '1659907279569'
+  alias: Re-enable toggle switch - living room
+  description: ''
+  use_blueprint:
+    path: common/reenable_toggle_switch.yaml
+    input:
+      toggle_switch:
+      - input_boolean.auto_living_room_standing
+      duration:
+        hours: 5
+        minutes: 0
+        seconds: 0
+- id: '1659907301662'
+  alias: Re-enable toggle switch - living room tv
+  description: ''
+  use_blueprint:
+    path: common/reenable_toggle_switch.yaml
+    input:
+      toggle_switch:
+      - input_boolean.auto_living_room_tv
+      duration:
+        hours: 5
+        minutes: 0
+        seconds: 0
+- id: '1659907325013'
+  alias: Re-enable toggle switch - dining room
+  description: ''
+  use_blueprint:
+    path: common/reenable_toggle_switch.yaml
+    input:
+      toggle_switch:
+      - input_boolean.auto_dining_room
+      duration:
+        hours: 5
+        minutes: 0
+        seconds: 0
+- id: '1659907351699'
+  alias: Re-enable toggle switch - office
+  description: ''
+  use_blueprint:
+    path: common/reenable_toggle_switch.yaml
+    input:
+      toggle_switch:
+      - input_boolean.auto_office
+      duration:
+        hours: 5
+        minutes: 0
+        seconds: 0

@@ -1,0 +1,27 @@
+blueprint:
+  name: Re-enable toggle switch
+  description: Turns a toggle switch back on after being disabled for a configurable time period
+  domain: automation
+  input:
+    toggle_switch:
+      name: Toggle switch
+      description: Turns automatic control of the lights on/off
+      selector:
+        entity:
+          domain: input_boolean
+          multiple: true
+    duration:
+      name: Duration
+      selector:
+        duration:
+
+trigger:
+  - platform: state
+    entity_id: !input toggle_switch
+    to: "off"
+    for: !input duration
+
+action:
+  - service: input_boolean.turn_on
+    target:
+      entity_id: !input toggle_switch

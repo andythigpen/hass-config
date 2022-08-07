@@ -27,6 +27,12 @@ blueprint:
       selector:
         entity:
           domain: room
+    occupied_boolean:
+      name: Input boolean
+      description: This input_boolean will be set on
+      selector:
+        entity:
+          domain: input_boolean
 
 mode: queued
 
@@ -50,7 +56,10 @@ condition:
   - condition: template
     value_template: '{{ not is_state(room, "occupied") }}'
 action:
-  service: python_script.set_room_state
-  data:
-    entity_id: !input room
-    state: occupied
+  - service: python_script.set_room_state
+    data:
+      entity_id: !input room
+      state: occupied
+  - service: python_script.set_occupancy
+    data:
+      entity_id: !input occupied_boolean
