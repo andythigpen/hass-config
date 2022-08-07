@@ -71,7 +71,7 @@ action:
       value: >-
         {% set t = current / duration * 2 %}
         {% if t < 1 %}
-          {{ (change / 2 * t * t + int(start_value))|round }}
+          {{ (change / 2 * t * t + (start_value|int))|round }}
         {% else %}
-          {{ (-change / 2 ((t - 1) * (t - 3) - 1) + int(start_value))|round }}
+          {{ (-change / 2 * ((t - 1) * (t - 3) - 1) + (start_value|int))|round }}
         {% endif %}
