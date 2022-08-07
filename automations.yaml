@@ -1089,7 +1089,7 @@
       number: input_number.office_threshold
       start_time: '13:00:00'
       start_value: 2
-      end_value: 20
+      end_value: 15
 - id: '1659897750753'
   alias: Auto threshold - office evening
   description: ''
@@ -1099,5 +1099,5 @@
       end_time: '21:00:00'
       number: input_number.office_threshold
       start_time: '18:00:00'
-      start_value: 20
+      start_value: 15
       end_value: 40
