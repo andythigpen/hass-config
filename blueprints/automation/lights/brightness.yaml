@@ -47,7 +47,7 @@ blueprint:
           max: 100
           mode: box
     presence_sensor:
-      name: Prescence sensor
+      name: Presence sensor
       description: Room presence sensor. Lights are only updated in occupied rooms.
       selector:
         entity:
@@ -66,41 +66,6 @@ blueprint:
       selector:
         entity:
           multiple: true
-    morning_brightness:
-      name: Morning brightness
-      default: ""
-      selector:
-        number:
-          min: 0
-          max: 255
-    day_brightness:
-      name: Day brightness
-      default: ""
-      selector:
-        number:
-          min: 0
-          max: 255
-    afternoon_brightness:
-      name: Afternoon brightness
-      default: ""
-      selector:
-        number:
-          min: 0
-          max: 255
-    evening_brightness:
-      name: Evening brightness
-      default: ""
-      selector:
-        number:
-          min: 0
-          max: 255
-    night_brightness:
-      name: Night brightness
-      default: ""
-      selector:
-        number:
-          min: 0
-          max: 255
     brightness_override_entity:
       name: Brightness override entity
       description: Optional entity that can override brightness values based on state
@@ -145,8 +110,8 @@ trigger:
   - platform: template
     value_template: >-
       {{ brightness_override_entity is defined and brightness_override_states is defined and states(brightness_override_entity) in brightness_override_states }}
-  # - platform: time_pattern
-  #   minutes: "/1"
+  - platform: time_pattern
+    minutes: "/1"
 
 condition:
   - condition: state
@@ -183,7 +148,7 @@ action:
         {% elif light_level < threshold %}
           on
         {% else %}
-          {{ states(lights[0]) }}
+          unknown
         {% endif %}
       # map values from 0-100 (light level) to 0-255 (brightness)
       desired_brightness: >-
