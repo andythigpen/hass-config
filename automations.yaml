@@ -756,3 +756,21 @@
         minutes: 7
         seconds: 0
       room: room.kitchen
+- id: '1659830260503'
+  alias: Presence - RFID Wallet
+  description: Sets the state of a device tracker based on RFID sensor
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.rfid_sensor_12_1
+  - platform: homeassistant
+    event: start
+  condition: []
+  action:
+  - service: device_tracker.see
+    data:
+      dev_id: rfid_sensor_12_1
+      location_name: "{% if states('sensor.rfid_sensor_12_1') == '1' %}\n  home\n\
+        {% elif states('sensor.rfid_sensor_12_1') == '0' %}\n  not_home\n{% else %}\n\
+        \   unknown\n{% endif %}\n"
+  mode: queued

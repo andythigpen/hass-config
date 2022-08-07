@@ -16,7 +16,7 @@ homeassistant:
 
 config:
 
-myhome: !include conf/myhome.yaml
+#myhome: !include conf/myhome.yaml
 
 frontend:
   themes: !include_dir_merge_named themes/
@@ -225,7 +225,7 @@ logger:
     homeassistant.components.template.scene: warning
     mysensors: warning
     homeassistant.components.mysensors: warning
-    custom_components.myhome: warning
+    #custom_components.myhome: warning
 
 input_number:
   living_room_threshold:
