@@ -1,0 +1,241 @@
+blueprint:
+  name: Auto-Light brightness
+  description: Controls the brightness of a light based on several factors
+  domain: automation
+  input:
+    lights:
+      name: Lights
+      description: The lights to control
+      selector:
+        entity:
+          domain: light
+          multiple: true
+    toggle_switch:
+      name: Toggle switch
+      description: Turns automatic control of the lights on/off
+      selector:
+        entity:
+          domain: input_boolean
+          multiple: true
+    light_sensor:
+      name: Light sensor
+      description: Light level sensor
+      selector:
+        entity:
+          domain: sensor
+    light_threshold:
+      name: Light threshold
+      description: Light threshold number
+      selector:
+        entity:
+          domain: input_number
+    minimum_brightness:
+      name: Minimum brightness
+      default: 0
+      selector:
+        number:
+          min: 0
+          max: 255
+          mode: box
+    hysteresis:
+      name: Hysteresis
+      description: Prevent constant toggling when near the threshold values.
+      default: 3
+      selector:
+        number:
+          min: 0
+          max: 100
+          mode: box
+    presence_sensor:
+      name: Prescence sensor
+      description: Room presence sensor. Lights are only updated in occupied rooms.
+      selector:
+        entity:
+          domain: room
+    disable_when_on:
+      name: Disable when on
+      description: Disable auto-updating when these entities are on.
+      default: ""
+      selector:
+        entity:
+          multiple: true
+    disable_when_off:
+      name: Disable when off
+      description: Disable auto-updating when these entities are off.
+      default: ""
+      selector:
+        entity:
+          multiple: true
+    morning_brightness:
+      name: Morning brightness
+      default: ""
+      selector:
+        number:
+          min: 0
+          max: 255
+    day_brightness:
+      name: Day brightness
+      default: ""
+      selector:
+        number:
+          min: 0
+          max: 255
+    afternoon_brightness:
+      name: Afternoon brightness
+      default: ""
+      selector:
+        number:
+          min: 0
+          max: 255
+    evening_brightness:
+      name: Evening brightness
+      default: ""
+      selector:
+        number:
+          min: 0
+          max: 255
+    night_brightness:
+      name: Night brightness
+      default: ""
+      selector:
+        number:
+          min: 0
+          max: 255
+    brightness_override_entity:
+      name: Brightness override entity
+      description: Optional entity that can override brightness values based on state
+      default: ""
+      selector:
+        entity:
+    brightness_override_states:
+      name: Brightness override states
+      description: Mapping of states to override brightness values
+      default: ""
+      selector:
+        object:
+    transition:
+      name: Brightness transition time
+      default: 0
+      selector:
+        number:
+          min: 0
+          max: 300
+
+variables:
+  brightness_override_entity: !input brightness_override_entity
+  brightness_override_states: !input brightness_override_states
+  light_sensor: !input light_sensor
+  light_threshold: !input light_threshold
+  lights: !input lights
+  minimum_brightness: !input minimum_brightness
+  hysteresis: !input hysteresis
+  transition: !input transition
+
+# TODO: separate automation to re-enable auto-toggle switches after being turned off for 5 hours
+# TODO: separate automation to turn off auto-toggle switches if a light changes state manually (user_id is set in event data)
+# TODO: separate automation to turn off all lights in a room that's unoccupied for x minutes
+# TODO: separate automation to set the threshold value based on easing functions throughout the day
+
+trigger:
+  - platform: state
+    entity_id: !input presence_sensor
+  - platform: state
+    entity_id: !input toggle_switch
+    to: 'on'
+  - platform: template
+    value_template: >-
+      {{ brightness_override_entity is defined and brightness_override_states is defined and states(brightness_override_entity) in brightness_override_states }}
+  # - platform: time_pattern
+  #   minutes: "/1"
+
+condition:
+  - condition: state
+    entity_id: !input toggle_switch
+    state: 'on'
+  - condition: template
+    value_template: >-
+      {% if disable_when_on is not defined %}
+        true
+      {% else %}
+        {{ expand(disable_when_on)|map(attribute="state")|select("equalto", "on")|list|length == 0 }}
+      {% endif %}
+  - condition: template
+    value_template: >-
+      {% if disable_when_off is not defined %}
+        true
+      {% else %}
+        {{ expand(disable_when_off)|map(attribute="state")|select("equalto", "off")|list|length == 0 }}
+      {% endif %}
+  - condition: state
+    entity_id: !input presence_sensor
+    state: 'occupied'
+
+# TODO: cooldown?
+
+action:
+  - variables:
+      light_level: "{{ int(states(light_sensor)) }}"
+      threshold: "{{ int(states(light_threshold)) }}"
+  - variables:
+      desired_state: >-
+        {% if light_level > threshold + hysteresis %}
+          off
+        {% elif light_level < threshold %}
+          on
+        {% else %}
+          {{ states(lights[0]) }}
+        {% endif %}
+      # map values from 0-100 (light level) to 0-255 (brightness)
+      desired_brightness: >-
+        {% if threshold == 0 %}
+          {{ minimum_brightness }}
+        {% else %}
+          {{ min([
+               max([
+                 (threshold - light_level) * 255 / threshold,
+                 minimum_brightness,
+               ]),
+               255
+             ]) }}
+        {% endif %}
+  - variables:
+      desired_transition: >-
+        {% if trigger.idx == 0 and desired_state == 'on' %}
+          1
+        {% elif trigger.idx == 2 %}
+          3
+        {% else %}
+          {{ transition }}
+        {% endif %}
+      # if brightness_override_entity is set to state
+      # then set desired_brightness to override
+      desired_brightness: >-
+        {% if brightness_override_entity is defined and brightness_override_states is defined and brightness_override_states[states(brightness_override_entity)] is defined %}
+          {{ brightness_override_states[states(brightness_override_entity)] }}
+        {% else %}
+          {{ desired_brightness }}
+        {% endif %}
+
+  - choose:
+      # if desired state is off
+      - conditions:
+          - condition: template
+            value_template: "{{ desired_state == 'off' }}"
+        # then turn it off 
+        sequence:
+          - service: light.turn_off
+            entity_id: !input lights
+            data:
+              transition: "{{ desired_transition }}"
+
+      # if desired state is on
+      - conditions:
+          - condition: template
+            value_template: "{{ desired_state == 'on' }}"
+        # then set it to desired brightness 
+        sequence:
+          - service: light.turn_on
+            entity_id: !input lights
+            data:
+              brightness: "{{ desired_brightness }}"
+              transition: "{{ desired_transition }}"

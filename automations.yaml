@@ -774,3 +774,20 @@
         {% elif states('sensor.rfid_sensor_12_1') == '0' %}\n  not_home\n{% else %}\n\
         \   unknown\n{% endif %}\n"
   mode: queued
+- id: '1659881807840'
+  alias: Auto brightness - kitchen
+  description: ''
+  use_blueprint:
+    path: lights/autolight.yaml
+    input:
+      lights:
+      - light.rgbw_15_2
+      - light.rgbw_15_1
+      toggle_switch:
+      - input_boolean.auto_kitchen
+      - input_boolean.room_kitchen
+      light_sensor: sensor.motion_sensor_1_2
+      light_threshold: input_number.kitchen_threshold
+      presence_sensor: room.kitchen
+      minimum_brightness: 3
+      hysteresis: 3
