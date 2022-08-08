@@ -793,7 +793,7 @@
       light_sensor: sensor.motion_sensor_1_2
       light_threshold: input_number.kitchen_threshold
       minimum_brightness: 3
-      presence_sensor: room.kitchen
+      presence_sensor: input_boolean.kitchen_occupied
       hysteresis: 2
 - id: '1659892407583'
   alias: Auto brightness - bedroom
@@ -809,7 +809,7 @@
       light_sensor: sensor.motion_sensor_2_2
       light_threshold: input_number.bedroom_threshold
       minimum_brightness: 3
-      presence_sensor: room.bedroom
+      presence_sensor: input_boolean.bedroom_occupied
       hysteresis: 3
       disable_when_on:
       - script.bedtime
@@ -832,7 +832,7 @@
       - input_boolean.room_dining_room
       light_sensor: sensor.motion_sensor_5_2
       light_threshold: input_number.dining_room_threshold
-      presence_sensor: room.dining_room
+      presence_sensor: input_boolean.dining_room_occupied
       transition: 10
 - id: '1659892834477'
   alias: Auto brightness - office
@@ -847,7 +847,7 @@
       - input_boolean.room_office
       light_sensor: sensor.motion_sensor_5_2
       light_threshold: input_number.office_threshold
-      presence_sensor: room.dining_room
+      presence_sensor: input_boolean.dining_room_occupied
       transition: 10
 - id: '1659893000885'
   alias: Auto brightness - living room
@@ -863,7 +863,7 @@
       light_sensor: sensor.motion_sensor_10_2
       minimum_brightness: 3
       hysteresis: 5
-      presence_sensor: room.living_room
+      presence_sensor: input_boolean.living_room_occupied
       brightness_override_entity: input_select.media_mode
       brightness_override_states:
         Movie: 0
@@ -888,12 +888,12 @@
       light_threshold: input_number.living_room_threshold
       minimum_brightness: 3
       hysteresis: 5
-      presence_sensor: room.living_room
+      presence_sensor: input_boolean.living_room_occupied
       brightness_override_entity: input_select.media_mode
       brightness_override_states:
         Movie: 0
         TV: 20
-        Paused: 20
+        Paused: 70
         Awake: 70
       transition: 10
 - id: '1659895843973'
@@ -1176,4 +1176,78 @@
       duration:
         hours: 5
         minutes: 0
+        seconds: 0
+- id: '1659908207840'
+  alias: Auto-Light unoccupied - bedroom
+  description: ''
+  use_blueprint:
+    path: lights/unoccupied.yaml
+    input:
+      lights:
+      - light.lifx_white_656ad2
+      toggle_switch:
+      - input_boolean.auto_bedroom
+      - input_boolean.room_bedroom
+      - input_boolean.myhome_active
+      occupied_boolean: input_boolean.bedroom_occupied
+      duration:
+        hours: 0
+        minutes: 10
+        seconds: 0
+- id: '1659908297134'
+  alias: Auto-Light unoccupied - living room
+  description: ''
+  use_blueprint:
+    path: lights/unoccupied.yaml
+    input:
+      lights:
+      - light.living_room_standing
+      - light.tv_left
+      - light.tv_right
+      - light.hyperion
+      toggle_switch:
+      - input_boolean.auto_living_room_standing
+      - input_boolean.auto_living_room_tv
+      - input_boolean.room_living_room
+      - input_boolean.myhome_active
+      occupied_boolean: input_boolean.living_room_occupied
+      duration:
+        hours: 0
+        minutes: 20
+        seconds: 0
+- id: '1659908359211'
+  alias: Auto-Light unoccupied - dining room
+  description: ''
+  use_blueprint:
+    path: lights/unoccupied.yaml
+    input:
+      lights:
+      - light.dresser
+      - light.night_stand
+      toggle_switch:
+      - input_boolean.auto_dining_room
+      - input_boolean.room_dining_room
+      - input_boolean.myhome_active
+      occupied_boolean: input_boolean.dining_room_occupied
+      duration:
+        hours: 0
+        minutes: 5
+        seconds: 0
+- id: '1659908409680'
+  alias: Auto-Light unoccupied - kitchen
+  description: ''
+  use_blueprint:
+    path: lights/unoccupied.yaml
+    input:
+      lights:
+      - light.rgbw_15_2
+      - light.rgbw_15_1
+      toggle_switch:
+      - input_boolean.auto_kitchen
+      - input_boolean.room_kitchen
+      - input_boolean.myhome_active
+      occupied_boolean: input_boolean.kitchen_occupied
+      duration:
+        hours: 0
+        minutes: 7
         seconds: 0

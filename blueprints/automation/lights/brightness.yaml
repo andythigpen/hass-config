@@ -51,7 +51,7 @@ blueprint:
       description: Room presence sensor. Lights are only updated in occupied rooms.
       selector:
         entity:
-          domain: room
+          domain: input_boolean
     disable_when_on:
       name: Disable when on
       description: Disable auto-updating when these entities are on.
@@ -78,6 +78,14 @@ blueprint:
         number:
           min: 0
           max: 300
+    unoccupied_duration:
+      name: Unoccupied duration
+      description: Number of minutes to leave lights
+      default: 5
+      selector:
+        number:
+          min: 0
+          max: 30
 
 mode: single
 max_exceeded: silent
@@ -92,9 +100,10 @@ variables:
   hysteresis: !input hysteresis
   transition: !input transition
   disable_when_on: !input disable_when_on
+  unoccupied_duration: !input unoccupied_duration
+  presence_sensor: !input presence_sensor
 
 # TODO: separate automation to turn off auto-toggle switches if a light changes state manually (user_id is set in event data)
-# TODO: separate automation to turn off all lights in a room that's unoccupied for x minutes
 
 trigger:
   - platform: state
@@ -102,9 +111,13 @@ trigger:
   - platform: state
     entity_id: !input toggle_switch
     to: 'on'
-  - platform: template
-    value_template: >-
-      {{ brightness_override_entity is defined and brightness_override_states is defined and states(brightness_override_entity) in brightness_override_states }}
+  - platform: event
+    event_type: state_changed
+    event_data:
+      entity_id: !input brightness_override_entity
+  #- platform: template
+  #  value_template: >-
+  #    {{ brightness_override_entity is defined and now() - states[brightness_override_entity].last_changed < timedelta(seconds=10) }}
   - platform: time_pattern
     minutes: "/1"
 
@@ -119,9 +132,6 @@ condition:
       {% else %}
         {{ expand(disable_when_on)|map(attribute="state")|select("equalto", "on")|list|length == 0 }}
       {% endif %}
-  - condition: state
-    entity_id: !input presence_sensor
-    state: 'occupied'
 
 # TODO: cooldown?
 
@@ -129,9 +139,16 @@ action:
   - variables:
       light_level: "{{ int(states(light_sensor)) }}"
       threshold: "{{ int(states(light_threshold)) }}"
+      trigger_idx: "{{ trigger.idx }}"
   - variables:
       desired_state: >-
-        {% if light_level > threshold + hysteresis %}
+        {% if is_state(presence_sensor, 'off') %}
+          {% if (now() - states[presence_sensor].last_changed) > timedelta(minutes=unoccupied_duration) %}
+            off
+          {% else %}
+            countdown
+          {% endif %}
+        {% elif light_level > threshold + hysteresis %}
           off
         {% elif light_level < threshold %}
           on
@@ -149,13 +166,13 @@ action:
                  minimum_brightness,
                ]),
                255
-             ]) }}
+             ])|round }}
         {% endif %}
   - variables:
       desired_transition: >-
-        {% if trigger.idx == 0 and desired_state == 'on' %}
+        {% if trigger_idx == 0 and desired_state == 'on' %}
           1
-        {% elif trigger.idx == 2 %}
+        {% elif trigger_idx == 2 %}
           3
         {% else %}
           {{ transition }}
