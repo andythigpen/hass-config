@@ -80,7 +80,7 @@ blueprint:
           max: 300
     unoccupied_duration:
       name: Unoccupied duration
-      description: Number of minutes to leave lights
+      description: Number of minutes to leave lights on in an unoccupied room before turning off
       default: 5
       selector:
         number:

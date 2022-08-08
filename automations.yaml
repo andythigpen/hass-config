@@ -483,12 +483,20 @@
 - id: '1659750059099'
   alias: Set rooms to unoccupied when away
   trigger:
-    platform: state
+  - platform: state
     entity_id: person.andrew
     from: home
     to: not_home
   action:
-    service: python_script.set_away
+  - service: input_boolean.turn_off
+    data: {}
+    target:
+      entity_id:
+      - input_boolean.bedroom_occupied
+      - input_boolean.dining_room_occupied
+      - input_boolean.kitchen_occupied
+      - input_boolean.living_room_occupied
+      - input_boolean.office_occupied
 - id: '1659750191012'
   alias: Autoupdate Kitchen Override
   trigger:
@@ -716,50 +724,6 @@
       active_switch: input_boolean.myhome_active
       room: room.living_room
       occupied_boolean: input_boolean.living_room_occupied
-- id: '1659797545200'
-  alias: Unoccupied countdown - bedroom
-  description: Set bedroom to unoccupied after a countdown
-  use_blueprint:
-    path: presence/unoccupied_countdown.yaml
-    input:
-      duration:
-        hours: 0
-        minutes: 10
-        seconds: 0
-      room: room.bedroom
-- id: '1659797591093'
-  alias: Unoccupied countdown - living room
-  description: Set living room to unoccupied after a countdown
-  use_blueprint:
-    path: presence/unoccupied_countdown.yaml
-    input:
-      duration:
-        hours: 0
-        minutes: 20
-        seconds: 0
-      room: room.living_room
-- id: '1659797647651'
-  alias: Unoccupied countdown - dining room
-  description: Set dining room to unoccupied after a countdown
-  use_blueprint:
-    path: presence/unoccupied_countdown.yaml
-    input:
-      duration:
-        hours: 0
-        minutes: 5
-        seconds: 0
-      room: room.dining_room
-- id: '1659797673518'
-  alias: Unoccupied countdown - kitchen
-  description: Set kitchen to unoccupied after a countdown
-  use_blueprint:
-    path: presence/unoccupied_countdown.yaml
-    input:
-      duration:
-        hours: 0
-        minutes: 7
-        seconds: 0
-      room: room.kitchen
 - id: '1659830260503'
   alias: Presence - RFID Wallet
   description: Sets the state of a device tracker based on RFID sensor
@@ -795,6 +759,7 @@
       minimum_brightness: 3
       presence_sensor: input_boolean.kitchen_occupied
       hysteresis: 2
+      unoccupied_duration: 7
 - id: '1659892407583'
   alias: Auto brightness - bedroom
   description: ''
@@ -818,6 +783,7 @@
       brightness_override_states:
         'on': 100
       transition: 10
+      unoccupied_duration: 10
 - id: '1659892714101'
   alias: Auto brightness - dining room
   description: ''
@@ -872,6 +838,7 @@
         Awake: 180
       transition: 10
       light_threshold: input_number.living_room_threshold
+      unoccupied_duration: 20
 - id: '1659893141131'
   alias: Auto brightness - living room TV
   description: ''
@@ -896,6 +863,7 @@
         Paused: 70
         Awake: 70
       transition: 10
+      unoccupied_duration: 20
 - id: '1659895843973'
   alias: Auto threshold - living room afternoon
   description: ''
@@ -1176,78 +1144,4 @@
       duration:
         hours: 5
         minutes: 0
-        seconds: 0
-- id: '1659908207840'
-  alias: Auto-Light unoccupied - bedroom
-  description: ''
-  use_blueprint:
-    path: lights/unoccupied.yaml
-    input:
-      lights:
-      - light.lifx_white_656ad2
-      toggle_switch:
-      - input_boolean.auto_bedroom
-      - input_boolean.room_bedroom
-      - input_boolean.myhome_active
-      occupied_boolean: input_boolean.bedroom_occupied
-      duration:
-        hours: 0
-        minutes: 10
-        seconds: 0
-- id: '1659908297134'
-  alias: Auto-Light unoccupied - living room
-  description: ''
-  use_blueprint:
-    path: lights/unoccupied.yaml
-    input:
-      lights:
-      - light.living_room_standing
-      - light.tv_left
-      - light.tv_right
-      - light.hyperion
-      toggle_switch:
-      - input_boolean.auto_living_room_standing
-      - input_boolean.auto_living_room_tv
-      - input_boolean.room_living_room
-      - input_boolean.myhome_active
-      occupied_boolean: input_boolean.living_room_occupied
-      duration:
-        hours: 0
-        minutes: 20
-        seconds: 0
-- id: '1659908359211'
-  alias: Auto-Light unoccupied - dining room
-  description: ''
-  use_blueprint:
-    path: lights/unoccupied.yaml
-    input:
-      lights:
-      - light.dresser
-      - light.night_stand
-      toggle_switch:
-      - input_boolean.auto_dining_room
-      - input_boolean.room_dining_room
-      - input_boolean.myhome_active
-      occupied_boolean: input_boolean.dining_room_occupied
-      duration:
-        hours: 0
-        minutes: 5
-        seconds: 0
-- id: '1659908409680'
-  alias: Auto-Light unoccupied - kitchen
-  description: ''
-  use_blueprint:
-    path: lights/unoccupied.yaml
-    input:
-      lights:
-      - light.rgbw_15_2
-      - light.rgbw_15_1
-      toggle_switch:
-      - input_boolean.auto_kitchen
-      - input_boolean.room_kitchen
-      - input_boolean.myhome_active
-      occupied_boolean: input_boolean.kitchen_occupied
-      duration:
-        hours: 0
-        minutes: 7
         seconds: 0
