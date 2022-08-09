@@ -1,0 +1,94 @@
+blueprint:
+  name: Auto-Light color temperature
+  description: Controls the color temperature of a light based on several factors
+  domain: automation
+  input:
+    lights:
+      name: Lights
+      description: The lights to control
+      selector:
+        entity:
+          domain: light
+          multiple: true
+    toggle_switch:
+      name: Toggle switch
+      description: Turns automatic control of the lights on/off
+      selector:
+        entity:
+          domain: input_boolean
+          multiple: true
+    color_temp_start:
+      name: Color temperature start
+      selector:
+        color_temp:
+    color_temp_end:
+      name: Color temperature end
+      selector:
+        color_temp:
+    transition:
+      name: Brightness transition time
+      default: 0
+      selector:
+        number:
+          min: 0
+          max: 300
+    start_time:
+      name: Start time
+      selector:
+        time:
+    end_time:
+      name: End time
+      selector:
+        time:
+    time_pattern_minutes:
+      name: Time pattern minutes
+      description: "Pattern for when to run this automation (ex: /1 every minute)"
+      default: "/10"
+    time_pattern_seconds:
+      name: Time pattern seconds
+      description: "Pattern for when to run this automation (ex: /1 every second)"
+      default: "0"
+
+variables:
+  start_time: !input start_time
+  end_time: !input end_time
+  color_temp_start: !input color_temp_start
+  color_temp_end: !input color_temp_end
+
+trigger:
+  - platform: time_pattern
+    minutes: !input time_pattern_minutes
+  - platform: state
+    entity_id: !input toggle_switch
+    to: 'on'
+
+condition:
+  - condition: state
+    entity_id: !input toggle_switch
+    state: 'on'
+  - condition: state
+    entity_id: !input lights
+    state: 'on'
+  - condition: time
+    after: !input start_time
+    before: !input end_time
+
+action:
+  - alias: "set variables"
+    variables:
+      start_datetime: "{{ today_at(start_time) }}"
+      end_datetime: "{{ today_at(end_time) }}"
+      duration: "{{ (as_datetime(end_datetime) - as_datetime(start_datetime)).total_seconds() }}"
+      current: "{{ (now() - as_datetime(start_datetime)).total_seconds() }}"
+      change: "{{ color_temp_end - color_temp_start }}"
+  - service: light.turn_on
+    entity_id: !input lights
+    data:
+      transition: !input transition
+      color_temp: >-
+        {% set t = current / duration * 2 %}
+        {% if t < 1 %}
+          {{ (change / 2 * t * t + (color_temp_start|int))|round }}
+        {% else %}
+          {{ (-change / 2 * ((t - 1) * (t - 3) - 1) + (color_temp_start|int))|round }}
+        {% endif %}

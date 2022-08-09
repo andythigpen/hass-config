@@ -1177,3 +1177,87 @@
       start_time: 05:00:00
       start_value: 40
       end_value: 40
+- id: '1660007078868'
+  alias: Auto color temperature - living room morning
+  description: ''
+  use_blueprint:
+    path: lights/color_temp.yaml
+    input:
+      end_time: '13:00:00'
+      lights:
+      - light.living_room_standing
+      - light.tv_left
+      - light.tv_right
+      color_temp_start: 500
+      color_temp_end: 174
+      transition: 10
+      start_time: 06:00:00
+      time_pattern_seconds: '3'
+      toggle_switch:
+      - input_boolean.auto_living_room_standing
+      - input_boolean.auto_living_room_tv
+      - input_boolean.room_living_room
+      - input_boolean.myhome_active
+      time_pattern_minutes: /5
+- id: '1660007474598'
+  alias: Auto color temperature - living room afternoon
+  description: ''
+  use_blueprint:
+    path: lights/color_temp.yaml
+    input:
+      end_time: '21:00:00'
+      lights:
+      - light.living_room_standing
+      - light.tv_left
+      - light.tv_right
+      color_temp_start: 173
+      color_temp_end: 490
+      transition: 10
+      start_time: '13:00:00'
+      time_pattern_seconds: '3'
+      toggle_switch:
+      - input_boolean.auto_living_room_standing
+      - input_boolean.auto_living_room_tv
+      - input_boolean.room_living_room
+      - input_boolean.myhome_active
+      time_pattern_minutes: /5
+- id: '1660007654863'
+  alias: Auto color temperature - kitchen morning
+  description: ''
+  use_blueprint:
+    path: lights/color_temp.yaml
+    input:
+      end_time: '13:00:00'
+      lights:
+      - light.rgbw_15_2
+      - light.rgbw_15_1
+      color_temp_start: 500
+      color_temp_end: 174
+      transition: 1
+      start_time: 06:00:00
+      time_pattern_seconds: '42'
+      toggle_switch:
+      - input_boolean.auto_kitchen
+      - input_boolean.room_kitchen
+      - input_boolean.myhome_active
+      time_pattern_minutes: /1
+- id: '1660007726980'
+  alias: Auto color temperature - kitchen evening
+  description: ''
+  use_blueprint:
+    path: lights/color_temp.yaml
+    input:
+      end_time: '21:00:00'
+      lights:
+      - light.rgbw_15_2
+      - light.rgbw_15_1
+      color_temp_start: 173
+      color_temp_end: 489
+      transition: 1
+      start_time: '13:00:00'
+      time_pattern_seconds: '42'
+      toggle_switch:
+      - input_boolean.auto_kitchen
+      - input_boolean.room_kitchen
+      - input_boolean.myhome_active
+      time_pattern_minutes: /1
