@@ -760,6 +760,7 @@
       presence_sensor: input_boolean.kitchen_occupied
       hysteresis: 2
       unoccupied_duration: 7
+      brightness_override_entity: sensor.asleep
 - id: '1659892407583'
   alias: Auto brightness - bedroom
   description: ''
@@ -779,11 +780,14 @@
       disable_when_on:
       - script.bedtime
       - script.bedtime_now
+      - sensor.asleep
       brightness_override_entity: sensor.bed_occupied
       brightness_override_states:
         'on': 100
       transition: 10
       unoccupied_duration: 10
+      time_pattern_minutes: /2
+      time_pattern_seconds: '5'
 - id: '1659892714101'
   alias: Auto brightness - dining room
   description: ''
@@ -800,6 +804,10 @@
       light_threshold: input_number.dining_room_threshold
       presence_sensor: input_boolean.dining_room_occupied
       transition: 10
+      disable_when_on:
+      - sensor.asleep
+      time_pattern_minutes: /2
+      time_pattern_seconds: '30'
 - id: '1659892834477'
   alias: Auto brightness - office
   description: ''
@@ -815,6 +823,10 @@
       light_threshold: input_number.office_threshold
       presence_sensor: input_boolean.dining_room_occupied
       transition: 10
+      disable_when_on:
+      - sensor.asleep
+      time_pattern_minutes: /2
+      time_pattern_seconds: '20'
 - id: '1659893000885'
   alias: Auto brightness - living room
   description: ''
@@ -839,6 +851,10 @@
       transition: 10
       light_threshold: input_number.living_room_threshold
       unoccupied_duration: 20
+      disable_when_on:
+      - sensor.asleep
+      time_pattern_minutes: /2
+      time_pattern_seconds: '10'
 - id: '1659893141131'
   alias: Auto brightness - living room TV
   description: ''
@@ -859,11 +875,16 @@
       brightness_override_entity: input_select.media_mode
       brightness_override_states:
         Movie: 0
-        TV: 20
+        TV: 5
         Paused: 70
         Awake: 70
+        Idle: 40
       transition: 10
       unoccupied_duration: 20
+      disable_when_on:
+      - sensor.asleep
+      time_pattern_minutes: /2
+      time_pattern_seconds: '11'
 - id: '1659895843973'
   alias: Auto threshold - living room afternoon
   description: ''
@@ -906,7 +927,7 @@
       end_time: 09:00:00
       number: input_number.kitchen_threshold
       start_time: 06:00:00
-      start_value: 100
+      start_value: 40
       end_value: 0
 - id: '1659897123941'
   alias: Auto threshold - kitchen day
@@ -917,7 +938,7 @@
       end_time: '13:00:00'
       number: input_number.kitchen_threshold
       start_time: 09:00:00
-      start_value: 100
+      start_value: 0
       end_value: 1
 - id: '1659897149225'
   alias: Auto threshold - kitchen afternoon
@@ -940,7 +961,7 @@
       number: input_number.kitchen_threshold
       start_time: '18:00:00'
       start_value: 3
-      end_value: 100
+      end_value: 40
 - id: '1659897265910'
   alias: Auto threshold - bedroom morning
   description: ''
@@ -1015,7 +1036,7 @@
     input:
       end_time: '18:00:00'
       number: input_number.dining_room_threshold
-      start_time: '13:00:00'
+      start_time: '14:00:00'
       start_value: 2
       end_value: 20
 - id: '1659897665753'
@@ -1059,7 +1080,7 @@
     input:
       end_time: '18:00:00'
       number: input_number.office_threshold
-      start_time: '13:00:00'
+      start_time: '14:00:00'
       start_value: 2
       end_value: 15
 - id: '1659897750753'
@@ -1145,3 +1166,14 @@
         hours: 5
         minutes: 0
         seconds: 0
+- id: '1659961532977'
+  alias: Auto threshold - bedroom night
+  description: ''
+  use_blueprint:
+    path: lights/threshold.yaml
+    input:
+      end_time: 05:01:00
+      number: input_number.bedroom_threshold
+      start_time: 05:00:00
+      start_value: 40
+      end_value: 40

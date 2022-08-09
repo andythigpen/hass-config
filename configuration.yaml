@@ -124,6 +124,15 @@ sensor:
         value_template: '{{ states("sensor.bed_sensor_4") < states("input_number.bed_sensor_4") }}'
       bed_occupied:
         value_template: '{% if [states("sensor.bed_triggered_1"), states("sensor.bed_triggered_2"), states("sensor.bed_triggered_3"), states("sensor.bed_triggered_4")]|select("equalto", "True")|list|length >= 2 %}on{% else %}off{% endif %}'
+      asleep:
+        value_template: >-
+          {% if is_state("input_select.myhome_mode", "Asleep") %}
+            on
+          {% elif is_state("sensor.bed_occupied", "on") and (now() > today_at("21:00") or now() < today_at("09:00")) %}
+            on
+          {% else %}
+            off
+          {% endif %}
   - platform: filter
     name: "Bed sensor 1"
     entity_id: sensor.bed_sensor_16_2

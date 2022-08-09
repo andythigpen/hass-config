@@ -86,6 +86,14 @@ blueprint:
         number:
           min: 0
           max: 30
+    time_pattern_minutes:
+      name: Time pattern minutes
+      description: "Pattern for when to run this automation (ex: /1 every minute)"
+      default: "/1"
+    time_pattern_seconds:
+      name: Time pattern seconds
+      description: "Pattern for when to run this automation (ex: /1 every second)"
+      default: "0"
 
 mode: single
 max_exceeded: silent
@@ -115,11 +123,9 @@ trigger:
     event_type: state_changed
     event_data:
       entity_id: !input brightness_override_entity
-  #- platform: template
-  #  value_template: >-
-  #    {{ brightness_override_entity is defined and now() - states[brightness_override_entity].last_changed < timedelta(seconds=10) }}
   - platform: time_pattern
-    minutes: "/1"
+    minutes: !input time_pattern_minutes
+    seconds: !input time_pattern_seconds
 
 condition:
   - condition: state
@@ -178,10 +184,10 @@ action:
           {{ transition }}
         {% endif %}
       # if brightness_override_entity is set to state
-      # then set desired_brightness to override
+      # then set desired_brightness to min of override and desired
       desired_brightness: >-
         {% if brightness_override_entity is defined and brightness_override_states is defined and brightness_override_states[states(brightness_override_entity)] is defined %}
-          {{ brightness_override_states[states(brightness_override_entity)] }}
+          {{ min([desired_brightness, brightness_override_states[states(brightness_override_entity)]]) }}
         {% else %}
           {{ desired_brightness }}
         {% endif %}
