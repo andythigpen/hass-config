@@ -754,6 +754,7 @@
       toggle_switch:
       - input_boolean.auto_kitchen
       - input_boolean.room_kitchen
+      - input_boolean.myhome_active
       light_sensor: sensor.motion_sensor_1_2
       light_threshold: input_number.kitchen_threshold
       minimum_brightness: 3
@@ -761,6 +762,8 @@
       hysteresis: 2
       unoccupied_duration: 7
       brightness_override_entity: sensor.asleep
+      disable_when_on:
+      - sensor.asleep
 - id: '1659892407583'
   alias: Auto brightness - bedroom
   description: ''
@@ -772,6 +775,7 @@
       toggle_switch:
       - input_boolean.auto_bedroom
       - input_boolean.room_bedroom
+      - input_boolean.myhome_active
       light_sensor: sensor.motion_sensor_2_2
       light_threshold: input_number.bedroom_threshold
       minimum_brightness: 3
@@ -800,6 +804,7 @@
       toggle_switch:
       - input_boolean.auto_dining_room
       - input_boolean.room_dining_room
+      - input_boolean.myhome_active
       light_sensor: sensor.motion_sensor_5_2
       light_threshold: input_number.dining_room_threshold
       presence_sensor: input_boolean.dining_room_occupied
@@ -819,6 +824,7 @@
       toggle_switch:
       - input_boolean.auto_office
       - input_boolean.room_office
+      - input_boolean.myhome_active
       light_sensor: sensor.motion_sensor_5_2
       light_threshold: input_number.office_threshold
       presence_sensor: input_boolean.dining_room_occupied
@@ -838,6 +844,7 @@
       toggle_switch:
       - input_boolean.auto_living_room_standing
       - input_boolean.room_living_room
+      - input_boolean.myhome_active
       light_sensor: sensor.motion_sensor_10_2
       minimum_brightness: 3
       hysteresis: 5
@@ -867,6 +874,7 @@
       toggle_switch:
       - input_boolean.auto_living_room_tv
       - input_boolean.room_living_room
+      - input_boolean.myhome_active
       light_sensor: sensor.motion_sensor_10_2
       light_threshold: input_number.living_room_threshold
       minimum_brightness: 3
@@ -1261,3 +1269,66 @@
       - input_boolean.room_kitchen
       - input_boolean.myhome_active
       time_pattern_minutes: /1
+- id: '1660089718668'
+  alias: Auto-Light manual override - bedroom
+  description: ''
+  use_blueprint:
+    path: lights/manual_override.yaml
+    input:
+      lights:
+      - light.lifx_white_656ad2
+      toggle_switch:
+      - input_boolean.auto_bedroom
+- id: '1660089867091'
+  alias: Auto-Light manual override - kitchen
+  description: ''
+  use_blueprint:
+    path: lights/manual_override.yaml
+    input:
+      lights:
+      - light.rgbw_15_1
+      - light.rgbw_15_2
+      toggle_switch:
+      - input_boolean.auto_kitchen
+- id: '1660089974172'
+  alias: Auto-Light manual override - living room
+  description: ''
+  use_blueprint:
+    path: lights/manual_override.yaml
+    input:
+      lights:
+      - light.living_room_standing
+      toggle_switch:
+      - input_boolean.auto_living_room_standing
+- id: '1660090015220'
+  alias: Auto-Light manual override - living room TV
+  description: ''
+  use_blueprint:
+    path: lights/manual_override.yaml
+    input:
+      lights:
+      - light.tv_left
+      - light.tv_right
+      toggle_switch:
+      - input_boolean.auto_living_room_tv
+- id: '1660090058506'
+  alias: Auto-Light manual override - dining room
+  description: ''
+  use_blueprint:
+    path: lights/manual_override.yaml
+    input:
+      lights:
+      - light.dresser
+      - light.night_stand
+      toggle_switch:
+      - input_boolean.auto_dining_room
+- id: '1660090083971'
+  alias: Auto-Light manual override - office
+  description: ''
+  use_blueprint:
+    path: lights/manual_override.yaml
+    input:
+      lights:
+      - light.hall
+      toggle_switch:
+      - input_boolean.auto_office

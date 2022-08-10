@@ -1,0 +1,36 @@
+blueprint:
+  name: Auto-Light manual override
+  description: Disables a toggle switch if a light is changed by a user.
+  domain: automation
+  input:
+    lights:
+      name: Lights
+      description: The lights to trigger on
+      selector:
+        entity:
+          domain: light
+          multiple: true
+    toggle_switch:
+      name: Toggle switch
+      description: Turned off when lights change
+      selector:
+        entity:
+          domain: input_boolean
+          multiple: true
+
+mode: queued
+
+trigger:
+  - platform: state
+    entity_id: !input lights
+
+action:
+  - choose:
+      # if a user triggered the change
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.to_state.context.user_id is defined and trigger.to_state.context.user_id is not none }}" 
+        # then disable the toggle switch
+        sequence:
+          - service: input_boolean.turn_off
+            entity_id: !input toggle_switch

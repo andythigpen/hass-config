@@ -111,8 +111,6 @@ variables:
   unoccupied_duration: !input unoccupied_duration
   presence_sensor: !input presence_sensor
 
-# TODO: separate automation to turn off auto-toggle switches if a light changes state manually (user_id is set in event data)
-
 trigger:
   - platform: state
     entity_id: !input presence_sensor
