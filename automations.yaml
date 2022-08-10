@@ -395,16 +395,16 @@
     entity_id: input_select.media_mode
     to: Movie
   condition:
-    condition: and
+  - condition: and
     conditions:
     - condition: state
       entity_id: input_boolean.myhome_active
       state: 'on'
     - condition: state
-      entity_id: room.living_room
-      state: occupied
+      state: 'on'
+      entity_id: input_boolean.living_room_occupied
   action:
-    service: light.turn_off
+  - service: light.turn_off
     data:
       entity_id:
       - group.bedroom
@@ -519,47 +519,21 @@
     service: light.turn_off
     entity_id: all
 - id: '1659750245917'
-  alias: Turn on kitchen light when arriving home
+  alias: Set kitchen occupied when arriving home
   trigger:
-    platform: state
+  - platform: state
     entity_id: person.andrew
     from: not_home
     to: home
   condition:
-    condition: state
+  - condition: state
     entity_id: input_boolean.myhome_active
     state: 'on'
   action:
-    service: python_script.set_room_state
-    data:
-      entity_id: room.kitchen
-      state: occupied
-- id: '1659750357408'
-  alias: Initialize rooms on start
-  trigger:
-    platform: homeassistant
-    event: start
-  action:
-  - service: python_script.set_room_state
-    data:
-      entity_id: room.bedroom
-      state: not_occupied
-  - service: python_script.set_room_state
-    data:
-      entity_id: room.living_room
-      state: not_occupied
-  - service: python_script.set_room_state
-    data:
-      entity_id: room.kitchen
-      state: not_occupied
-  - service: python_script.set_room_state
-    data:
-      entity_id: room.dining_room
-      state: not_occupied
-  - service: python_script.set_room_state
-    data:
-      entity_id: room.office
-      state: not_occupied
+  - service: input_boolean.turn_on
+    data: {}
+    target:
+      entity_id: input_boolean.kitchen_occupied
 - id: '1659750378911'
   alias: Reset lights on start
   trigger:
@@ -615,10 +589,10 @@
 - id: '1659750479072'
   alias: Wake-up
   trigger:
-    platform: time
+  - platform: time
     at: 07:20:00
   condition:
-    condition: and
+  - condition: and
     conditions:
     - condition: state
       entity_id: calendar.vacation
@@ -627,13 +601,13 @@
       entity_id: binary_sensor.weekday
       state: 'on'
     - condition: state
-      entity_id: room.bedroom
-      state: occupied
+      state: 'on'
+      entity_id: input_boolean.bedroom_occupied
     - condition: state
       entity_id: input_boolean.myhome_active
       state: 'on'
   action:
-    service: script.turn_on
+  - service: script.turn_on
     entity_id: script.wakeup
 - id: '1659792514683'
   alias: Home mode - morning
@@ -689,7 +663,6 @@
       motion_sensor: binary_sensor.motion_sensor_1_1
       person: person.andrew
       active_switch: input_boolean.myhome_active
-      room: room.kitchen
       occupied_boolean: input_boolean.kitchen_occupied
 - id: '1659795789483'
   alias: Motion detection - bedroom
@@ -700,7 +673,6 @@
       motion_sensor: binary_sensor.motion_sensor_2_1
       person: person.andrew
       active_switch: input_boolean.myhome_active
-      room: room.bedroom
       occupied_boolean: input_boolean.bedroom_occupied
 - id: '1659795862181'
   alias: Motion detection - dining room
@@ -711,7 +683,6 @@
       motion_sensor: binary_sensor.motion_sensor_5_1
       person: person.andrew
       active_switch: input_boolean.myhome_active
-      room: room.dining_room
       occupied_boolean: input_boolean.dining_room_occupied
 - id: '1659795910513'
   alias: Motion detection - living room
@@ -722,7 +693,6 @@
       motion_sensor: binary_sensor.motion_sensor_10_1
       person: person.andrew
       active_switch: input_boolean.myhome_active
-      room: room.living_room
       occupied_boolean: input_boolean.living_room_occupied
 - id: '1659830260503'
   alias: Presence - RFID Wallet

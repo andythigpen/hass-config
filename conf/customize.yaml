@@ -66,15 +66,3 @@ sensor.bed_sensor_16_9:
 sensor.bed_occupied:
   friendly_name: Bed occupied
   icon: mdi:bed
-
-# rooms
-room.living_room:
-  friendly_name: 'Living Room'
-room.kitchen:
-  friendly_name: Kitchen
-room.dining_room:
-  friendly_name: Dining Room
-room.bedroom:
-  friendly_name: Bedroom
-room.office:
-  friendly_name: Office
