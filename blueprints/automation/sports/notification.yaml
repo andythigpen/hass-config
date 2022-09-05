@@ -1,0 +1,101 @@
+blueprint:
+  name: Sports Notification
+  description: Sends an actionable notification to my phone
+  domain: automation
+  input:
+    calendar:
+      name: Calendar
+      selector:
+        entity:
+          domain: calendar
+    notification_title:
+      name: Notification Title
+    android_tv:
+      name: Android TV
+      selector:
+        entity:
+          domain: media_player
+    android_source:
+      name: Android TV Media Source
+    tv:
+      name: TV
+      selector:
+        entity:
+          domain: media_player
+    tv_source:
+      name: TV Source
+    phone:
+      name: Phone notification service
+
+variables:
+  calendar: !input calendar
+
+mode: single
+
+trigger:
+- platform: calendar
+  event: start
+  offset: "-0:15:0"
+  entity_id: !input calendar
+
+action:
+- alias: "Set up variables for the actions"
+  variables:
+    action_open: "{{ 'OPEN_' ~ context.id }}"
+
+- service: !input phone
+  data:
+    message: '{{ state_attr(calendar, "message") }}'
+    title: !input notification_title
+    data:
+      actions:
+      - action: "{{ action_open }}"
+        title: Watch
+
+- alias: "Wait for a response"
+  wait_for_trigger:
+    - platform: event
+      event_type: mobile_app_notification_action
+      event_data:
+        action: "{{ action_open }}"
+  continue_on_timeout: false
+  timeout: '600'
+
+- service: media_player.turn_on
+  data: {}
+  target:
+    entity_id:
+      - !input tv
+      - !input android_tv
+
+#- wait_for_trigger:
+#    - platform: state
+#      entity_id:
+#        - !input tv
+#      to: 'on'
+#  continue_on_timeout: false
+#  timeout: '30'
+#
+#- service: media_player.select_source
+#  data:
+#    source: !input tv_source
+#  target:
+#    entity_id: !input tv
+
+- wait_for_trigger:
+    - platform: state
+      entity_id:
+        - !input android_tv
+      to: 'on'
+      for:
+        hours: 0
+        minutes: 0
+        seconds: 10
+  continue_on_timeout: false
+  timeout: '30'
+
+- service: media_player.select_source
+  data:
+    source: !input android_source
+  target:
+    entity_id: !input android_tv

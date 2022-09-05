@@ -1,22 +1,3 @@
-- id: '1659748228472'
-  alias: Notify Dortmund game
-  description: Send a mobile notification prior to a Dortmund game
-  trigger:
-  - platform: calendar
-    event: start
-    offset: -0:15:0
-    entity_id: calendar.bundesliga_schedule
-  condition: []
-  action:
-  - service: notify.mobile_app_pixel_3a_xl
-    data:
-      message: '{{ state_attr("calendar.bundesliga_schedule", "message") }}'
-      title: Dortmund Game
-      data:
-        actions:
-        - action: OPEN_ESPN
-          title: Watch
-  mode: single
 - id: '1659748462454'
   alias: Open ESPN on TV
   description: ''
@@ -36,13 +17,13 @@
 - id: '1659748935069'
   alias: Bed triggers nighttime
   trigger:
-    platform: state
+  - platform: state
     entity_id: sensor.bed_occupied
     to: 'on'
     for:
       minutes: 2
   condition:
-    condition: and
+  - condition: and
     conditions:
     - condition: state
       entity_id: input_select.myhome_mode
@@ -52,20 +33,22 @@
       state: 'on'
   action:
   - service: script.bedtime
+    data: {}
   - service: notify.mobile_app_pixel_3a_xl
     data:
       message: command_dnd
-      title: alarms_only
+      data:
+        command: alarms_only
 - id: '1659748972004'
   alias: Bed not occupied DND
   trigger:
-    platform: state
+  - platform: state
     entity_id: sensor.bed_occupied
     to: 'off'
     for:
       minutes: 5
   condition:
-    condition: and
+  - condition: and
     conditions:
     - condition: state
       entity_id: input_boolean.myhome_active
@@ -74,7 +57,8 @@
   - service: notify.mobile_app_pixel_3a_xl
     data:
       message: command_dnd
-      title: 'off'
+      data:
+        command: 'off'
 - id: '1659749000122'
   alias: Bed not occupied
   description: Disable the bedtime script if the bed is not occupied for some time
@@ -175,8 +159,13 @@
     to: paused
     for: 00:00:05
   - platform: state
-    entity_id: media_player.android_tv
+    entity_id:
+    - media_player.android_tv
     to: standby
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 11
   - platform: state
     entity_id: media_player.android_tv
     to: idle
@@ -190,7 +179,7 @@
     value_template: '{{ state_attr(''media_player.android_tv'', ''app_id'') != ''com.google.android.tvlauncher''
       }}'
   condition:
-    condition: and
+  - condition: and
     conditions:
     - condition: template
       value_template: '{% set mode = states("input_select.media_mode") %} {% if mode
@@ -422,7 +411,8 @@
   - service: notify.mobile_app_pixel_3a_xl
     data:
       message: command_bluetooth
-      title: turn_on
+      data:
+        command: turn_on
 - id: '1659749965530'
   alias: Turn bluetooth off when arriving
   trigger:
@@ -433,7 +423,8 @@
   - service: notify.mobile_app_pixel_3a_xl
     data:
       message: command_bluetooth
-      title: turn_off
+      data:
+        command: turn_off
 - id: '1659749990931'
   alias: Turn off alarm reminder for vacations
   trigger:
@@ -1080,6 +1071,7 @@
     input:
       toggle_switch:
       - input_boolean.auto_bedroom
+      trigger_switch: input_boolean.auto_bedroom
       duration:
         hours: 5
         minutes: 0
@@ -1092,6 +1084,7 @@
     input:
       toggle_switch:
       - input_boolean.auto_kitchen
+      trigger_switch: input_boolean.auto_kitchen
       duration:
         hours: 5
         minutes: 0
@@ -1104,6 +1097,7 @@
     input:
       toggle_switch:
       - input_boolean.auto_living_room_standing
+      trigger_switch: input_boolean.auto_living_room_standing
       duration:
         hours: 5
         minutes: 0
@@ -1116,6 +1110,7 @@
     input:
       toggle_switch:
       - input_boolean.auto_living_room_tv
+      trigger_switch: input_boolean.auto_living_room_tv
       duration:
         hours: 5
         minutes: 0
@@ -1128,6 +1123,7 @@
     input:
       toggle_switch:
       - input_boolean.auto_dining_room
+      trigger_switch: input_boolean.auto_dining_room
       duration:
         hours: 5
         minutes: 0
@@ -1140,6 +1136,7 @@
     input:
       toggle_switch:
       - input_boolean.auto_office
+      trigger_switch: input_boolean.auto_office
       duration:
         hours: 5
         minutes: 0
@@ -1302,3 +1299,121 @@
       - light.hall
       toggle_switch:
       - input_boolean.auto_office
+- id: '1660324249885'
+  alias: Sports Notification - Dortmund
+  description: ''
+  use_blueprint:
+    path: sports/notification.yaml
+    input:
+      calendar: calendar.bundesliga_schedule
+      notification_title: Dortmund Game
+      android_tv: media_player.android_tv
+      android_source: com.espn.score_center
+      tv: media_player.samsung
+      tv_source: HDMI
+      phone: notify.mobile_app_pixel_3a_xl
+- id: '1660422850468'
+  alias: Re-enable unoccupied auto update - bedroom
+  description: ''
+  use_blueprint:
+    path: common/reenable_toggle_switch.yaml
+    input:
+      toggle_switch:
+      - input_boolean.auto_bedroom
+      trigger_switch: input_boolean.bedroom_occupied
+      duration:
+        hours: 0
+        minutes: 30
+        seconds: 0
+- id: '1660422888184'
+  alias: Re-enable unoccupied auto update - kitchen
+  description: ''
+  use_blueprint:
+    path: common/reenable_toggle_switch.yaml
+    input:
+      toggle_switch:
+      - input_boolean.auto_kitchen
+      trigger_switch: input_boolean.kitchen_occupied
+      duration:
+        hours: 0
+        minutes: 30
+        seconds: 0
+- id: '1660422927407'
+  alias: Re-enable unoccupied auto update - living room
+  description: ''
+  use_blueprint:
+    path: common/reenable_toggle_switch.yaml
+    input:
+      toggle_switch:
+      - input_boolean.auto_living_room_standing
+      - input_boolean.auto_living_room_tv
+      trigger_switch: input_boolean.living_room_occupied
+      duration:
+        hours: 0
+        minutes: 30
+        seconds: 0
+- id: '1660422965392'
+  alias: Re-enable unoccupied auto update - dining room
+  description: ''
+  use_blueprint:
+    path: common/reenable_toggle_switch.yaml
+    input:
+      toggle_switch:
+      - input_boolean.auto_dining_room
+      trigger_switch: input_boolean.dining_room_occupied
+      duration:
+        hours: 0
+        minutes: 30
+        seconds: 0
+- id: '1660422998612'
+  alias: Re-enable unoccupied auto update - office
+  description: ''
+  use_blueprint:
+    path: common/reenable_toggle_switch.yaml
+    input:
+      toggle_switch:
+      - input_boolean.auto_office
+      trigger_switch: input_boolean.office_occupied
+      duration:
+        hours: 0
+        minutes: 30
+        seconds: 0
+- id: '1660423240635'
+  alias: Sports Notification - MSU FB
+  description: ''
+  use_blueprint:
+    path: sports/notification.yaml
+    input:
+      calendar: calendar.ncaaf_sec
+      notification_title: MSU FB
+      android_tv: media_player.android_tv
+      android_source: com.espn.score_center
+      tv: media_player.samsung
+      tv_source: HDMI
+      phone: notify.mobile_app_pixel_3a_xl
+- id: '1660423355740'
+  alias: Sports Notification - Saints
+  description: ''
+  use_blueprint:
+    path: sports/notification.yaml
+    input:
+      calendar: calendar.nfl_schedule
+      notification_title: Saints
+      android_tv: media_player.android_tv
+      android_source: com.espn.score_center
+      tv: media_player.samsung
+      tv_source: HDMI
+      phone: notify.mobile_app_pixel_3a_xl
+- id: '1660423389666'
+  alias: Sports Notification - USMNT
+  description: ''
+  use_blueprint:
+    path: sports/notification.yaml
+    input:
+      calendar: calendar.usa_men_s_soccer_schedule
+      notification_title: USMNT
+      android_tv: media_player.android_tv
+      android_source: com.espn.score_center
+      tv: media_player.samsung
+      tv_source: HDMI
+      phone: notify.mobile_app_pixel_3a_xl

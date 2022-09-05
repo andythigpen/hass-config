@@ -10,6 +10,11 @@ blueprint:
         entity:
           domain: input_boolean
           multiple: true
+    trigger_switch:
+      name: Trigger switch
+      selector:
+        entity:
+          domain: input_boolean
     duration:
       name: Duration
       selector:
@@ -17,7 +22,7 @@ blueprint:
 
 trigger:
   - platform: state
-    entity_id: !input toggle_switch
+    entity_id: !input trigger_switch
     to: "off"
     for: !input duration
 

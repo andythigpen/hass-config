@@ -1,107 +1,108 @@
 all_off:
   alias: All Off
   sequence:
-    - service: light.turn_off
-      data:
-        entity_id: all
+  - service: light.turn_off
+    data:
+      entity_id: all
 bedtime:
   alias: Bedtime
   sequence:
-    - service: light.turn_on
-      data:
-        entity_id: light.lifx_white_656ad2
-        transition: 10
-        brightness: 150
-    - delay:
-        minutes: "{% if now().hour >= 23 %}5{% else %}10{% endif %}"
-    - service: light.turn_off
-      data:
-        entity_id: light.lifx_white_656ad2
-        transition: "{% if now().hour >= 23 %}300{% else %}600{% endif %}"
-      alias: Bedroom lights off
-    - service: input_select.select_option
-      target:
-        entity_id: input_select.myhome_mode
-      data:
-        option: Asleep
-    - service: light.turn_off
-      data:
-        entity_id: group.living_room
-        transition: 10
-    - delay:
-        minutes: "{% if now().hour >= 23 %}6{% else %}11{% endif %}"
-    - service: light.turn_off
-      data:
-        entity_id: all
+  - service: light.turn_on
+    data:
+      entity_id: light.lifx_white_656ad2
+      transition: 10
+      brightness: 150
+  - delay:
+      minutes: '{% if now().hour >= 23 %}5{% else %}10{% endif %}'
+  - service: light.turn_off
+    data:
+      entity_id: light.lifx_white_656ad2
+      transition: '{% if now().hour >= 23 %}300{% else %}600{% endif %}'
+    alias: Bedroom lights off
+  - service: light.turn_off
+    data:
+      entity_id:
+      - group.living_room
+      - group.kitchen
+  - delay:
+      minutes: '{% if now().hour >= 23 %}6{% else %}11{% endif %}'
+  - service: light.turn_off
+    data:
+      entity_id: all
+  - service: input_select.select_option
+    target:
+      entity_id: input_select.myhome_mode
+    data:
+      option: Asleep
 bedtime_now:
   alias: Bedtime Now
   sequence:
-    - service: light.turn_off
-      data:
-        entity_id: group.Bedroom
-        transition: 60
-      alias: Bedroom lights off
-    - service: input_select.select_option
-      target:
-        entity_id: input_select.myhome_mode
-      data:
-        option: Asleep
-    - delay:
-        minutes: 1
-        seconds: 30
-    - service: light.turn_off
-      data:
-        entity_id: all
+  - service: light.turn_off
+    data:
+      entity_id: group.Bedroom
+      transition: 60
+    alias: Bedroom lights off
+  - service: input_select.select_option
+    target:
+      entity_id: input_select.myhome_mode
+    data:
+      option: Asleep
+  - delay:
+      minutes: 1
+      seconds: 30
+  - service: light.turn_off
+    data:
+      entity_id: all
 reset_bed:
   alias: Reset Bed
   sequence:
-    - service: myhome.send_msg
-      data:
-        entity_id: binary_sensor.bed_sensor_16_1
-        value_type: 1
-        sub_type: 24
-        payload: 1
+  - service: myhome.send_msg
+    data:
+      entity_id: binary_sensor.bed_sensor_16_1
+      value_type: 1
+      sub_type: 24
+      payload: 1
 restart_hyperion:
   alias: Restart Hyperion
   sequence:
-    - service: shell_command.restart_hyperion
-    - delay:
-        seconds: 8
-    - service: light.turn_on
-      data:
-        entity_id: light.hyperion
-        brightness: 0
-    - delay:
-        seconds: 10
-    - service: light.turn_off
-      data:
-        entity_id: light.hyperion
+  - service: shell_command.restart_hyperion
+  - delay:
+      seconds: 8
+  - service: light.turn_on
+    data:
+      entity_id: light.hyperion
+      brightness: 0
+  - delay:
+      seconds: 10
+  - service: light.turn_off
+    data:
+      entity_id: light.hyperion
 snooze:
   alias: Snooze Alarm
   sequence:
-    - service: myhome.set_touch
-      data:
-        entity_id: sensor.touch_controller_13_1
-        command: 7
-    - delay:
-        minutes: 4
-        seconds: 30
-    - service: light.turn_on
-      data:
-        entity_id: group.Bedroom
-        transition: 600
-        brightness: 255
+  - service: myhome.set_touch
+    data:
+      entity_id: sensor.touch_controller_13_1
+      command: 7
+  - delay:
+      minutes: 4
+      seconds: 30
+  - service: light.turn_on
+    data:
+      entity_id: group.Bedroom
+      transition: 600
+      brightness: 255
 wakeup:
   alias: Wake up
   sequence:
-    - service: input_select.select_option
-      target:
-        entity_id: input_select.myhome_mode
-      data:
-        option: Morning
-    - service: light.turn_on
-      data:
-        entity_id: group.Bedroom
-        transition: 240
-        brightness: 255
-      alias: Bedroom lights on
+  - service: input_select.select_option
+    target:
+      entity_id: input_select.myhome_mode
+    data:
+      option: Morning
+  - service: light.turn_on
+    data:
+      entity_id: group.Bedroom
+      transition: 240
+      brightness: 255
+    alias: Bedroom lights on
