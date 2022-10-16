@@ -34,7 +34,7 @@
   action:
   - service: script.bedtime
     data: {}
-  - service: notify.mobile_app_pixel_3a_xl
+  - service: notify.mobile_app_pixel_7
     data:
       message: command_dnd
       data:
@@ -54,7 +54,7 @@
       entity_id: input_boolean.myhome_active
       state: 'on'
   action:
-  - service: notify.mobile_app_pixel_3a_xl
+  - service: notify.mobile_app_pixel_7
     data:
       message: command_dnd
       data:
@@ -120,7 +120,7 @@
     entity_id: sensor.bed_sensor_16_5
     above: 70
   action:
-    service: notify.mobile_app_pixel_3a_xl
+    service: notify.mobile_app_pixel_7
     data:
       message: Check the bed sensors
       title: Bed sensor disconnected
@@ -408,7 +408,7 @@
     entity_id: device_tracker.rfid_sensor_12_1
     to: not_home
   action:
-  - service: notify.mobile_app_pixel_3a_xl
+  - service: notify.mobile_app_pixel_7
     data:
       message: command_bluetooth
       data:
@@ -420,7 +420,7 @@
     entity_id: device_tracker.rfid_sensor_12_1
     to: home
   action:
-  - service: notify.mobile_app_pixel_3a_xl
+  - service: notify.mobile_app_pixel_7
     data:
       message: command_bluetooth
       data:
@@ -437,12 +437,12 @@
   - condition: not
     conditions:
     - condition: state
-      entity_id: sensor.pixel_3a_xl_next_alarm
+      entity_id: sensor.pixel_7_next_alarm
       state: unavailable
   action:
-  - service: notify.mobile_app_pixel_3a_xl
+  - service: notify.mobile_app_pixel_7
     data:
-      message: Vacaction starts tomorrow but your alarm is still set.
+      message: Vacaction starts tomorrow but your alarm is still set
       title: Vacation start
       data:
         actions:
@@ -459,12 +459,12 @@
     value_template: '{{ (state_attr(''calendar.vacation'', ''end_time'')|as_timestamp)|round
       <= (now() + timedelta(days=1))|as_timestamp|round }}'
   - condition: state
-    entity_id: sensor.pixel_3a_xl_next_alarm
     state: unavailable
+    entity_id: sensor.pixel_7_next_alarm
   action:
-  - service: notify.mobile_app_pixel_3a_xl
+  - service: notify.mobile_app_pixel_7
     data:
-      message: Vacaction ends tomorrow but your alarm is not set.
+      message: Vacaction ends tomorrow but your alarm is not set
       title: Vacation end
       data:
         actions:
@@ -1311,7 +1311,7 @@
       android_source: com.espn.score_center
       tv: media_player.samsung
       tv_source: HDMI
-      phone: notify.mobile_app_pixel_3a_xl
+      phone: notify.mobile_app_pixel_7
 - id: '1660422850468'
   alias: Re-enable unoccupied auto update - bedroom
   description: ''
@@ -1390,7 +1390,7 @@
       android_source: com.espn.score_center
       tv: media_player.samsung
       tv_source: HDMI
-      phone: notify.mobile_app_pixel_3a_xl
+      phone: notify.mobile_app_pixel_7
 - id: '1660423355740'
   alias: Sports Notification - Saints
   description: ''
@@ -1403,7 +1403,7 @@
       android_source: com.espn.score_center
       tv: media_player.samsung
       tv_source: HDMI
-      phone: notify.mobile_app_pixel_3a_xl
+      phone: notify.mobile_app_pixel_7
 - id: '1660423389666'
   alias: Sports Notification - USMNT
   description: ''
@@ -1416,4 +1416,4 @@
       android_source: com.espn.score_center
       tv: media_player.samsung
       tv_source: HDMI
-      phone: notify.mobile_app_pixel_3a_xl
+      phone: notify.mobile_app_pixel_7
