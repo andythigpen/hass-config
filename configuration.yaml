@@ -128,7 +128,7 @@ sensor:
         value_template: >-
           {% if is_state("input_select.myhome_mode", "Asleep") %}
             on
-          {% elif is_state("sensor.bed_occupied", "on") and (now() > today_at("05:00") or now() < today_at("09:00")) %}
+          {% elif is_state("sensor.bed_occupied", "on") and (now() > today_at("05:00") and now() < today_at("09:30")) %}
             on
           {% else %}
             off
