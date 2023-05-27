@@ -20,20 +20,24 @@ bedtime:
       transition: '{% if now().hour >= 23 %}300{% else %}600{% endif %}'
     alias: Bedroom lights off
   - service: light.turn_off
-    data:
+    data: {}
+    target:
       entity_id:
-      - group.living_room
       - group.kitchen
+      device_id:
+      - 9f98dd76885f4005953d01fc2399e670
+      - da844e65088d4e66aba9c0590d15a9ad
+      - 866b6ef6104040c3bc90056768ede3c0
   - delay:
       minutes: '{% if now().hour >= 23 %}6{% else %}11{% endif %}'
-  - service: light.turn_off
-    data:
-      entity_id: all
   - service: input_select.select_option
     target:
       entity_id: input_select.myhome_mode
     data:
       option: Asleep
+  - service: light.turn_off
+    data:
+      entity_id: all
 bedtime_now:
   alias: Bedtime Now
   sequence:
