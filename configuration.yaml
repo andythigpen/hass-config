@@ -396,6 +396,10 @@ panel_iframe:
     title: 'Hyperion'
     url: 'http://192.168.1.142:8090'
     icon: mdi:led-variant-on
+  prometheus:
+    title: 'Prometheus'
+    url: 'http://192.168.1.140:9090/alerts'
+    icon: mdi:gauge
 
 system_health:
 
