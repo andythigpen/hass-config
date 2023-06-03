@@ -324,7 +324,7 @@
     entity_id: binary_sensor.xbox
     to: 'on'
   condition:
-    condition: and
+  - condition: and
     conditions:
     - condition: template
       value_template: '{% set mode = states("input_select.media_mode") %} {% if mode
@@ -334,6 +334,11 @@
     - condition: state
       entity_id: input_boolean.myhome_active
       state: 'on'
+    - condition: not
+      conditions:
+      - condition: state
+        entity_id: input_select.myhome_mode
+        state: Asleep
   action:
   - service: light.turn_on
     data_template:
@@ -1417,3 +1422,21 @@
       tv: media_player.samsung
       tv_source: HDMI
       phone: notify.mobile_app_pixel_7
+- id: '1685753233116'
+  alias: Disable hyperion
+  description: Makes a REST call to hyperion instance to disable it and save power
+    when turned off
+  trigger:
+  - platform: state
+    entity_id:
+    - light.hyperion
+    to: 'off'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 10
+  condition: []
+  action:
+  - service: rest_command.disable_hyperion
+    data: {}
+  mode: single

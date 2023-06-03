@@ -16,6 +16,8 @@ homeassistant:
 
 config:
 
+default_config:
+
 frontend:
   themes: !include_dir_merge_named themes/
 
@@ -406,3 +408,10 @@ system_health:
 backup:
 
 my:
+
+rest_command:
+  disable_hyperion:
+    url: http://192.168.1.142:8090/json-rpc
+    method: POST
+    payload: '{"command":"componentstate","tan":1,"componentstate":{"component":"ALL","state":false}}'
+    content_type:  'application/json; charset=utf-8'
