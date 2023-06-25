@@ -206,7 +206,7 @@
       option: '{% set name = state_attr(''media_player.android_tv'', ''app_name'')
         %} {% if is_state(''media_player.android_tv'', ''playing'') %} {% if name
         in (''Prime Video'', ''Netflix'') %} Movie {% elif ''amazonvideo'' in name
-        or ''hbonow'' in name %} Movie {% else %} TV {% endif %} {% elif is_state(''media_player.android_tv'',
+        or ''com.wbd.stream'' in name %} Movie {% else %} TV {% endif %} {% elif is_state(''media_player.android_tv'',
         ''paused'') %} {% if name in (''com.google.android.tvlauncher'', ''com.android.tv.settings'',
         ''Android TV Launcher'') %} Awake {% else %} Paused {% endif %} {% elif is_state(''media_player.android_tv'',
         ''standby'') %} Awake {% elif is_state(''media_player.android_tv'', ''idle'')
