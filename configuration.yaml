@@ -387,10 +387,6 @@ shell_command:
 
 mobile_app:
 
-duckdns:
-  domain: !secret duckdns_domain
-  access_token: !secret duckdns_token
-
 person:
 
 panel_iframe:
