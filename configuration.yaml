@@ -183,7 +183,7 @@ binary_sensor:
 
 hue:
   bridges:
-    - host: 192.168.2.101
+    - host: 192.168.1.143
       filename: phue.conf
 
 device_tracker:
