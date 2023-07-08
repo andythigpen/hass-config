@@ -397,6 +397,10 @@ panel_iframe:
     title: 'Hyperion'
     url: 'https://hyperion.atlocal.duckdns.org'
     icon: mdi:led-variant-on
+  grafana:
+    title: 'Grafana'
+    url: 'https://grafana.atlocal.duckdns.org/d/rYdddlPWk/node-exporter-full?orgId=1&var-DS_PROMETHEUS=default&var-job=debian&var-node=localhost%3A9100'
+    icon: mdi:chart-line
   prometheus:
     title: 'Prometheus'
     url: 'https://prometheus.atlocal.duckdns.org/alerts'
