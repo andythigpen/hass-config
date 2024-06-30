@@ -178,16 +178,6 @@ sensor:
 binary_sensor:
   - platform: template
     sensors: !include_dir_merge_named binary_sensors/
-  - platform: ping
-    host: 192.168.1.131
-    name: Xbox
-    count: 2
-    scan_interval: 30
-
-hue:
-  bridges:
-    - host: 192.168.1.143
-      filename: phue.conf
 
 device_tracker:
 - platform: !secret device_tracker_platform
@@ -417,4 +407,19 @@ rest_command:
     url: http://192.168.1.142:8090/json-rpc
     method: POST
     payload: '{"command":"componentstate","tan":1,"componentstate":{"component":"ALL","state":false}}'
-    content_type:  'application/json; charset=utf-8'
+    content_type: 'application/json; charset=utf-8'
+  clock_brightness:
+    url: http://192.168.1.133:8080/api/display/brightness
+    method: POST
+    payload: '{ "brightness":{{ brightness }} }'
+    content_type: 'application/json; charset=utf-8'
+
+switch:
+  - platform: rest
+    name: Pi Clock
+    resource: http://192.168.1.133:8080/api/display/state
+    body_on: '{"state":"On"}'
+    body_off: '{"state":"Off"}'
+    is_on_template: "{{ value_json.state == 'On' }}"
+    headers:
+      Content-Type: application/json

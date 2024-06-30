@@ -1,0 +1,42 @@
+blueprint:
+  name: Auto-Light unoccupied
+  description: Turns off lights in occupied rooms after a certain duration
+  domain: automation
+  input:
+    lights:
+      name: Lights
+      description: The lights to control
+      selector:
+        entity:
+          domain: light
+          multiple: true
+    toggle_switch:
+      name: Toggle switch
+      description: Turns automatic control of the lights on/off
+      selector:
+        entity:
+          domain: input_boolean
+          multiple: true
+    occupied_boolean:
+      name: Occupied boolean
+      description: Input boolean for the room occupancy trigger
+      selector:
+        entity:
+          domain: input_boolean
+    duration:
+      name: Duration
+      selector:
+        duration:
+
+trigger:
+  - platform: state
+    entity_id: !input occupied_boolean
+    to: "off"
+    for: !input duration
+
+action:
+  - service: light.turn_off
+    target:
+      entity_id: !input lights
+    data:
+      transition: 5
