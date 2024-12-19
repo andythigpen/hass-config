@@ -87,17 +87,6 @@ http:
 sun:
 
 sensor:
-  - platform: systemmonitor
-    scan_interval: 30
-    resources:
-      - type: memory_use
-      - type: memory_free
-      - type: swap_use
-      - type: swap_free
-      - type: load_1m
-      - type: load_5m
-      - type: load_15m
-      - type: processor_use
   - platform: time_date
     display_options:
       - date
@@ -382,20 +371,6 @@ mobile_app:
 
 person:
 
-panel_iframe:
-  hyperion:
-    title: 'Hyperion'
-    url: 'https://hyperion.atlocal.duckdns.org'
-    icon: mdi:led-variant-on
-  grafana:
-    title: 'Grafana'
-    url: 'https://grafana.atlocal.duckdns.org/d/rYdddlPWk/node-exporter-full?orgId=1&var-DS_PROMETHEUS=default&var-job=debian&var-node=localhost%3A9100'
-    icon: mdi:chart-line
-  prometheus:
-    title: 'Prometheus'
-    url: 'https://prometheus.atlocal.duckdns.org/alerts'
-    icon: mdi:gauge
-
 system_health:
 
 backup:
@@ -423,3 +398,23 @@ switch:
     is_on_template: "{{ value_json.state == 'On' }}"
     headers:
       Content-Type: application/json
+
+template:
+  - trigger:
+      - platform: homeassistant
+        event: start 
+      - platform: time_pattern
+        hours: /1
+    action:
+      - service: weather.get_forecasts
+        data:
+          type: hourly
+        target:
+          entity_id: weather.kcha_daynight
+        response_variable: hourly
+    sensor:
+      - name: Weather Forecast Hourly
+        unique_id: weather_forecast_hourly
+        state: "{{ now().isoformat() }}"
+        attributes:
+          forecast: "{{ hourly['weather.kcha_daynight'].forecast }}"
